@@ -1,13 +1,28 @@
-import React, {useState} from "react";
+import React, {useState,useEffect } from "react";
 import { ImMenu,ImMenu3  } from "react-icons/im";
-import { useIsConnected } from "./IsConnected";
+
+
+
+
 
 
 const NavigBar = () => {
 
     const [bar,setBar] = useState(true)
-    const isConnected = useIsConnected().isConnected
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const [name, setName] = useState("");
+
+    useEffect(() => {
+        const isAuthenticatedFromLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
+        if (isAuthenticatedFromLocalStorage) {
+            setName(localStorage.getItem('name'));
+        }
+        setIsAuthenticated(isAuthenticatedFromLocalStorage);
+    }, []);
+    
+    
     const handleBar = () => {
         setBar(!bar)
         
@@ -21,11 +36,17 @@ const NavigBar = () => {
                 e.preventDefault();
                 window.location.href='/';
                 }}>Mini Games</button></div>
-            {!isConnected ? <button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={(e) => {
+            {!isAuthenticated ? <button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={(e) => {
                 e.preventDefault();
                 window.location.href='/Connexion';
                 }}>Connexion
-            </button> : <button></button>}
+            </button>:<button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" 
+            onClick={(e) => {
+                e.preventDefault();
+                localStorage.setItem('isAuthenticated','false');
+                window.location.href='/';
+            }}
+            >{localStorage.getItem("name")}</button>}
             <div className={!bar ? "fixed  left-0 top-24 w-[10] h-full border-r border-r-[#525240] bg-[#000300] ease-in-out duration-300 z-50" : "fixed left-[-100%] top-24 h-full ease-in-out duration-300"}>
                 <ul className="">
                     <li className="p-4 hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300">Profil</li>

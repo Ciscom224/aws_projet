@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import NavigBar from "./NavigBar";
 import {useForm} from "react-hook-form";
-import { useIsConnected } from "./IsConnected";
+
+
 
 
 const Login = () => {
@@ -13,7 +14,10 @@ const Login = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        console.log(data)
+        //console.log(data)
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('name',data.pseudonyme)
+        window.location.href="/";
 
     }
 
@@ -51,20 +55,20 @@ const Login = () => {
                   <div className="flex items-center justify-between">
                       <div className="flex items-start">
                           <div className="flex items-center h-5">
-                            <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
+                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                           </div>
-                          <div class="ml-3 text-sm">
-                            <label htmlFor="remember" class="text-gray-500 dark:text-[#e0c758]">Se souvenir de moi</label>
+                          <div className="ml-3 text-sm">
+                            <label htmlFor="remember" className="text-gray-500 dark:text-[#e0c758]">Se souvenir de moi</label>
                           </div>
                       </div>
-                      <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={(e) => {
+                      <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={(e) => {
       e.preventDefault();
       window.location.href='/mdp_oublie';
       }}>Mot de passe oublié ?</a>
                   </div>
-                  <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]">Connexion</button>
-                  <p class="text-sm font-light text-gray-500  dark:text-[#423d28]">
-                      Créer un compte? <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={(e) => {
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]">Connexion</button>
+                  <p className="text-sm font-light text-gray-500  dark:text-[#423d28]">
+                      Créer un compte? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={(e) => {
       e.preventDefault();
       window.location.href='/Inscription';
       }}>Cliquez ici</a>
