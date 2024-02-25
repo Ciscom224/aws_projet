@@ -1,11 +1,14 @@
 import React, {useContext, useState} from "react";
-import NavigBar from "./NavigBar";
+import NavigBar from "../components/NavigBar";
 import {useForm} from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 const Login = () => {
+
+    const navigate = useNavigate();
 
     const {
         register,
@@ -17,7 +20,7 @@ const Login = () => {
         //console.log(data)
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('name',data.pseudonyme)
-        window.location.href="/";
+        navigate("/");
 
     }
 

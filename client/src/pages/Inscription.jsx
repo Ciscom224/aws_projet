@@ -1,8 +1,12 @@
 import React, {useState} from "react";
-import NavigBar from "./NavigBar";
+import NavigBar from "../components/NavigBar";
 import {useForm} from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { sendAuthMail } from "../components/SendMailConfirm";
 
 const Inscription = () => {
+
+    const navigate = useNavigate();
 
     const {
         register,
@@ -11,7 +15,17 @@ const Inscription = () => {
         formState: {errors},
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = async (data) => {
+        try {
+        const code = Math.floor(Math.random() * 1000000);
+        console.log(code)
+        console.log(data.email)
+        await sendAuthMail(data.email,code);
+        navigate("/verifemail", { state: { code, pseudonyme: data.pseudonyme } } );
+        } catch(err) {
+            console.log(err)
+        }
+    }
     return (
         <div>
             <NavigBar/>

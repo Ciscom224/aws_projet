@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './pages/App';
 import './index.css';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import Login from './components/Login';
-import Inscription  from './components/Inscription';
+import Login from './pages/Login';
+import Inscription  from './pages/Inscription';
+import EmailConfirmation  from './pages/EmailConfirmation';
 
 const route = createBrowserRouter([
   {
@@ -20,8 +21,8 @@ const route = createBrowserRouter([
     element: <Inscription />,
   },
   {
-    path: "/mdp_oublie", // Pour Mot de passe oublié
-    element: <Login />,
+    path: "/verifemail", // Pour vérifier le email
+    element: <EmailConfirmation />,
   },
   {
     path: "*",
