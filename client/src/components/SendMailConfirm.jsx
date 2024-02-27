@@ -1,6 +1,8 @@
 import React from 'react';
 import emailjs from '@emailjs/browser';
 
+// Ce composant nous permet de pouvoir envoyé un mail a un utilisateur afin de pouvoir vérifier que son email existe bel et bien
+// On utilise eamil.js depuis le coté client
 export const sendAuthMail = (userMail,code) => {
     const serviceId = "service_xuqr26r"
     const templateId = "template_kteg1hf"

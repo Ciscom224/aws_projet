@@ -6,14 +6,17 @@ import {createBrowserRouter,RouterProvider} from 'react-router-dom';
 import Login from './pages/Login';
 import Inscription  from './pages/Inscription';
 import EmailConfirmation  from './pages/EmailConfirmation';
+import { initial } from './components/Initiale';
 
+
+// On crée un routeur qui spécifie plusieurs routes avec chacune une page (composantes) associé
 const route = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: "/", // path c'est le chemin
+    element: <App />, // element le composant ou page associé
   },
   {
-    path: "/Connexion",
+    path: "/Connexion", // Pour connexion
     element: <Login />,
   },
   {
@@ -25,19 +28,19 @@ const route = createBrowserRouter([
     element: <EmailConfirmation />,
   },
   {
-    path: "*",
+    path: "*", // le reste des pages
     element: <h2 className='dark:text-[#83794f] '>La page n'existe pas</h2>,
   }
 
 ]);
+
+initial()
+
+// racine de notre site web qui permet de pouvoir naviguer avec les routes configurés
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RouterProvider router={route} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 

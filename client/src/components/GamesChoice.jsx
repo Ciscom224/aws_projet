@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import {FaChevronCircleLeft ,FaChevronCircleRight} from "react-icons/fa"
 
+// Ceci represente le composant pour notre choix de jeu qui sera dans la page de menu represente par les images/
 const GamesChoice = () => {
     const games = [
         {
@@ -12,12 +13,14 @@ const GamesChoice = () => {
     ];
 
     const [actualGame,setActualGame] = useState(0)
-
+   
+    // fonction pour le cas ou on clique sur la fleche de gauche mais qu'on est déja a l'index 0 de games donc on revient au dernier
     const prevGame = () => {
         const isFirstGame = actualGame === 0;
         const newGame = isFirstGame ? games.length - 1: actualGame -1;
         setActualGame(newGame);
     }
+    // pareil mais avec celui de droite
     const nextGame = () => {
         const isLastGame = actualGame === games.length - 1;
         const newGame = isLastGame ? 0: actualGame + 1;

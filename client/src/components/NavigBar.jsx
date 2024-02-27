@@ -1,11 +1,7 @@
 import React, {useState,useEffect } from "react";
 import { ImMenu,ImMenu3  } from "react-icons/im";
 
-
-
-
-
-
+// Composant permettant d'afficher la barre de navigation dans notre page
 const NavigBar = () => {
 
     const [bar,setBar] = useState(true)
@@ -14,25 +10,29 @@ const NavigBar = () => {
 
     const [name, setName] = useState("");
 
+    // Permet de mettre a jour le bouton Connexion ou le pseudo du joueur a droite de la NavigBar
     useEffect(() => {
         const isAuthenticatedFromLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
+
         if (isAuthenticatedFromLocalStorage) {
-            setName(localStorage.getItem('name'));
+            setName(localStorage.getItem('name'))
+            console.log(name)
+            
         }
         setIsAuthenticated(isAuthenticatedFromLocalStorage);
+
+
     }, []);
-    
     
     const handleBar = () => {
         setBar(!bar)
-        
     }
     return(
         <div className="flex justify-between items-center h-24  mx-auto px-4 text-white bg-[#181717]" >
             <button onClick={handleBar} className="absolute top-8.5 ">
               {!bar ? <ImMenu3  size={33} /> : <ImMenu  size={25} />}
             </button>
-            <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-24"><button onClick={(e) => {
+            <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-24" ><button onClick={(e) => {
                 e.preventDefault();
                 window.location.href='/';
                 }}>Mini Games</button></div>

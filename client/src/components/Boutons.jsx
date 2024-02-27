@@ -1,9 +1,11 @@
 import React from "react"
 
+// Composant responsable du bouton jouer et des futurs boutons (1 joueur, multijoueur etc etc)
 const Boutons = () => {
 
     const jouer = () => {
-        alert("Connectez vous d'abord sss! ")
+        // Verifie si la donnée stocké détient la valeur String true et affiche une alerte en fonction de cette valeur
+        return localStorage.getItem("isAuthenticated")==='true' ? alert("Ca arrive prochainement") : alert("Connectez vous d'abord sss! ")
       }
     return (
         <div className="flex  items-center">

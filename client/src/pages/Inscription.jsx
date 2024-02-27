@@ -1,13 +1,16 @@
-import React, {useState} from "react";
+import React from "react";
 import NavigBar from "../components/NavigBar";
 import {useForm} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { sendAuthMail } from "../components/SendMailConfirm";
+import { initial } from "../components/Initiale";
 
+// notre page d'inscription, qui ressemble beaucoup a celle du Login.
 const Inscription = () => {
 
     const navigate = useNavigate();
 
+    // Watch ici permet de vérifier une valeur de notre register
     const {
         register,
         handleSubmit,
@@ -15,11 +18,11 @@ const Inscription = () => {
         formState: {errors},
     } = useForm()
 
+    // Fonction du submit de l'inscription qui envoie un mail avec un code généré aléatoirement au mail de l'inscription et qui doit le vérifier pour s'inscrire 
     const onSubmit = async (data) => {
+        initial()
         try {
         const code = Math.floor(Math.random() * 1000000);
-        console.log(code)
-        console.log(data.email)
         await sendAuthMail(data.email,code);
         navigate("/verifemail", { state: { code, pseudonyme: data.pseudonyme } } );
         } catch(err) {
@@ -79,7 +82,8 @@ const Inscription = () => {
                   <div className="flex items-center justify-between">
                       <div className="flex items-start">
                           <div className="flex items-center h-5">
-                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
+                            <input id="remember" aria-describedby="remember" type="checkbox"
+                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                           </div>
                           <div className="ml-3 text-sm">
                             <label htmlFor="remember" className="text-gray-500 dark:text-[#e0c758]">Se souvenir de moi</label>
