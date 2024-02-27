@@ -34,6 +34,7 @@ const route = createBrowserRouter([
 
 ]);
 
+// on initialise ici nos stockages locaux en cas de 1er connexion
 initial()
 
 // racine de notre site web qui permet de pouvoir naviguer avec les routes configurés
