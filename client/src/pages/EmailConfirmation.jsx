@@ -3,8 +3,10 @@ import {useForm} from "react-hook-form";
 import { useNavigate,useLocation } from "react-router-dom";
 import NavigBar from "../components/NavigBar";
 
+// Represente la page de vérification d'email apres inscription afin de pouvoir se connecter
 const EmailConfirmation = () => {
 
+    // location va nous permettre de récupérer les (props) de notre EmailConfirmation et afin de pouvoir les appeler dans les fonctions en dessous (voir la page Inscription pour les props)
     const location = useLocation()
 
     const navigate = useNavigate();
@@ -17,10 +19,11 @@ const EmailConfirmation = () => {
     } = useForm()
 
     const onSubmit = (data) => {
+        // On appelle ici location pour récuperer le props code 
         if (data.code == location.state.code) {
             alert("Inscription reussi")
             localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('name',location.state.pseudonyme)
+            localStorage.setItem('name',location.state.pseudonyme) // On stocke le nom de l'utilisateur pour l'afficher a gauche de dans notre navigBar
             navigate("/")
         }
         else {
