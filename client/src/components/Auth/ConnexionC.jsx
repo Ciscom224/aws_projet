@@ -3,6 +3,8 @@ import {useForm} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { initial } from "../Initiale";
 import InscriptionC from "./InscriptionC";
+import { SpanAlerte } from "../SpanAlert";
+
 
 const ConnexionC = (props) => {
 
@@ -48,7 +50,7 @@ const ConnexionC = (props) => {
                       {...register("pseudonyme",{required: true,maxLength:30})} // on enregistre la donné pseudonyme qui est required et doit faire une taille max de 30 
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Identifiant"/>
                         {errors.pseudonyme && errors.pseudonyme.type === "required" && ( // Ici par exemple on vérifieque si le label pseudo est required et que rien n'a été écris alors on affiche un message en rouge en dessous
-                            <span role="alert" className="text-red-500 text-sm ">Pseudonyme requis</span>
+                            <SpanAlerte message = "Pseudonyme requis"/>
                         )}
                   </div>
                   <div>
@@ -57,7 +59,7 @@ const ConnexionC = (props) => {
                         {...register("password",{required: true,maxLength:30})} 
                         placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                         {errors.password && errors.password.type === "required" && (
-                            <span role="alert" className="text-red-500 text-sm ">Mot de passe requis</span>
+                           <SpanAlerte message = "Mot de passe requis"/>
                         )}
                   </div>
                   <div className="flex items-center justify-between">

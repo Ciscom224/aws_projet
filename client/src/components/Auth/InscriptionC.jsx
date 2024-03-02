@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form";
 import { sendAuthMail } from "../SendMailConfirm";
 import { initial } from "../Initiale";
 import EmailConfirmation from "../../pages/EmailConfirmation";
+import { SpanAlerte } from "../SpanAlert";
 
 // notre page d'inscription, qui ressemble beaucoup a celle du Login.
 const InscriptionC = (props) => {
@@ -16,7 +17,7 @@ const InscriptionC = (props) => {
         register,
         handleSubmit,
         watch,
-        formState: {errors},
+        formState: {errors, isValid},
     } = useForm()
 
     const handleLogin = () => {
@@ -56,7 +57,7 @@ const InscriptionC = (props) => {
                       {...register("pseudonyme",{required: true,maxLength:30})} 
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Identifiant"/>
                    {errors.pseudonyme && errors.pseudonyme.type === "required" && (
-                            <span role="alert" className="text-red-500 text-sm ">Pseudonyme Requis</span>
+                            <SpanAlerte message = "Pseudonyme requis"/>
                         )}
                   </div>
                   <div>
@@ -64,7 +65,7 @@ const InscriptionC = (props) => {
                       <input type="text" name="email" id="email" 
                       {...register("email",{required: true,maxLength:30})} placeholder="nom.prenom@email.com" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "/>
                     {errors.email && errors.email.type === "required" && (
-                            <span role="alert" className="text-red-500 text-sm ">Email requis</span>
+                            <SpanAlerte message = "Email requis"/>
                         )}
                   </div>
                   <div>
@@ -72,7 +73,7 @@ const InscriptionC = (props) => {
                       <input type="password" name="password" id="password" 
                       {...register("password",{required: true,maxLength:30})} placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                   {errors.password && errors.password.type === "required" && (
-                            <span role="alert" className="text-red-500 text-sm ">Mot de Passe requis</span>
+                            <SpanAlerte message = "Mot de passe requis"/>
                         )}
                   </div>
                   <div>
@@ -80,10 +81,10 @@ const InscriptionC = (props) => {
                       <input type="password" name="confirmpassword" 
                       {...register("confirmpassword",{required: true,maxLength:30})} id="Confirmpassword" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                   {errors.confirmpassword && errors.confirmpassword.type === "required" && (
-                            <span role="alert" className="text-red-500 text-sm ">Confirmation du mot de passe requis</span>
+                           <SpanAlerte message = "Confirmation de Mot de passe requis"/>
                         )}
                      {!errors.confirmpassword && watch("password") !== watch("confirmpassword") && (
-                            <span role="alert" className="text-red-500 text-sm ">Les mots de passe ne correspondent pas</span>
+                            <SpanAlerte message = "Les mots de passe ne correspondent pas"/>
                         )}
                   </div>
                   <div className="flex items-center justify-between">
@@ -97,7 +98,7 @@ const InscriptionC = (props) => {
                           </div>
                       </div>
                   </div>
-                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]"  >Inscription</button>
+                  <button type="submit" disabled={!isValid}  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]"  >Inscription</button>
               </form>
           </div>
       </div>

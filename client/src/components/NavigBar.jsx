@@ -1,6 +1,8 @@
 import React, {useState,useEffect } from "react";
 import { ImMenu,ImMenu3  } from "react-icons/im";
 import ConnexionC from "./Auth/ConnexionC";
+import Profile from "./PictureManag/Profile";
+import "react-image-crop/dist/ReactCrop.css";
 
 // Composant permettant d'afficher la barre de navigation dans notre page
 const NavigBar = () => {
@@ -44,14 +46,12 @@ const NavigBar = () => {
                 e.preventDefault();
                 window.location.href='/';
                 }}>Mini Games</button></div>
-            {!isAuthenticated ? <button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
-            </button>:<button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" 
-            onClick={(e) => {
-                e.preventDefault();
-                localStorage.setItem('isAuthenticated','false');
-                window.location.href='/';
-            }}
-            >{localStorage.getItem("name")}</button>}
+            {!isAuthenticated ? 
+                <button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
+                </button>   :
+            <div className="flex absolute right-12">
+                <Profile/>
+            </div>}
             <div className={!bar ? "fixed  left-0 top-24 w-[10] h-full border-r border-r-[#525240] bg-[#000300] ease-in-out duration-300 z-50" : "fixed left-[-100%] top-24 h-full ease-in-out duration-300"}>
                 <ul className="">
                     <li className="p-4 hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300">Profil</li>
