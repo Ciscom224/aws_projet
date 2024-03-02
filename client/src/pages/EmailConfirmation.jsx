@@ -1,14 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import {useForm} from "react-hook-form";
-import { useNavigate,useLocation } from "react-router-dom";
-import NavigBar from "../components/NavigBar";
 
-const EmailConfirmation = () => {
 
-    const location = useLocation()
-
-    const navigate = useNavigate();
-
+const EmailConfirmation = (props) => {
 
     const {
         register,
@@ -17,11 +11,13 @@ const EmailConfirmation = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        if (data.code == location.state.code) {
+        console.log(data.code)
+        console.log(props.code)
+        if (data.code == props.code) {
             alert("Inscription reussi")
             localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('name',location.state.pseudonyme)
-            navigate("/")
+            localStorage.setItem('name',props.pseudonyme)
+            window.location.reload();
         }
         else {
             alert("Code mauvais veuillez ressayer")
@@ -30,16 +26,13 @@ const EmailConfirmation = () => {
     }
 
     return (
-        <div>
-            <NavigBar/>
-        <section className="bg-gray-50 dark:bg-[#000300]">
-  <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-[#e0c758]">
-          Le code a été envoyé a votre email
-            
-      </a>
-      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-[#0c0c0c] dark:border-[#e0c758]">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+    <div>
+        <div className="fixed inset-0 flex items-center justify-center ">
+        
+        <div className="flex flex-col w-full items-center justify-center mx-auto max-w-md md:h-screen lg:py-0">
+
+            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-[#0c0c0c] dark:border-[#e0c758]">
+                <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               
               <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit(onSubmit)} >
                   <div>
@@ -57,7 +50,7 @@ const EmailConfirmation = () => {
           </div>
       </div>
   </div>
-</section>
+</div>
 </div>
     );
 };

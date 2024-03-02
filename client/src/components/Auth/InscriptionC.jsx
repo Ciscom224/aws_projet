@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { sendAuthMail } from "../SendMailConfirm";
 import { initial } from "../Initiale";
+import EmailConfirmation from "../../pages/EmailConfirmation";
 
 // notre page d'inscription, qui ressemble beaucoup a celle du Login.
 const InscriptionC = (props) => {
 
-    const navigate = useNavigate();
+    const [login,setLogin] = useState(true)
+    const [pseudo,setPseudo] = useState("")
+    const [codeVal,setCodeVal] = useState(0)
 
     // Watch ici permet de vérifier une valeur de notre register
     const {
@@ -17,19 +19,27 @@ const InscriptionC = (props) => {
         formState: {errors},
     } = useForm()
 
+    const handleLogin = () => {
+        setLogin(!login)
+    }
+
     // Fonction du submit de l'inscription qui envoie un mail avec un code généré aléatoirement au mail de l'inscription et qui doit le vérifier pour s'inscrire 
     const onSubmit = async (data) => {
         initial()
+        console.log("ICI")
         try {
         const code = Math.floor(Math.random() * 1000000);
         await sendAuthMail(data.email,code);
-        navigate("/verifemail", { state: { code, pseudonyme: data.pseudonyme } } );
+        setCodeVal(code)
+        setPseudo(data.pseudonyme)
+        handleLogin()
         } catch(err) {
             console.log(err)
         }
     }
-    return (props.trigger) ? (
-        <div className="fixed inset-0 flex items-center justify-center ">
+    return props.trigger ?
+    <>
+        {login && <div className="fixed inset-0 flex items-center justify-center ">
         
         <div className="flex flex-col w-full items-center justify-center mx-auto max-w-md md:h-screen lg:py-0">
             <a className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-[#e0c758]">
@@ -87,13 +97,16 @@ const InscriptionC = (props) => {
                           </div>
                       </div>
                   </div>
-                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]" >Inscription</button>
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]"  >Inscription</button>
               </form>
           </div>
       </div>
   </div>
   </div>
-    ) : "";
+}
+{!login && <EmailConfirmation code = {codeVal} pseudonyme = {pseudo}/>}
+  </>
+     : "";
 }
 
 export default InscriptionC
