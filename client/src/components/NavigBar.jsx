@@ -11,7 +11,7 @@ const NavigBar = () => {
 
     const [loginOpen,setLoginOpen] = useState(false)
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
 
     const [name, setName] = useState("");
 

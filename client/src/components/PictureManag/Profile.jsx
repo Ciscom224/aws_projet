@@ -1,21 +1,27 @@
 import { useRef, useState } from "react";
 import PencilIcon from "./PencilIcon";
 import Modal from "./Modal";
+import Side_bar from "../SideBarPicture";
 
 const Profile = () => {
   const avatarUrl = useRef(
     "https://avatarfiles.alphacoders.com/161/161002.jpg"
   );
   const [modalOpen, setModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const updateAvatar = (imgSrc) => {
     avatarUrl.current = imgSrc;
   };
+  const handlePicture = () => {
+    setIsClicked(!isClicked)
+    // localStorage.setItem('isAuthenticated','false')
+    // window.location.reload();
+  }
 
   return (
     <div className="flex flex-col items-center ">
-      <div className="relative" onMouseEnter={() => setIsHovered(true)}  onMouseLeave={() => setIsHovered(false)}>
+      <div className="relative" onClick={handlePicture}>
         <img
           src={avatarUrl.current}
           alt="Avatar"
@@ -29,16 +35,16 @@ const Profile = () => {
           <PencilIcon />
         </button>
       </div>
-      {isHovered && ( // Affiche le nom uniquement si isHovered est vrai
-        <h2 className="text-[#e0c758] font-bold mt-2">{localStorage.getItem('name')}</h2>
-      )}
+      {isClicked &&<Side_bar/>}
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}
           closeModal={() => setModalOpen(false)}
         />
       )}
+      {}
     </div>
+    
   );
 };
 
