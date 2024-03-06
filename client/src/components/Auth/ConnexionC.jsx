@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {useForm} from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { initial } from "../Initiale";
 import InscriptionC from "./InscriptionC";
 import { SpanAlerte } from "../SpanAlert";
@@ -13,8 +12,6 @@ const ConnexionC = (props) => {
     const handleLogin = () => {
         setLogin(!login)
     }
-    // fonction de navigation pour naviguer entre différentes pages 
-    const navigate = useNavigate();
 
     // Permet de gérer les formulaires (register pour enregistrer,handleSubmit pour soumettre et formState pour les erreurs )
     const {
@@ -25,10 +22,13 @@ const ConnexionC = (props) => {
 
     // Fonction du submit de notre formulaire avec data les données enregistré par useForm 
     const onSubmit = (data) => {
+    
         initial()
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('name',data.pseudonyme)
-        window.location.reload();
+        props.updateAuth(true)
+        props.onClose()
+
 
     }
 
@@ -65,7 +65,9 @@ const ConnexionC = (props) => {
                   <div className="flex items-center justify-between">
                       <div className="flex items-start">
                           <div className="flex items-center h-5">
-                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
+                            <input id="remember" aria-describedby="remember" type="checkbox" 
+                            {...register("remember")}
+                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
                           </div>
                           <div className="ml-3 text-sm">
                             <label htmlFor="remember" className="text-gray-500 dark:text-[#e0c758]">Se souvenir de moi</label>
@@ -73,17 +75,22 @@ const ConnexionC = (props) => {
                       </div>
                       <a className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" >Mot de passe oublié ?</a>
                   </div>
-                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]">Connexion</button>
                   <p className="text-sm font-light text-gray-500  dark:text-[#423d28]">
                       Créer un compte? <a className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={handleLogin} >Cliquez ici</a>
                   </p>
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758] hover:scale-105 duration-300
+                  hover:bg-[#3a3522]"
+                  >Connexion</button>
+                  
               </form>
+              <button onClick={props.onClose} className=" w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]
+                  hover:bg-[#ac6f40] ">Fermer </button>
           </div>
       </div>
   </div>
 </div>
 }
-{!login && <InscriptionC trigger={!login}/> }
+{!login && <InscriptionC trigger={!login} onClose={props.onClose} toLogin={handleLogin} updateAuth={props.updateAuth}/> }
 </>
 : "";
 

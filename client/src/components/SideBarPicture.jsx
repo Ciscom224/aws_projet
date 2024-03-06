@@ -1,17 +1,18 @@
 
-import { Sidebar } from 'flowbite-react';
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
 
-const Side_bar =() => {
-    
+import { HiArrowSmRight, HiInbox, HiUser } from 'react-icons/hi';
+
+const Side_bar =(props) => {
+
     const handleDisconnect = () => {
         localStorage.setItem('isAuthenticated','false')
-        window.location.reload();
+        props.updateAuth(false)
+        
     }
 
 return (
 
-<div className="fixed right-[1%] bottom-[70%] flex flex-col justify-center items-center bg-gray-950 ">
+<div className="fixed right-[1%] bottom-[70%] flex flex-col justify-center items-center bg-gray-950 z-50">
       <div className="sidebar-header text-[#e0c758] p-5">
         {localStorage.getItem("name")}
       </div>

@@ -11,13 +11,12 @@ const EmailConfirmation = (props) => {
     } = useForm()
 
     const onSubmit = (data) => {
-        console.log(data.code)
-        console.log(props.code)
         if (data.code == props.code) {
             alert("Inscription reussi")
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('name',props.pseudonyme)
-            window.location.reload();
+            props.updateAuth(true)
+            props.onClose()
         }
         else {
             alert("Code mauvais veuillez ressayer")
@@ -45,8 +44,11 @@ const EmailConfirmation = (props) => {
                             <span role="alert" className="text-red-500 text-sm ">Code Requis</span>
                         )}
                   </div>
-                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]" >Confirmation</button>
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]
+                  hover:scale-105 duration-300 hover:bg-[#3a3522]" >Confirmation</button>
               </form>
+              <button onClick={props.onClose} className=" w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]
+                  hover:bg-[#ac6f40]">Fermer </button>
           </div>
       </div>
   </div>

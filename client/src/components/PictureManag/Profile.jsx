@@ -3,7 +3,7 @@ import PencilIcon from "./PencilIcon";
 import Modal from "./Modal";
 import Side_bar from "../SideBarPicture";
 
-const Profile = () => {
+const Profile = (props) => {
   const avatarUrl = useRef(
     "https://avatarfiles.alphacoders.com/161/161002.jpg"
   );
@@ -35,7 +35,7 @@ const Profile = () => {
           <PencilIcon />
         </button>
       </div>
-      {isClicked &&<Side_bar/>}
+      {isClicked &&<Side_bar updateAuth={props.updateAuth}/>}
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}

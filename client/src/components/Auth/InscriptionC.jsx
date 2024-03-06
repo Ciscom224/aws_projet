@@ -98,14 +98,20 @@ const InscriptionC = (props) => {
                           </div>
                       </div>
                   </div>
-                  <button type="submit" disabled={!isValid}  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]"  >Inscription</button>
+                  <p className="text-sm font-light text-gray-500  dark:text-[#423d28]">
+                      Déja inscris ? <a className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#83794f]" onClick={props.toLogin} >Cliquez ici</a>
+                  </p>
+                  <button type="submit" disabled={!isValid}  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]
+                  hover:bg-[#3a3522] hover:scale-105 duration-300"  >Inscription</button>
               </form>
+              <button onClick={props.onClose} className=" w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#e0c758]
+                  hover:bg-[#ac6f40]">Fermer </button>
           </div>
       </div>
   </div>
   </div>
 }
-{!login && <EmailConfirmation code = {codeVal} pseudonyme = {pseudo}/>}
+{!login && <EmailConfirmation code = {codeVal} pseudonyme = {pseudo} onClose = {props.onClose} updateAuth={props.updateAuth}/>}
   </>
      : "";
 }
