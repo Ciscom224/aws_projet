@@ -16,17 +16,16 @@ const Profile = (props) => {
   };
   const handlePicture = () => {
     setIsClicked(!isClicked)
-    // localStorage.setItem('isAuthenticated','false')
-    // window.location.reload();
   }
 
   return (
     <div className="flex flex-col items-center relative">
-      <div className="relative" onClick={handlePicture}>
+      <div className="relative">
         <img
           src={avatarUrl.current}
           alt="Avatar"
           className="w-[60px] h-[60px] rounded-full border-2 border-gray-400"
+          onClick={handlePicture}
         />
         <button
           className="absolute -bottom-3 left-0 right-0 m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600"

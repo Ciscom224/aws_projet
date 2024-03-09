@@ -3,6 +3,7 @@ import { ImMenu,ImMenu3  } from "react-icons/im";
 import { useLocation,useNavigate } from 'react-router-dom';
 import ConnexionC from "./Auth/ConnexionC";
 import Profile from "./PictureManag/Profile";
+import AccessibleBadges from "./NotificationIcon";
 import "react-image-crop/dist/ReactCrop.css";
 
 
@@ -45,9 +46,12 @@ const NavigBar = (props) => {
             {!isAuthenticated ? 
                 <button className="absolute right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
                 </button>   :
-            <div className="flex absolute right-16">
-                <Profile updateAuth = {setIsAuthenticated}/>
-            </div>}
+                <>
+                <div className="flex absolute right-40"><AccessibleBadges/></div>
+                <div className="flex absolute right-16">
+                <Profile updateAuth = {setIsAuthenticated}/> 
+            </div>
+            </>}
         </div>
         {loginOpen && <div className="fixed inset-0 flex items-center justify-center  bg-[#000000] bg-opacity-50">
                     
