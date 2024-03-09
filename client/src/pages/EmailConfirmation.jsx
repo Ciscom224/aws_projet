@@ -14,14 +14,13 @@ const EmailConfirmation = (props) => {
     const handleOnClose= ()=> {
         props.onClose()
         props.setIsRemoved(false)
-        localStorage.setItem('isRemoved', 'false');
+
     }
     const onSubmit = (data) => {
         if (data.code == props.code) {
             alert("Inscription reussi")
-            localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('name',props.pseudonyme)
-            localStorage.setItem('isRemoved', 'false');
+            localStorage.setItem('isAuthenticated', 'true');
             props.setIsRemoved(false)
             props.updateAuth(true)
             props.onClose()
@@ -31,6 +30,7 @@ const EmailConfirmation = (props) => {
         }
 
     }
+    
 
     return (
     <div>

@@ -9,7 +9,6 @@ import "react-image-crop/dist/ReactCrop.css";
 // Composant permettant d'afficher la barre de navigation dans notre page
 const NavigBar = (props) => {
 
-    const [bar,setBar] = useState(true)
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -18,36 +17,26 @@ const NavigBar = (props) => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
 
-    // Permet de mettre a jour le bouton Connexion ou le pseudo du joueur a droite de la NavigBar
-    useEffect(() => {
-        const isAuthenticatedFromLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
-        setIsAuthenticated(isAuthenticatedFromLocalStorage);
-
-
-    }, []);
-
-
-    const handleBar = () => {
-        setBar(!bar)
-    }
 
     const handleLogo = () => {
-        if (!location.pathname == '') {navigate("/")}
-        else {setLoginOpen(false)
+        if (location.pathname !== "/") {
+            navigate("/")
+        }
+        else {
+        setLoginOpen(false)
         props.setIsRemoved(false)
-        localStorage.setItem('isRemoved', 'false');
         }
     }
 
     const handleLogin = () => {
         setLoginOpen(!loginOpen)
         props.setIsRemoved(!loginOpen)
-        localStorage.setItem('isRemoved', 'true');
+    
     }
     return(
 <>
         <div className="fixed top-0 left-0 right-0 z-50 h-24 flex items-center bg-[#181717] bg-opacity-25" >
-            <button onClick={handleBar} className="absolute top-8.5 ">
+            <button  className="absolute top-8.5 ">
            
             </button>
             <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-[12%] flex items-center" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="inline-block"/></button></div>

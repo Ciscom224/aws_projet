@@ -12,18 +12,7 @@ const GamesChoice = () => {
 
     const [actualGame,setActualGame] = useState(0)
    
-    // fonction pour le cas ou on clique sur la fleche de gauche mais qu'on est déja a l'index 0 de games donc on revient au dernier
-    const prevGame = () => {
-        const isFirstGame = actualGame === 0;
-        const newGame = isFirstGame ? games.length - 1: actualGame -1;
-        setActualGame(newGame);
-    }
-    // pareil mais avec celui de droite
-    const nextGame = () => {
-        const isLastGame = actualGame === games.length - 1;
-        const newGame = isLastGame ? 0: actualGame + 1;
-        setActualGame(newGame);
-    }
+   
     return(
         <div className="max-w-[700px] h-[500px] w-full m-auto py-16 px-4 relative">
     

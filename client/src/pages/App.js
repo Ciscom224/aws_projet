@@ -10,13 +10,6 @@ function App() {
   const [isRemoved,setIsRemoved] = useState(false)
 
 
-useEffect(() => {
-  const isRemovedFromStorage = localStorage.getItem('isRemoved') === 'true';
-    setIsRemoved(isRemovedFromStorage);
-
-
-}, []);
-
   return (
     
       <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: "url('/images/menu_bg.jpg')"}}>

@@ -33,16 +33,14 @@ const ConnexionC = (props) => {
         localStorage.setItem('name',data.pseudonyme)
         props.updateAuth(true)
         props.onClose()
-        localStorage.setItem('isRemoved', 'false');
         props.setIsRemoved(false)
-        alert("Inscription reussi")
+        alert("Connexion reussi !!!!!!!!!!!!")
 
     }
 
     const handleOnClose= ()=> {
         props.onClose()
         props.setIsRemoved(false)
-        localStorage.setItem('isRemoved', 'false');
     }
 
     return props.trigger ?
@@ -103,11 +101,7 @@ const ConnexionC = (props) => {
 </div>
 }
 {!login && <InscriptionC trigger={!login} onClose={props.onClose} toLogin={handleLogin} updateAuth={props.updateAuth} setIsRemoved={props.setIsRemoved}/> }
-{connexionReussie && (
-                <div className="absolute top-0 left-0 w-full z-50">
-                    <AlertVariousStates type={true} message={"Connexion Réussie"} onClose={() => setConnexionReussie(false)} />
-                </div>
-            )}
+
 </>
 : "";
 
