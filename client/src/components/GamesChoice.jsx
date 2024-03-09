@@ -7,9 +7,7 @@ const GamesChoice = () => {
         {
             url: "https://images.unsplash.com/photo-1484807352052-23338990c6c6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         },
-        {
-            url: "https://images.unsplash.com/photo-1530840197133-665af68f9d71?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        },
+        
     ];
 
     const [actualGame,setActualGame] = useState(0)

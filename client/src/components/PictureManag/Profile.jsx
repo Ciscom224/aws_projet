@@ -9,6 +9,7 @@ const Profile = (props) => {
   );
   const [modalOpen, setModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  
 
   const updateAvatar = (imgSrc) => {
     avatarUrl.current = imgSrc;
@@ -20,7 +21,7 @@ const Profile = (props) => {
   }
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center relative">
       <div className="relative" onClick={handlePicture}>
         <img
           src={avatarUrl.current}
@@ -35,14 +36,16 @@ const Profile = (props) => {
           <PencilIcon />
         </button>
       </div>
-      {isClicked &&<Side_bar updateAuth={props.updateAuth}/>}
+      
+      <Side_bar  isClicked={isClicked} updateAuth={props.updateAuth} /> 
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}
           closeModal={() => setModalOpen(false)}
         />
       )}
-      {}
+      
+      
     </div>
     
   );

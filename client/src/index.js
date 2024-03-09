@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './pages/App';
+import Games from './pages/Games';
 import './index.css';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import Login from './pages/Login';
-import Inscription  from './pages/Inscription';
-import EmailConfirmation  from './pages/EmailConfirmation';
 import { initial } from './components/Initiale';
 
 
@@ -16,16 +14,8 @@ const route = createBrowserRouter([
     element: <App />, // element le composant ou page associé
   },
   {
-    path: "/Connexion", // Pour connexion
-    element: <Login />,
-  },
-  {
-    path: "/Inscription", // Pour Inscription
-    element: <Inscription />,
-  },
-  {
-    path: "/verifemail", // Pour vérifier le email
-    element: <EmailConfirmation />,
+    path: "/games", // path c'est le chemin
+    element: <Games />, // element le composant ou page associé
   },
   {
     path: "*", // le reste des pages

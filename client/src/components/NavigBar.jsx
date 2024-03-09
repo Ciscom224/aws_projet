@@ -1,19 +1,22 @@
 import React, {useState,useEffect } from "react";
 import { ImMenu,ImMenu3  } from "react-icons/im";
+import { useLocation,useNavigate } from 'react-router-dom';
 import ConnexionC from "./Auth/ConnexionC";
 import Profile from "./PictureManag/Profile";
 import "react-image-crop/dist/ReactCrop.css";
 
+
 // Composant permettant d'afficher la barre de navigation dans notre page
-const NavigBar = () => {
+const NavigBar = (props) => {
 
     const [bar,setBar] = useState(true)
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [loginOpen,setLoginOpen] = useState(false)
 
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
-
-    const [name, setName] = useState("");
 
     // Permet de mettre a jour le bouton Connexion ou le pseudo du joueur a droite de la NavigBar
     useEffect(() => {
@@ -22,35 +25,45 @@ const NavigBar = () => {
 
 
     }, []);
-    
+
+
     const handleBar = () => {
         setBar(!bar)
     }
 
+    const handleLogo = () => {
+        if (!location.pathname == '') {navigate("/")}
+        else {setLoginOpen(false)
+        props.setIsRemoved(false)
+        localStorage.setItem('isRemoved', 'false');
+        }
+    }
+
     const handleLogin = () => {
         setLoginOpen(!loginOpen)
+        props.setIsRemoved(!loginOpen)
+        localStorage.setItem('isRemoved', 'true');
     }
     return(
 <>
-        <div className="flex justify-between items-center h-24  mx-auto px-4 text-white bg-[#181717]" >
+        <div className="fixed top-0 left-0 right-0 z-50 h-24 flex items-center bg-[#181717] bg-opacity-25" >
             <button onClick={handleBar} className="absolute top-8.5 ">
            
             </button>
-            <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-24" ><button onClick={(e) => {
-                e.preventDefault();
-                window.location.href='/';
-                }}>Mini Games</button></div>
+            <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-[12%] flex items-center" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="inline-block"/></button></div>
+                
+        
             {!isAuthenticated ? 
-                <button className="absolute right-12 text-[#f0efea] hover:text-[#e0c758] bg-[#181717] w-[100px] rounded-md text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
+                <button className="absolute right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
                 </button>   :
-            <div className="flex absolute right-12">
+            <div className="flex absolute right-16">
                 <Profile updateAuth = {setIsAuthenticated}/>
             </div>}
         </div>
-        {loginOpen && <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
+        {loginOpen && <div className="fixed inset-0 flex items-center justify-center  bg-[#000000] bg-opacity-50">
                     
                 <div className="w-full p-8 rounded-lg">
-                    <ConnexionC trigger={loginOpen} onClose={handleLogin} updateAuth = {setIsAuthenticated}/>
+                    <ConnexionC trigger={loginOpen}  setIsRemoved={props.setIsRemoved} onClose={handleLogin} updateAuth = {setIsAuthenticated}/>
         
                 </div>
             </div>}
