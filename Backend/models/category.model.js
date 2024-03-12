@@ -7,21 +7,17 @@ const qSchema= new mongoose.Schema(
             unique:true,
         },
         questions: [{
-            ID: {
-                type: String,
-            },
-            content: {
-                type: String,
-            },
-            anwers:[{
-                ID:{
-                    type:int,
-                    unique:true,
-                },
-                content:{
-                    type:String,
+            questionId: String,
+            text: String,
+            timestamp: Number,
+            answers: [
+                {
+                    answerId: String,
+                    text: String,
+                    timestamp: Number,
+                    
                 }
-            }]
+            ]
         }]
     }
 )
