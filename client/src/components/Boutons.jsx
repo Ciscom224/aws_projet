@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom"
 // Composant responsable du bouton jouer et des futurs boutons (1 joueur, multijoueur etc etc)
 const Boutons = () => {
 
+    
     const navigate = useNavigate()
     const jouer = () => {
         // Verifie si la donnée stocké détient la valeur String true et affiche une alerte en fonction de cette valeur

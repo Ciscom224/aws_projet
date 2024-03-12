@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import InscriptionC from "./InscriptionC";
 import { SpanAlerte } from "../SpanAlert";
 import { GrClose } from "react-icons/gr";
-import AlertVariousStates from "./AlerteAuth"
+// import AlertVariousStates from "./AlerteAuth"
 import { useAuthStore, useRemovedMenu } from "../../store";
 
 
