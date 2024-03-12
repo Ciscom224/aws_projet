@@ -1,10 +1,13 @@
 import React from "react";
 import {useForm} from "react-hook-form";
 import { GrClose } from "react-icons/gr";
+import { useAuthStore, useRemovedMenu } from "../store";
 
 
 const EmailConfirmation = (props) => {
 
+    const setFalse = useRemovedMenu((state)=> state.setFalse);
+    const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
     const {
         register,
         handleSubmit,
@@ -13,16 +16,15 @@ const EmailConfirmation = (props) => {
 
     const handleOnClose= ()=> {
         props.onClose()
-        props.setIsRemoved(false)
+        setFalse()
 
     }
     const onSubmit = (data) => {
         if (data.code == props.code) {
             alert("Inscription reussi")
             localStorage.setItem('name',props.pseudonyme)
-            localStorage.setItem('isAuthenticated', 'true');
-            props.setIsRemoved(false)
-            props.updateAuth(true)
+            setIsAuthenticated(true);
+            setFalse()
             props.onClose()
         }
         else {

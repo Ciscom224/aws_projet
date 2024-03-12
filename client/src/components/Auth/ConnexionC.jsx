@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import {useForm} from "react-hook-form";
-import { initial } from "../Initiale";
 import InscriptionC from "./InscriptionC";
 import { SpanAlerte } from "../SpanAlert";
 import { GrClose } from "react-icons/gr";
 import AlertVariousStates from "./AlerteAuth"
+import { useAuthStore, useRemovedMenu } from "../../store";
 
 
 
 const ConnexionC = (props) => {
 
     const [login,setLogin] = useState(true)
-    const [connexionReussie, setConnexionReussie] = useState(false);
+    const setFalse = useRemovedMenu((state)=> state.setFalse);
+    const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
+
 
     const handleLogin = () => {
         setLogin(!login)
@@ -27,20 +29,18 @@ const ConnexionC = (props) => {
     // Fonction du submit de notre formulaire avec data les données enregistré par useForm 
     const onSubmit = (data) => {
     
-        initial()
         
-        localStorage.setItem('isAuthenticated', 'true');
+        setIsAuthenticated(true);
         localStorage.setItem('name',data.pseudonyme)
-        props.updateAuth(true)
         props.onClose()
-        props.setIsRemoved(false)
+        setFalse()
         alert("Connexion reussi !!!!!!!!!!!!")
 
     }
 
     const handleOnClose= ()=> {
         props.onClose()
-        props.setIsRemoved(false)
+        setFalse()
     }
 
     return props.trigger ?
@@ -100,7 +100,7 @@ const ConnexionC = (props) => {
   </div>
 </div>
 }
-{!login && <InscriptionC trigger={!login} onClose={props.onClose} toLogin={handleLogin} updateAuth={props.updateAuth} setIsRemoved={props.setIsRemoved}/> }
+{!login && <InscriptionC trigger={!login} onClose={props.onClose} toLogin={handleLogin} /> }
 
 </>
 : "";

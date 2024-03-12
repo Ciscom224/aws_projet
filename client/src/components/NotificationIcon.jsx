@@ -1,6 +1,8 @@
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import { GoTrophy } from "react-icons/go";
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import React,{useState} from "react"
 
 function notificationsLabel(count) {
@@ -13,7 +15,7 @@ function notificationsLabel(count) {
     return `${count} notifications`;
   }
   
-  export default function AccessibleBadges() {
+  export default function AccessibleBadges(props) {
 
     const [count,setCount] = useState(0)
 
@@ -22,9 +24,11 @@ function notificationsLabel(count) {
     }
 
     return (
-      <IconButton aria-label={notificationsLabel(100)} sx={{ fontSize: 30 }} onClick={incrementCount} >
+      <IconButton aria-label={notificationsLabel(100)} onClick={incrementCount} >
         <Badge badgeContent={count} color="error">
-          <NotificationsIcon fontSize='' style={{ color: '#000000' }}/>
+          {props.type == "notif" && <NotificationsOutlinedIcon sx={{ fontSize: 30 }} style={{ color: '#d3dbe8' }}/>}
+          {props.type == "msg" && <ChatBubbleOutlineOutlinedIcon sx={{ fontSize: 25 }} style={{ color: '#d3dbe8' }}/>}
+          {props.type == "classment" && <GoTrophy sx={{ fontSize: 30 }} style={{ color: '#d3dbe8' }}/>}
         </Badge>
       </IconButton>
     );

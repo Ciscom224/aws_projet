@@ -4,7 +4,7 @@ import App from './pages/App';
 import Games from './pages/Games';
 import './index.css';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import { initial } from './components/Initiale';
+
 
 
 // On crée un routeur qui spécifie plusieurs routes avec chacune une page (composantes) associé
@@ -24,7 +24,6 @@ const route = createBrowserRouter([
 
 ]);
 
-initial()
 
 // racine de notre site web qui permet de pouvoir naviguer avec les routes configurés
 const root = ReactDOM.createRoot(document.getElementById('root'));

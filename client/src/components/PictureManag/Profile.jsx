@@ -25,6 +25,7 @@ const Profile = (props) => {
           src={avatarUrl.current}
           alt="Avatar"
           className="w-[60px] h-[60px] rounded-full border-2 border-gray-400"
+          title="Profil"
           onClick={handlePicture}
         />
         <button
@@ -36,7 +37,7 @@ const Profile = (props) => {
         </button>
       </div>
       
-      <Side_bar  isClicked={isClicked} updateAuth={props.updateAuth} /> 
+      <Side_bar  isClicked={isClicked}  /> 
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}

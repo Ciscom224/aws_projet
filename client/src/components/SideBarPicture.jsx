@@ -1,9 +1,10 @@
 
 
-import { HiArrowSmRight, HiInbox, HiUser } from 'react-icons/hi';
+import { HiArrowSmRight, HiUser } from 'react-icons/hi';
 import { FaUserFriends } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { useLocation,useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store';
 
 
 
@@ -12,17 +13,19 @@ const Side_bar =(props) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
+
     const handleDisconnect = () => {
       if (!location.pathname == '') {navigate("/")}
-        localStorage.setItem('isAuthenticated','false')
-        props.updateAuth(false)
+      setIsAuthenticated(false)
+
         
     }
 
 return props.isClicked ? (
 
 <div className="fixed right-[1%] bottom-[64%] flex flex-col justify-center items-center bg-gray-950 bg-opacity-50 z-50 ">
-      <div className="sidebar-header text-[#e2cb63] font-bold p-5">
+      <div className="sidebar-header text-[#e2cb63] font-bold p-5 text-xl">
         {localStorage.getItem("name")}
       </div>
       <ul className="sidebar-menu ">

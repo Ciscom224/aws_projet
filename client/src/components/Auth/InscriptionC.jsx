@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import { sendAuthMail } from "../SendMailConfirm";
-import { initial } from "../Initiale";
 import EmailConfirmation from "../../pages/EmailConfirmation";
 import { SpanAlerte } from "../SpanAlert";
 import { GrClose } from "react-icons/gr";
+import { useRemovedMenu } from "../../store";
 
 // notre page d'inscription, qui ressemble beaucoup a celle du Login.
 const InscriptionC = (props) => {
@@ -12,6 +12,8 @@ const InscriptionC = (props) => {
     const [login,setLogin] = useState(true)
     const [pseudo,setPseudo] = useState("")
     const [codeVal,setCodeVal] = useState(0)
+
+    const setFalse = useRemovedMenu((state)=> state.setFalse);
 
 
     // Watch ici permet de vérifier une valeur de notre register
@@ -27,13 +29,12 @@ const InscriptionC = (props) => {
     }
     const handleOnClose= ()=> {
         props.onClose()
-        props.setIsRemoved(false)
-        localStorage.setItem('isRemoved', 'false');
+        setFalse()
+        
     }
 
     // Fonction du submit de l'inscription qui envoie un mail avec un code généré aléatoirement au mail de l'inscription et qui doit le vérifier pour s'inscrire 
     const onSubmit = async (data) => {
-        initial()
     
         if (watch("password") == watch("confirmpassword")) { try {
         const code = Math.floor(Math.random() * 1000000);
@@ -112,7 +113,7 @@ const InscriptionC = (props) => {
                   <p className="text-sm font-light text-gray-500  dark:text-[#fffffe]">
                       Déja inscris ? <a className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#fffefc]" onClick={props.toLogin} >Cliquez ici</a>
                   </p>
-                  <button type="submit"  disabled={!isValid}  className="w-full text-white bg-[#2f9421] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#eeeeed] hover:scale-105 duration-300
+                  <button type="submit"    className="w-full text-white bg-[#2f9421] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#eeeeed] hover:scale-105 duration-300
                   hover:bg-[#245e2c]"  >Inscription</button>
               </form>
           
@@ -121,7 +122,7 @@ const InscriptionC = (props) => {
   </div>
   </div>
 }
-{!login && <EmailConfirmation code = {codeVal} pseudonyme = {pseudo} onClose = {props.onClose} updateAuth={props.updateAuth} setIsRemoved={props.setIsRemoved}/>}
+{!login && <EmailConfirmation code = {codeVal} pseudonyme = {pseudo} onClose = {props.onClose} />}
   </>
      : "";
 }
