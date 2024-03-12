@@ -1,5 +1,5 @@
 import React, {useState,useEffect } from "react";
-import { ImMenu,ImMenu3  } from "react-icons/im";
+//import { ImMenu,ImMenu3  } from "react-icons/im";
 import { useLocation,useNavigate } from 'react-router-dom';
 import ConnexionC from "./Auth/ConnexionC";
 import Profile from "./PictureManag/Profile";

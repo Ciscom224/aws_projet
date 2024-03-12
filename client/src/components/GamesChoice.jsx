@@ -10,7 +10,7 @@ const GamesChoice = () => {
         
     ];
 
-    const [actualGame,setActualGame] = useState(0)
+    const [actualGame,_] = useState(0)
    
    
     return(

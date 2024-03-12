@@ -3,7 +3,7 @@ import PencilIcon from "./PencilIcon";
 import Modal from "./Modal";
 import Side_bar from "../SideBarPicture";
 
-const Profile = (props) => {
+const Profile = () => {
   const avatarUrl = useRef(
     "https://avatarfiles.alphacoders.com/161/161002.jpg"
   );
