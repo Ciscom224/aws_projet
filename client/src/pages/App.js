@@ -15,10 +15,10 @@ function App() {
 
   return (
     
-      <div className="fixed w-full h-screen bg-cover bg-center" style={{backgroundImage: "url('/images/menu_bg.jpg')"}}>
+      <div className="fixed w-full h-screen bg-cover bg-center py-16 px-8 " style={{backgroundImage: "url('/images/menu_bg.jpg')"}}>
 
         <NavigBar />
-        {!MenuRemoved ? <div className='absolute left-[35%] top-[2%]'><Boutons/></div> :
+        {!MenuRemoved ? <div className='relative w-full h-1/3 m-auto '><Boutons/></div> :
         ""}
       </div>
       

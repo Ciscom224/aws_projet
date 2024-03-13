@@ -50,7 +50,7 @@ const NavigBar = () => {
             <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-[12%] flex items-center" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="inline-block"/></button></div>
                 
         
-            {!isAuthenticated ? 
+            {!isAuthenticated ?
                 <button className="absolute right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
                 </button>   :
                 <>
@@ -65,7 +65,7 @@ const NavigBar = () => {
         {loginOpen && <div className="fixed inset-0 flex items-center justify-center  bg-[#000000] bg-opacity-50">
                     
                 <div className="w-full p-8 rounded-lg">
-                    <ConnexionC trigger={loginOpen}  onClose={handleLogin} />
+                    <ConnexionC trigger={loginOpen}  onClose={handleLogin}  />
         
                 </div>
             </div>}

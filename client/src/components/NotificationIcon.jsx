@@ -24,7 +24,7 @@ function notificationsLabel(count) {
     }
 
     return (
-      <IconButton aria-label={notificationsLabel(100)} onClick={incrementCount} >
+      <IconButton aria-label={notificationsLabel(100)} onClick={incrementCount}  color="inherit">
         <Badge badgeContent={count} color="error">
           {props.type == "notif" && <NotificationsOutlinedIcon sx={{ fontSize: 30 }} style={{ color: '#d3dbe8' }}/>}
           {props.type == "msg" && <ChatBubbleOutlineOutlinedIcon sx={{ fontSize: 25 }} style={{ color: '#d3dbe8' }}/>}
