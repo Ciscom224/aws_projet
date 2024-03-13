@@ -19,7 +19,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center relative">
+    
+    <div className="flex flex-col items-center">
       <div className="relative">
         <img
           src={avatarUrl.current}
@@ -34,19 +35,21 @@ const Profile = () => {
           onClick={() => setModalOpen(true)}
         >
           <PencilIcon />
+          
         </button>
+        <div className="absolute top-20 right-[115px]"><Side_bar  isClicked={isClicked}  /> </div>
       </div>
-      
-      <Side_bar  isClicked={isClicked}  /> 
       {modalOpen && (
         <Modal
           updateAvatar={updateAvatar}
           closeModal={() => setModalOpen(false)}
         />
+        
       )}
       
       
     </div>
+    
     
   );
 };

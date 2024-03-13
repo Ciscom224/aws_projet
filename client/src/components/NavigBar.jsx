@@ -47,20 +47,26 @@ const NavigBar = () => {
             <button  className="absolute top-8.5 ">
            
             </button>
-            <div className="w-full text-3xl font-bold text-[#e0c758] absolute left-[12%] flex items-center" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="inline-block"/></button></div>
+            <div className=" text-3xl font-bold fixed left-[12%] flex items-center  md:flex" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="hidden sm:inline-block"/></button></div>
                 
         
             {!isAuthenticated ?
-                <button className="absolute right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
+                <button className="fixed right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
                 </button>   :
-                <>
-                <div className="flex absolute right-64" title="Notifications"><AccessibleBadges type={"notif"}/></div>
-                <div className="flex absolute right-44" title="Messages"><AccessibleBadges type={"msg"}/></div>
-                <div className="flex absolute right-[18%]" title="Classements"><AccessibleBadges type={"classment"}/></div>
-                <div className="flex absolute right-16">
-                <Profile /> 
-            </div>
-            </>}
+                 <>
+                 <div className="hidden fixed right-[150px] md:flex" title="Notifications">
+                     <AccessibleBadges type={"notif"}/>
+                 </div>
+                 <div className="hidden fixed right-[250px] md:flex" title="Messages">
+                     <AccessibleBadges type={"msg"}/>
+                 </div>
+                 <div className="hidden fixed right-[350px] md:flex" title="Classements">
+                     <AccessibleBadges type={"classment"}/>
+                 </div>
+                 <div className="flex fixed right-10">
+                     <Profile /> 
+                 </div>
+             </>}
         </div>
         {loginOpen && <div className="fixed inset-0 flex items-center justify-center  bg-[#000000] bg-opacity-50">
                     

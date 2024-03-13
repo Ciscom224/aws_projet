@@ -24,7 +24,7 @@ const Side_bar =(props) => {
 
 return props.isClicked ? (
 
-<div className="fixed right-[1%] bottom-[64%] flex flex-col justify-center items-center bg-gray-950 bg-opacity-50 z-50 ">
+<div className="fixed flex flex-col justify-center items-center bg-gray-950 bg-opacity-60 z-40 ">
       <div className="sidebar-header text-[#e2cb63] font-bold p-5 text-xl">
         {localStorage.getItem("name")}
       </div>
@@ -33,6 +33,10 @@ return props.isClicked ? (
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300"><FaUserFriends className="mr-3" /> Amis</li>
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300"><HiUser className="mr-3"/> Profil</li>
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300" onClick={handleDisconnect}><HiArrowSmRight className="mr-3"/> Se déconnecter</li>
+        <li className="p-2  items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 md:hidden"><HiArrowSmRight className="mr-3"/> Messages</li>
+        <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 md:hidden"><HiArrowSmRight className="mr-3"/> Classement</li>
+        <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 md:hidden"><HiArrowSmRight className="mr-3"/> Notifications </li>
+
       </ul>
     </div>
     ) : ""
