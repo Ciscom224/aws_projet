@@ -51,7 +51,7 @@ const NavigBar = () => {
                 
         
             {!isAuthenticated ?
-                <button className="fixed right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-[85%] font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
+                <button className="fixed right-12 text-[#0F0D1C] hover:text-[#000000] bg-[#E8E8F2]  w-[100px] rounded-3xl text-gray font-medium my-6 mx-auto py-2 px-3  hover:scale-105 duration-300" onClick={handleLogin}>Connexion
                 </button>   :
                  <>
                  <div className="hidden fixed right-[150px] md:flex" title="Notifications">

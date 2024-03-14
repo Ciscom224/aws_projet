@@ -36,7 +36,7 @@ const EmailConfirmation = (props) => {
 
     return (
     <div>
-        <div className="fixed inset-0 flex items-center justify-center ">
+        <div className="fixed inset-0 flex items-center justify-center py-16 px-8 ">
         
         <div className="flex flex-col w-full items-center justify-center mx-auto max-w-md md:h-screen lg:py-0">
 

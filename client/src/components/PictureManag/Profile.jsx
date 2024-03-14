@@ -37,7 +37,7 @@ const Profile = () => {
           <PencilIcon />
           
         </button>
-        <div className="absolute top-20 right-[115px]"><Side_bar  isClicked={isClicked}  /> </div>
+        <div className="absolute top-20 right-[115px] "><Side_bar  isClicked={isClicked}  /> </div>
       </div>
       {modalOpen && (
         <Modal
