@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './pages/App';
+import App from './pages/Accueil';
 import Games from './pages/Games';
+import QuizChoice from './pages/QuizChoice';
 import './index.css';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
 
@@ -16,6 +17,10 @@ const route = createBrowserRouter([
   {
     path: "/games", // path c'est le chemin
     element: <Games />, // element le composant ou page associé
+  },
+  {
+    path: "/games/quizchoice", 
+    element: <QuizChoice />, 
   },
   {
     path: "*", // le reste des pages

@@ -84,7 +84,7 @@ const ConnexionC = (props) => {
                             <label htmlFor="remember" className="text-gray-500 dark:text-[#fcfafa]">Se souvenir de moi</label>
                           </div>
                       </div>
-                      <a className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#fffefc]" >Mot de passe oublié ?</a>
+                      <a className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#fffefc] mr-6" >Mot de passe oublié ?</a>
                   </div>
                   <p className="text-sm font-light text-gray-500  dark:text-[#fffffe]">
                       Créer un compte? <a className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-[#f0efec]" onClick={handleLogin} >Cliquez ici</a>

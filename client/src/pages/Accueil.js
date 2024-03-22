@@ -15,7 +15,7 @@ function App() {
 
   return (
     
-      <div className="fixed w-full h-full bg-cover bg-center  " style={{backgroundImage: "url('/images/menu_bg.jpg')"}}>
+      <div className="fixed w-full h-full bg-cover bg-center  " style={{backgroundImage: "url('/images/Background/menu_bg.jpg')"}}>
 
         <NavigBar />
         {!MenuRemoved ? <div className='fixed w-full h-1/3 m-auto '><Boutons/></div> :

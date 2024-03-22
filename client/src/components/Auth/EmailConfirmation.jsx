@@ -1,7 +1,7 @@
 import React from "react";
 import {useForm} from "react-hook-form";
 import { GrClose } from "react-icons/gr";
-import { useAuthStore, useRemovedMenu } from "../store";
+import { useAuthStore, useRemovedMenu } from "../../store";
 
 
 const EmailConfirmation = (props) => {

@@ -22,8 +22,6 @@ const NavigBar = () => {
 
     const [loginOpen,setLoginOpen] = useState(false)
 
-    // const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
-
 
     const handleLogo = () => {
         if (location.pathname !== "/") {
@@ -44,9 +42,6 @@ const NavigBar = () => {
     return(
 <>
         <div className="fixed top-0 left-0 right-0 z-50 h-24 flex items-center bg-[#181717] bg-opacity-65" >
-            <button  className="absolute top-8.5 ">
-           
-            </button>
             <div className=" text-3xl font-bold fixed left-[12%] flex items-center  md:flex" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="hidden sm:inline-block"/></button></div>
                 
         

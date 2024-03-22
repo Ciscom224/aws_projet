@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import { sendAuthMail } from "../SendMailConfirm";
-import EmailConfirmation from "../../pages/EmailConfirmation";
+import EmailConfirmation from "./EmailConfirmation";
 import { SpanAlerte } from "../SpanAlert";
 import { GrClose } from "react-icons/gr";
 import { useRemovedMenu } from "../../store";
