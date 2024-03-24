@@ -14,4 +14,16 @@ const useAuthStore = create((set) => ({
     },
   }));
 
-export { useRemovedMenu,useAuthStore };
+const useQuizStore = create(set => ({
+  points: 0,
+  theme: "",
+  questions : [],
+  choices : [],
+  answers : [],
+  setQuestions: () => set({ questions: ["Qui est le goat ?","Quelle équipe n'est pas qualifié en quart de finale de Champions League ?"] }),
+  setChoice: () => set({ choice: [["Lionel Messi","Cristiano Ronaldo","Maradonna","Neymar JR"],["PSG","Barcelone","Real Madrid","Liverpool"]] }),
+  setAnswers: () => set({ answers: ["Lionel Messi","PSG"] }),
+  setTheme: (newTheme) => set({ theme: newTheme})
+}))
+
+export { useRemovedMenu,useAuthStore,useQuizStore };
