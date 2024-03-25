@@ -26,7 +26,7 @@ const Side_bar =(props) => {
 
 return props.isClicked ? (
 
-<div className="fixed flex flex-col justify-center items-center bg-gray-950  bg-opacity-90 rounded-lg">
+<div id="sidebar" className="fixed flex flex-col justify-center items-center bg-gray-950  bg-opacity-90 rounded-lg">
       <div className="sidebar-header text-[#e2cb63] font-bold p-5 text-xl ">
         {localStorage.getItem("name")}
       </div>

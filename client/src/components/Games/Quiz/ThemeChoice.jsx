@@ -5,10 +5,18 @@ import { useQuizStore } from "../../../store";
 
 // Ceci represente le composant pour notre choix de jeu qui sera dans la page de menu represente par les images/
 const GamesChoice = () => {
+  
   const setTheme = useQuizStore((state)=> state.setTheme)
+  const setQuestions = useQuizStore((state)=> state.setQuestions)
+  const setChoice = useQuizStore((state)=> state.setChoice)
+  const setAnswers = useQuizStore((state)=> state.setAnswers)
   const navigate = useNavigate()
+
   const onClick = (newTheme) => {
     setTheme(newTheme)
+    setQuestions()
+    setChoice()
+    setAnswers()
     navigate("/games/quiz")
   }
     return(

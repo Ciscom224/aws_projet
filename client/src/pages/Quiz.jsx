@@ -8,7 +8,7 @@ import QuizForm from '../components/Games/Quiz/QuizForm';
 // Cette fonction represente notre page principale et fais appelle aux composants necessaire 
 function Quiz() {
   
-
+  
   return (
     
       <div className="w-full h-screen bg-cover bg-center " style={{backgroundImage: "url('/images/Background/quiz_bg.png')"}}>

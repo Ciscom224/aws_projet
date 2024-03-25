@@ -2,7 +2,9 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useQuizStore } from "../../../store"
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { styled } from '@mui/material/styles';
+import { FormControlLabel, Radio, RadioGroup, FormControl, styled} from '@mui/material';
+
+
 
 const QuizForm = () => {
     const {
@@ -11,7 +13,12 @@ const QuizForm = () => {
         formState: {errors},
     } = useForm()
 
-    const [progressValue,setProgressValue] = useState(20)
+    const theme = useQuizStore((state) => state.theme)
+    const questions = useQuizStore((state)=> state.questions)
+    const choice = useQuizStore((state)=> state.choice)
+    const answers = useQuizStore((state)=> state.answers)
+    const [progressValue,setProgressValue] = useState(1)
+    const [selectedValues, setSelectedValues] = useState([]);
     
     
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -22,14 +29,27 @@ const QuizForm = () => {
         },
         [`& .${linearProgressClasses.bar}`]: {
           borderRadius: 5,
-          backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+          backgroundColor: theme.palette.mode === 'light' ? '#1e0554' : '#308fe8',
         },
       }));
 
-    const theme = useQuizStore((state) => state.theme)
-
+    
+    const handleChange =(value) => {
+        //console.log(selectedValues)
+        if (selectedValues.includes(value)) {
+            setSelectedValues(selectedValues.filter((item) => item !== value));
+          } else {
+            setSelectedValues([...selectedValues, value]);
+          }
+    }
     const onSubmit =  (data) => {
-        if (progressValue != 100) {setProgressValue(progressValue+20)}
+        if (progressValue != 5) {setProgressValue(progressValue+1)}
+        console.log(selectedValues)
+        console.log(answers[progressValue-1])
+        if (JSON.stringify(selectedValues) == JSON.stringify(answers[progressValue-1])) {alert("Bonne réponse")}
+        else {alert("Mauvaise réponse")}
+        setSelectedValues([])
+
     }
 
     const [number,setNumber] = useState(1)
@@ -38,55 +58,34 @@ const QuizForm = () => {
       return(
         <div className="fixed inset-0 flex  ">
         
-        <div className="flex flex-col w-full items-center justify-center mx-auto sm:max-w-md  lg:py-0 ">
+        <div className="flex flex-col items-center justify-center  sm:mt-5 mx-auto  sm:max-w-md  lg:py-0  w-full">
         
-            <div className="w-full bg-white sm:rounded-lg shadow dark:border  xl:p-0 dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent h-full sm:h-auto mt-[95px]">
-                <h2 className="font-bold px-3 py-5 text-xl sm:text-xl text-[#070707] text-shadow">Thème : {theme}</h2>
-                <p className="font-bold px-3 py-5 text-xl sm:text-xl text-[#070707] text-shadow">Question {progressValue / 20 } / 5 </p>
-                <div className="px-5 w-[80%]"><BorderLinearProgress variant="determinate" value={progressValue} /></div>
+            <div className="w-full bg-white sm:rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent h-full sm:h-auto mt-[95px]">
+                <h2 className="font-bold px-3 py-5 text-md text-x sm:text-xl text-[#070707] text-shadow">Thème : {theme}</h2>
+                <p className="font-bold px-3 py-5 text-md sm:text-xl text-[#070707] text-shadow hidden sm:block">Question {progressValue} / 5 </p>
+                <div className="px-5 w-[80%]"><BorderLinearProgress variant="determinate" value={progressValue * 20} /></div>
+                
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8 relative ">
-                    
+                <p className="font-bold text-md sm:text-xl text-[#070707] text-shadow">{questions[progressValue-1]} </p>
                 <div 
-                    className="absolute top-6 right-6  flex  justify-center  translate-x-1/2 -translate-y-1/2 ">
+                    className="absolute top-0 right-0  flex  justify-center  translate-x-1/2 -translate-y-[130%] ">
                          <img src="/images/HibouQuizWiz.png" alt="bug" className="w-1/3 cursor-pointer hidden sm:block "/>
                 </div>
               
-              <form className="space-y-4 md:space-y-6  " action="#" onSubmit={handleSubmit(onSubmit)} >
-                  
-                  <div>
-                      <input type="text" name="pseudonyme" id="pseudonyme"
-                  
-                      {...register("pseudonyme",{maxLength:30})} 
-                      className="bg-gray-50 border border-gray-300 text-[#313030] sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-[#FFFFFF] dark:border-gray-600 dark:placeholder-[#474444] dark:text-[#474444] dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Identifiant"/>
-                
-                  </div>
-                  <div>
-                      
-                      <input type="text" name="email" id="email" 
-                      {...register("email",{maxLength:30})} placeholder="Email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-[#FFFFFF] dark:border-gray-600 dark:placeholder-[#474444] dark:text-[#474444] dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                    
-                  </div>
-                  <div>
-                      
-                      <input type="password" name="password" id="password" 
-                      {...register("password",{maxLength:30})} placeholder="Mot de passe" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-[#FFFFFF] dark:border-gray-600 dark:placeholder-[#474444] dark:text-[#474444] dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                  
-                  </div>
-                  <div>
-                      
-                      <input type="password" name="confirmpassword" 
-                      {...register("confirmpassword",{maxLength:30})} id="Confirmpassword" placeholder="Confirmation du mot de passe" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-[#FFFFFF] dark:border-gray-600 dark:placeholder-[#474444] dark:text-[#474444] dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                 
-                     
-                  </div>
-                  <div className="flex items-center justify-between">
-                      <div className="flex items-start">
-                          
-                      </div>
-                  </div>
-                  
-                  <button type="submit"    className="w-full text-white bg-[#2f9421] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#eeeeed] hover:scale-105 duration-300
-                  hover:bg-[#245e2c]"  >Soumettre </button>
+              <form className="flex flex-col " action="#" onSubmit={handleSubmit(onSubmit)} >
+            
+                <FormControlLabel className="mt-5 border-2 rounded-lg border-black w-full" value="b" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]}  {...register("option1")}/>
+                <FormControlLabel className="mt-5 border-2 rounded-lg border-black w-full" value="c" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
+                <FormControlLabel className="mt-5 border-2 rounded-lg border-black w-full" value="a" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
+                <FormControlLabel className="mt-5 border-2 rounded-lg border-black w-full" value="d" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
+           
+                <button
+  type="submit"
+  className="fixed bottom-[8%] w-[88%] text-black bg-[#b6af8f] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
+>
+  Submit
+</button>
+           
               </form>
           
           </div>

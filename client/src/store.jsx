@@ -20,9 +20,9 @@ const useQuizStore = create(set => ({
   questions : [],
   choices : [],
   answers : [],
-  setQuestions: () => set({ questions: ["Qui est le goat ?","Quelle équipe n'est pas qualifié en quart de finale de Champions League ?"] }),
-  setChoice: () => set({ choice: [["Lionel Messi","Cristiano Ronaldo","Maradonna","Neymar JR"],["PSG","Barcelone","Real Madrid","Liverpool"]] }),
-  setAnswers: () => set({ answers: ["Lionel Messi","PSG"] }),
+  setQuestions: () => set({ questions: ["Qui est le goat ?","Quelle équipe n'est pas qualifié en quart de finale de Champions League ?","Qui est le goat ?","Quelle équipe n'est pas qualifié en quart de finale de Champions League ?","Qui est le goat ?"] }),
+  setChoice: () => set({ choice: [["Lionel Messi","Cristiano Ronaldo","Maradonna","Neymar JR"],["PSG","Barcelone","Real Madrid","Liverpool"],["Lionel Messi","Cristiano Ronaldo","Maradonna","Neymar JR"],["PSG","Barcelone","Real Madrid","Liverpool"],["Lionel Messi","Cristiano Ronaldo","Maradonna","Neymar JR"]] }),
+  setAnswers: () => set({ answers: [["Lionel Messi","Cristiano Ronaldo"],["PSG"],["Lionel Messi","Cristiano Ronaldo"],["PSG"],["Lionel Messi","Cristiano Ronaldo"]] }),
   setTheme: (newTheme) => set({ theme: newTheme})
 }))
 

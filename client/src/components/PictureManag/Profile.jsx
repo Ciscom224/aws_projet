@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState ,useEffect } from "react";
 import PencilIcon from "./PencilIcon";
 import Modal from "./Modal";
 import Side_bar from "../SideBarPicture";
@@ -18,6 +18,22 @@ const Profile = () => {
     setIsClicked(!isClicked)
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isClicked) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && !sidebar.contains(event.target)) {
+          setIsClicked(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isClicked]);
   return (
     
     <div className="flex flex-col items-center">
