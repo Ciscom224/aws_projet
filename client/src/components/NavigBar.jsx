@@ -59,7 +59,7 @@ const NavigBar = () => {
                      <AccessibleBadges type={"classment"}/>
                  </div>
                  <div className="flex fixed right-10">
-                     <Profile /> 
+                     <Profile navig={true} /> 
                  </div>
              </>}
         </div>
