@@ -22,7 +22,7 @@ function Friends({ isOpen, onClose }) {
   }
 
   useEffect(() => {
-    console.log("user : ",userData)
+  
   }, [userData]);
 
   return (
