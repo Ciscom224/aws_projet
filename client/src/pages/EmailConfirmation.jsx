@@ -20,7 +20,7 @@ const EmailConfirmation = (props) => {
 
     }
     const onSubmit = (data) => {
-        if (data.code == props.code) {
+        if (data.code === props.code) {
             alert("Inscription reussi")
             localStorage.setItem('name',props.pseudonyme)
             setIsAuthenticated(true);

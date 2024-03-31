@@ -10,6 +10,7 @@ const useAuthStore = create((set) => ({
     isAuthenticated: localStorage.getItem('isAuthenticated') === 'true' || false,
     setIsAuthenticated: (value) => {
       set({ isAuthenticated: value });
+      
       localStorage.setItem('isAuthenticated', value ? 'true' : 'false');
     },
   }));

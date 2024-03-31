@@ -25,3 +25,6 @@
 - ....  
 
 
+
+
+npm i -s react-redux redux redux-thunk redux-logger redux-devtools-extension

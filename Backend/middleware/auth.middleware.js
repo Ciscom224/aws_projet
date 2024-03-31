@@ -7,8 +7,7 @@ module.exports.verifyUser = (req, res, next) => {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
             if (err) {
                 res.locals.user = null;
-                res.cookie('jwt', '', { maxAge: 1 });
-                console.log("error : ", err)
+                // res.cookie('jwt', '', { maxAge: 1 });
                 next();
             }
             else {
@@ -31,12 +30,13 @@ module.exports.requireAuth = (req, res, next) => {
         jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => { 
             if(err){
                 console.log(err)
+                res.status(200).send("No Token");
             }
             else{
                 console.log(decodedToken.id)
                 next()
             }
         })
-    }else console.log("No Token")
+    }else res.status(200).send("No Token")
 
 }
