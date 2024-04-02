@@ -3,7 +3,7 @@ import React, {useState,useEffect } from "react";
 import { useLocation,useNavigate } from 'react-router-dom';
 import ConnexionC from "./Auth/ConnexionC";
 import Profile from "./PictureManag/Profile";
-import AccessibleBadges from "./NotificationIcon";
+import NotificationIcon from "./NotificationIcon";
 import "react-image-crop/dist/ReactCrop.css";
 import { useAuthStore, useRemovedMenu } from "../store";
 
@@ -42,7 +42,7 @@ const NavigBar = () => {
     return(
 <>
         <div className="fixed top-0 left-0 right-0 z-50 h-24 flex items-center bg-[#181717] bg-opacity-65" >
-            <div className=" text-3xl font-bold fixed left-[12%] flex items-center  md:flex" ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="hidden sm:inline-block"/></button></div>
+            <div className=" text-3xl font-bold fixed left-[12%] flex items-center " ><button onClick={handleLogo}><img src="/images/LogoNav.png" alt="Logo" className="inline-block"/><img src="/images/LogoQuizWiz.png" alt="Logo" className="hidden sm:inline-block"/></button></div>
                 
         
             {!isAuthenticated ?
@@ -50,16 +50,16 @@ const NavigBar = () => {
                 </button>   :
                  <>
                  <div className="hidden fixed right-[150px] md:flex" title="Notifications">
-                     <AccessibleBadges type={"notif"}/>
+                     <NotificationIcon type={"notif"}/>
                  </div>
                  <div className="hidden fixed right-[250px] md:flex" title="Messages">
-                     <AccessibleBadges type={"msg"}/>
+                     <NotificationIcon type={"msg"}/>
                  </div>
                  <div className="hidden fixed right-[350px] md:flex" title="Classements">
-                     <AccessibleBadges type={"classment"}/>
+                     <NotificationIcon type={"classment"}/>
                  </div>
                  <div className="flex fixed right-10">
-                     <Profile navig={true} /> 
+                     <Profile navig={true} classment={false}/> 
                  </div>
              </>}
         </div>
@@ -79,6 +79,3 @@ const NavigBar = () => {
 
 export default NavigBar
 
-// {/* <button onClick={handleLogin} className="absolute left-[60%] top-[18.5%] transform -translate-x-1/2 text-[#e0c758] hover:text-[#494222]">
-//                         Fermer
-//                     </button> */}

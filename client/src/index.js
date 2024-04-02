@@ -6,6 +6,8 @@ import QuizChoice from './pages/QuizChoice';
 import './index.css';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
 import Quiz from './pages/Quiz';
+import Classement from './pages/Classement';
+import Amis from './pages/Amis';
 
 
 
@@ -22,6 +24,14 @@ const route = createBrowserRouter([
   {
     path: "/games/quizchoice", 
     element: <QuizChoice />, 
+  },
+  {
+    path: "/amis", 
+    element: <Amis />, 
+  },
+  {
+    path: "/classement", 
+    element: <Classement />, 
   },
   {
     path: "/games/quiz", 

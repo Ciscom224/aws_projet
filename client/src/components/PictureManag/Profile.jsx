@@ -1,17 +1,16 @@
 import { useRef, useState ,useEffect } from "react";
 import PencilIcon from "./PencilIcon";
 import Modal from "./Modal";
-import Side_bar from "../SideBarPicture";
+import ProfileMenu from "../ProfileMenu";
 
 const Profile = (props) => {
-  const avatarUrl = useRef(
-    "https://avatarfiles.alphacoders.com/161/161002.jpg"
-  );
+  const avatarUrl = useRef(localStorage.getItem("img") !== null ? localStorage.getItem("img") : "https://avatarfiles.alphacoders.com/161/161002.jpg")
   const [modalOpen, setModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   
 
   const updateAvatar = (imgSrc) => {
+    localStorage.setItem("img",imgSrc)
     avatarUrl.current = imgSrc;
   };
   const handlePicture = () => {
@@ -44,16 +43,19 @@ const Profile = (props) => {
 
   return (
     
-    <div className="flex flex-col items-center">
+    <div className="flex-col items-center">
       <div className="relative">
         <img
           src={avatarUrl.current}
           alt="Avatar"
-          className="w-[60px] h-[60px] rounded-full border-2 border-gray-400"
+          className={` ${props.classment ? 'w-[45px] ':'w-[60px]'}  rounded-full border-2 border-gray-400 `}
           title="Profil"
           id = "Profil"
           onClick={handlePicture}
         />
+        {props.online && <div className="absolute  -bottom-0.5 left-1 right-0 m-auto w-fit  rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-950">
+          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        </div> }
         {props.navig && <button
           className="absolute -bottom-3 left-0 right-0 m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600"
           title="Change photo"
@@ -62,7 +64,7 @@ const Profile = (props) => {
           <PencilIcon />
           
         </button>}
-        <div className="absolute top-20 right-[115px] "><Side_bar  isClicked={isClicked}  /> </div>
+        <div className="absolute top-20 right-[115px] "><ProfileMenu  isClicked={isClicked}  /> </div>
       </div>
       {modalOpen && (
         <Modal
