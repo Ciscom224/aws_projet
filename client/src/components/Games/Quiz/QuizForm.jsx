@@ -31,9 +31,10 @@ const QuizForm = () => {
   const [progressValue,setProgressValue] = useState(1)
   const [selectedValues, setSelectedValues] = useState([]);
   const [countdown, setCountdown] = useState(20);
-  const [cdResponse, setCdResponse] = useState(3);
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
+  const [isDisable,setIsDisable] = useState(false)
+
 
 
   
@@ -52,6 +53,7 @@ const QuizForm = () => {
           }
           else {
             setColor("border-[#008000]")
+            setIsDisable(true)
             setTimeout(() => {
              setColor("border-black");
              setSelectedValues([])
@@ -63,6 +65,7 @@ const QuizForm = () => {
             else {
               setInGame(false)
             }
+            setIsDisable(false)
             }, 2000)
             
           
@@ -97,7 +100,6 @@ const QuizForm = () => {
     }
     // cette fonction permet de gérer les values selectionnées dans notre formulaire (des Radio)
     const handleChange =(value) => {
-        //console.log(selectedValues)
         if (selectedValues.includes(value)) {
             setSelectedValues(selectedValues.filter((item) => item !== value));
           } else {
@@ -107,6 +109,7 @@ const QuizForm = () => {
     // Fonction du submit, ou on met en place le submit pour chaque question et on calcule les points + le countdown 
     const onSubmit =  () => {
       setColor("border-[#008000]")
+      setIsDisable(true)
       setTimeout(() => {
         setCountdown(20);
         if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
@@ -121,6 +124,7 @@ const QuizForm = () => {
         }
         setSelectedValues([])
         setColor("border-black");
+        setIsDisable(false)
       }, 2000);
         
 
@@ -149,10 +153,10 @@ const QuizForm = () => {
               
               <form className= "flex flex-wrap" action="#"  onSubmit={handleSubmit(onSubmit)} >
              
-                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][0]) ? color : "border-black"} w-full`} value="b" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]} />
-                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][1]) ? color : "border-black"} w-full`} value="c" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
-                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][2]) ? color : "border-black"} w-full`} value="a" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
-                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][3]) ? color : "border-black"} w-full`} value="d" control={<Radio sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
+                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][0]) ? color : "border-black"} w-full`} value="b" control={<Radio disabled={isDisable} sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]} />
+                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][1]) ? color : "border-black"} w-full`} value="c" control={<Radio disabled={isDisable} sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
+                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][2]) ? color : "border-black"} w-full`} value="a" control={<Radio disabled={isDisable} sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
+                <FormControlLabel className={`mt-5 border-2 rounded-lg ${answers[progressValue-1].includes(choice[progressValue-1][3]) ? color : "border-black"} w-full`} value="d" control={<Radio disabled={isDisable} sx={{ color: "black",'&.Mui-checked': { color: '#1e0554',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
                 <button
                   type="submit"
                   className="fixed bottom-[5%] w-[80%] text-black bg-[#b6af8f] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
