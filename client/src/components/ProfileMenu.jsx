@@ -15,8 +15,10 @@ const ProfileMenu =(props) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Pour changer l'authentification local de l'utilisateur 
     const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
 
+    // Si on se déconnecte on sera redirigé vers la page principale
     const handleDisconnect = () => {
       if (!location.pathname == '') {navigate("/")}
       setIsAuthenticated(false)

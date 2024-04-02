@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import Profile from "./PictureManag/Profile";
 
 const ClassementComponent = () =>  {
+  // Pour le classement, on fait des test avec ces States la afin de pouvoir tester comment les données pourraient s'afficher
   const [selectedTab, setSelectedTab] = useState('Quiz');
   const [quizLB,setQuizLB] = useState([["Avatar","UserQuiz1","2018"],["Avatar","UserQuiz2","2010"],["Avatar","UserQuiz3","1855"],["Avatar","UserQuiz4","1630"],["Avatar","UserQuiz5","1520"],["Avatar","UserQuiz6","430"]])
   const [quiz60LB,setQuiz60LB] = useState([["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"],["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"]])
   const [guessRLB,setguessRLB] = useState([["Avatar","UserguessR1","2018"],["Avatar","UserguessR2","2010"],["Avatar","UserguessR3","1855"],["Avatar","UserguessR4","1630"],["Avatar","UserguessR5","1520"],["Avatar","UserguessR6","430"]])
   const [selectedLB, setSelectedLB] = useState(quizLB);
 
-  // On fera un UseEffect pour récuperer les classements depuis le serveur et appliquer les 3 set 
+  // On fera un UseEffect pour récuperer les classements depuis le serveur et appliquer les 3 set
+
+  // Fonction pour savoir quel classement est selectionné
   const handleOnClick = (selected) => {
     setSelectedTab(selected)
     if (selected === 'Quiz') {setSelectedLB(quizLB)}

@@ -8,6 +8,8 @@ import Alert from '@mui/joy/Alert';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 
+
+// pas utilisé actuellement mais permettra de gérer les Alerte d'authentifications  (code de MUI)
 const AlertVariousStates = (props)=> {
 
     const [color,setColor] = useState(props.type ? 'success' : 'danger')

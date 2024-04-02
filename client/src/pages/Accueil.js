@@ -8,7 +8,7 @@ import { useRemovedMenu } from '../store';
 // Cette fonction represente notre page principale et fais appelle aux composants necessaire 
 function App() {
   
-
+  // On remove le Menu (image + catalogue) si on clique sur inscription et autre
   const MenuRemoved = useRemovedMenu((state) => state.isRemoved)
   
 

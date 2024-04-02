@@ -11,7 +11,7 @@ import { useAuthStore, useRemovedMenu } from "../store";
 // Composant permettant d'afficher la barre de navigation dans notre page
 const NavigBar = () => {
 
-
+    // Location permet de récupérer l'url de la page actuelle et qu'on utilise dans handleLogo
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const NavigBar = () => {
 
     const [loginOpen,setLoginOpen] = useState(false)
 
-
+    // Ici en fonction de si l'user est dans la page d'accueil ou pas, on le renvoie a la page d'accueil s'il clique sur le logo 
     const handleLogo = () => {
         if (location.pathname !== "/") {
             navigate("/")

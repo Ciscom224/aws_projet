@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// Code permettant de calculer la taille de la hauteur de la page qu'on utilisera bientot pour la responsive des formulaires du QUIZ
 const HeighPage = () => {
   const [distanceFromBottom, setDistanceFromBottom] = useState(10); 
 

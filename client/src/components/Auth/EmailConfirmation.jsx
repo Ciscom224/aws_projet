@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import { GrClose } from "react-icons/gr";
 import { useAuthStore, useRemovedMenu } from "../../store";
 
-
+// Composant pour la confirmation de mails et de mettre a jour l'authentification (coté locale pour l'instant )
 const EmailConfirmation = (props) => {
 
     const setFalse = useRemovedMenu((state)=> state.setFalse);
@@ -19,6 +19,7 @@ const EmailConfirmation = (props) => {
         setFalse()
 
     }
+    // quand on a bien rentré le code d'inscription, on est alors connecté et on met a jour les stores 
     const onSubmit = (data) => {
         if (data.code == props.code) {
             alert("Inscription reussi")

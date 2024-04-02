@@ -17,17 +17,20 @@ function notificationsLabel(count) {
     }
     return `${count} notifications`;
   }
-  
+  // Gestion des notifications 
   export default function NotificationIcon(props) {
 
+    // Ces stats nous permettent de tester notre menu de notifications (friendToAdd = les demandes d'amis en cours)
     const [friendsToAdd,setFriendsToAdd] = useState(["1er","Yanis","Cristiano Ronaldo","Farouk","Yanis","Cristiano Ronaldo","Farouk"])
     const [isClicked, setIsClicked] = useState(false);
-    const [count,setCount] = useState(friendsToAdd.length)
+    const [count,setCount] = useState(friendsToAdd.length) // pour le count des nombres de notifications
     const navigate = useNavigate()
 
+    // MAJ apres avoir vérifier (ignorer ou accepter ) une demande d'amis 
     const updateCount = () => {
       setCount(friendsToAdd.length - 1 );
     }
+    // Useeffect pour le cas des clique en dehors du menu ou de l'icon de notfications et donc permet de fermer le menu (identique a celui de profile)
     useEffect(() => {
       
       const handleClickOutside = (event) => {
@@ -50,6 +53,7 @@ function notificationsLabel(count) {
     
     }, [isClicked]);
 
+    // On envoie a la page classement si on clique sur le trophée de la navigBar
     const handleClick = () => {
       setIsClicked(!isClicked)
       if (props.type == "classment") {navigate("/classement")}

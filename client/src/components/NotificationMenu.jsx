@@ -1,13 +1,13 @@
-
+// Gestion du menu de notifications
 const NotificationMenu = (props) => {
+  // Cette fonction permet de gérer le nombre de caractère a afficher dans notre menu (des users) 
   const truncatePseudo = (pseudo) => {
       return pseudo.length > 10 ? pseudo.slice(0, 10) + '...' : pseudo;
     };
 
+  // On met a jour le compteur de notifications + on met a jour notre State de friendRequest
   const  handleOnClick = (indexToRemove,type) => {
-    if (type) {
-        console.log("yes")
-    }
+
     props.setFriendsToAdd(prevFriends => {
         return prevFriends.filter((friend, index) => index !== indexToRemove);
     });
