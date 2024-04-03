@@ -14,7 +14,6 @@ const createToken=(id)=>{
 module.exports.signUp = async (req,res) =>{
     
     const {surName,email,password}=req.body
-
     try {
         const user= await  UserModel.create({surName,email,password})
         res.status(201).json({user:user._id})
@@ -31,10 +30,10 @@ module.exports.signIn=async (req,res)=>{
         const user= await UserModel.login(email,password);
         const token=createToken(user._id);
         res.cookie('jwt',token,{httpOnly:true,maxDate}) // ajout du token JWT dans le cookie
-        res.status(200).json({user:user._id})
+        res.status(201).send(user)
     } catch (err) {
         const errors=signInErrors(err)
-        res.status(200).send(err.message)
+        res.status(200).send(errors)
     }
 
 }
@@ -42,6 +41,5 @@ module.exports.logout= async (req,res)=>{
 
    await UserModel.updateOne({ _id: res.locals.user._id }, { $set: { online: false } });
    res.cookie('jwt','',{maxAge: 1 }); //suppression du token JWT dans le cookie  
-   res.redirect("/") // le chemin de redirection apres la deconnexion
+   res.status(201).send({message:"vous vous etes deconnecter"})
 }
-

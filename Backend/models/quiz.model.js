@@ -7,12 +7,10 @@ const qSchema= new mongoose.Schema(
             unique:true,
         },
         questions: [{
-            questionId: String,
             text: String,
             timestamp: Number,
             answers: [
                 {
-                    answerId: String,
                     text: String,
                     timestamp: Number,
                     
@@ -21,3 +19,6 @@ const qSchema= new mongoose.Schema(
         }]
     }
 )
+const QuizModel = mongoose.model('Quiz', qSchema);
+
+module.exports = QuizModel;
