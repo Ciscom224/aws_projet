@@ -15,8 +15,6 @@ function QuizChoice() {
         <NavigBar />
         <ThemeChoice />
       </div>
-      
-
   )
 }
 

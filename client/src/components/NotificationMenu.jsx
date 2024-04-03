@@ -8,7 +8,7 @@ const NotificationMenu = (props) => {
   // On met a jour le compteur de notifications + on met a jour notre State de friendRequest
   const  handleOnClick = (indexToRemove,type) => {
 
-    props.setFriendsToAdd(prevFriends => {
+    props.setFriendsToAdd(prevFriends => { // On met a jour le liste des demandes d'amis
         return prevFriends.filter((friend, index) => index !== indexToRemove);
     });
     props.updateCount();

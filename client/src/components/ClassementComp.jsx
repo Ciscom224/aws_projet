@@ -3,11 +3,11 @@ import Profile from "./PictureManag/Profile";
 
 const ClassementComponent = () =>  {
   // Pour le classement, on fait des test avec ces States la afin de pouvoir tester comment les données pourraient s'afficher
-  const [selectedTab, setSelectedTab] = useState('Quiz');
+  const [selectedTab, setSelectedTab] = useState('Quiz'); // selection du jeu
   const [quizLB,setQuizLB] = useState([["Avatar","UserQuiz1","2018"],["Avatar","UserQuiz2","2010"],["Avatar","UserQuiz3","1855"],["Avatar","UserQuiz4","1630"],["Avatar","UserQuiz5","1520"],["Avatar","UserQuiz6","430"]])
   const [quiz60LB,setQuiz60LB] = useState([["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"],["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"]])
   const [guessRLB,setguessRLB] = useState([["Avatar","UserguessR1","2018"],["Avatar","UserguessR2","2010"],["Avatar","UserguessR3","1855"],["Avatar","UserguessR4","1630"],["Avatar","UserguessR5","1520"],["Avatar","UserguessR6","430"]])
-  const [selectedLB, setSelectedLB] = useState(quizLB);
+  const [selectedLB, setSelectedLB] = useState(quizLB); // selection du leaderboard
 
   // On fera un UseEffect pour récuperer les classements depuis le serveur et appliquer les 3 set
 
@@ -20,7 +20,7 @@ const ClassementComponent = () =>  {
   }
     return (
       <div className="sm:flex ">
-        <div className="sm:w-[200px] mr-4  bg-[#292727] h-full  bg-opacity-55 ">
+        <div className="sm:w-[200px] mr-4  bg-[#292727] h-  bg-opacity-55 ">
             <div className={`p-4 text-white cursor-pointer hover:bg-[#4b4848] ${selectedTab === 'Quiz' && 'bg-[#afa9a9] bg-opacity-55'}`} onClick={() => handleOnClick('Quiz')}>Quiz </div>
             <div className={`p-4 text-white cursor-pointer hover:bg-[#4b4848] ${selectedTab === '60 Sec' && 'bg-[#afa9a9] bg-opacity-55'}` } onClick={() => handleOnClick('60 Sec')}>60 Sec! </div>
             <div className={`p-4 text-white cursor-pointer hover:bg-[#4b4848] ${selectedTab === 'GuessR' && 'bg-[#afa9a9] bg-opacity-55'}`} onClick={() => handleOnClick('GuessR')}>GuessR </div>
