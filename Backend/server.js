@@ -2,6 +2,7 @@ const express= require("express");
 const bodyParser=require('body-parser');
 const cookieParser=require('cookie-parser');
 const userRoutes=require('./routes/user.routes');
+const quizRoutes=require("./routes/quiz.routes.js")
 
 require('dotenv').config({path:' .env'})
 require('./db.js')
@@ -21,6 +22,7 @@ app.get('/jwtid',requireAuth,(req,res)=>{
 })
 //Les routes 
 app.use('/api/user',userRoutes);
+app.use('/api/quiz',quizRoutes);
 // lancement du server
 app.listen(process.env.PORT,() => {
     console.log("Serveur actif ... "+process.env.PORT+" port")
