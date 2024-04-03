@@ -12,7 +12,7 @@ const AmisComp = () =>  {
 
   // States permettant de faire les test pour la page classement (amis = liste d'amis, newFriend = les joueurs qu'on peut ajouter)
   const [amis,setAmis] = useState([["Amis1",true],["Amis2",true],["Amis3",true],["Amis4",true],["Amis5",false],["Amis6",false],["Amis7",false],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true],["Amis1",true]])
-  const [newFriend,setNewFriend] = useState(["Farouk","Messi"])
+  const [newFriend,setNewFriend] = useState(["Farouk","Messi"]) //liste des utilisateurs
   const [message, setMessage] = useState("");
   const [color,setColor] = useState("")
 
