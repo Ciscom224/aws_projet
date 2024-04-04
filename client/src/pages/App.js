@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { UidContext } from '../AppContext';
 import { useDispatch } from 'react-redux';
 
 import { getUser } from '../actions/user.actions';
-
+import Home from './Home.page';
+import Games from './Games';
+import QuizChoice from './QuizChoice';
 import NavBar from '../components/NavBar.component';
-import Boutons from '../components/Boutons';
-import { useRemovedMenu } from '../store';
-
-
 
 function App() {
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
-
-
 
   useEffect(() => {
     async function checkAuth() {
@@ -33,25 +30,24 @@ function App() {
     checkAuth()
 
     if (uid) dispatch(getUser(uid));
+
   }, [uid])
-  // On remove le Menu (image + catalogue) si on clique sur inscription et autre
-  const MenuRemoved = useRemovedMenu((state) => state.isRemoved)
-
-
 
   return (
-    <UidContext.Provider value={uid} >
-      <div className="fixed w-full h-full bg-cover bg-center " style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
-
-        <NavBar uid={uid} />
-        {!MenuRemoved ? <div className='fixed w-full h-1/3 m-auto '><Boutons uid={uid} /></div> :
-          ""}
-      </div>
+    <UidContext.Provider value={uid}>
+      <Router>
+        <div className="w-full h-screen bg-cover  bg-center overflow-hidden " style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
+          <NavBar/>
+          <main className='border-2 border-rose-300 h-screen '>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/games/quizchoice" element={<QuizChoice />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
     </UidContext.Provider>
-
-
-
   );
 }
-
 export default App;

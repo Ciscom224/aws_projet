@@ -12,7 +12,6 @@ function Games() {
   return (
     
       <div className="w-full h-screen bg-cover bg-center overflow-y-auto" style={{backgroundImage: "url('/images/Background/games_bg.png')"}}>
-        <NavigBar />
         <GamesChoice />
       </div>
       

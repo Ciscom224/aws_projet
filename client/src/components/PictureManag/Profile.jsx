@@ -1,86 +1,146 @@
-import { useRef, useState ,useEffect } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AccessibleBadges from "../NotificationIcon";
+import { Menu, Transition } from "@headlessui/react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import userReducer from "../../reducers/user.reducer";
+// import Friends from "./frends.component";
 import PencilIcon from "./PencilIcon";
-import Modal from "./Modal";
-import ProfileMenu from "../ProfileMenu";
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+const ProfileUser = ({ setIsLogin }) => {
+  const userData = useSelector((state) => state.userReducer);
+  const navigate = useNavigate();
+  const [openDrawer, setOpenDrawer] = useState(false);
 
-// Il existe 3 props possible : props.navig permet de savoir si on est dans la barre de navigation ou pas / props.online : permet de savoir si on est en ligne ou pas pour la page amis
-// et le props.classment est la pour gérer la taille de la photo de profil car on l'appelle juste dans la page classement pour l'instant
-const Profile = (props) => {
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+  const disconnect = async () => {
+    await axios({
+      method: "get",
+      url: `${process.env.REACT_APP_API_URL}api/user/logout`,
+      withCredentials: true,
+    }).then((res) => {
+      navigate("/");
+      setIsLogin(false);
 
-  // ce UseRef va nous permettre de récupérer l'image locale de l'utilisateur s'il en a une et sinon on en met une personnalisé
-  // Bien sur quand elle sera connecté au backend on demandera juste la photo car le backend gère déja les photo par défault
-  const avatarUrl = useRef(localStorage.getItem("img") !== null ? localStorage.getItem("img") : "https://avatarfiles.alphacoders.com/161/161002.jpg")
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  
-  // Fonction lorsqu'on change de photo de profil 
-  const updateAvatar = (imgSrc) => {
-    localStorage.setItem("img",imgSrc)
-    avatarUrl.current = imgSrc;
+      //   toast(res.data.message)
+    });
   };
 
-  // Fonction pour le cas du menu et savoir si on a cliqué sur la Photo de profil de la navigBar ou pas
-  const handlePicture = () => {
-    if (props.navig) {
-      setIsClicked(!isClicked)
-    }
-  }
-
-    // Cet useEffect permet de fermer le menu du profil en cas de event (mouse) de dehors du menu et photo de profil et se met a jour a chaque clic
-    useEffect(() => {
-      if (props.navig) {
-      const handleClickOutside = (event) => {
-        if (isClicked) {
-          const sidebar = document.getElementById('sidebar');
-          const profilImage = document.getElementById('Profil');
-          if (sidebar && !sidebar.contains(event.target) && profilImage && !profilImage.contains(event.target)) {
-            setIsClicked(false);
-          }
-        
-        }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }
-    }, [isClicked]);
-
+  useEffect(() => {
+    console.log("user : ", userData);
+  }, [userData]);
   return (
-    
-    <div className="flex-col items-center">
-      <div className="relative">
-        <img
-          src={avatarUrl.current}
-          alt="Avatar"
-          className={` ${props.classment ? 'w-[45px] ':'w-[60px]'}  rounded-full border-2 border-gray-400 `}
-          title="Profil"
-          id = "Profil"
-          onClick={handlePicture}
-        />
-        {props.online && <div className="absolute  -bottom-0.5 left-1 right-0 m-auto w-fit  rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-950">
-          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-        </div> }
-        {props.navig && <button
-          className="absolute -bottom-3 left-0 right-0 m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600"
-          title="Change photo"
-          onClick={() => setModalOpen(true)}
+    <div>
+      <Menu as="div" className="relative ml-3">
+        <div>
+          <div>
+            <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <span className="absolute -inset-1.5" />
+              <span className="sr-only">Open user menu</span>
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="Avatar"
+                className="w-[45px] rounded-full border-2 border-gray-400 "
+                title="Profil"
+                id="Profil"
+                // onClick={}
+              />
+              {userData.online && (
+              <div className="absolute  -bottom-0.5 left-1 right-0 m-auto w-fit  rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-950">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+            )}
+            <button
+              className="absolute -bottom-3 left-0 right-0 m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600"
+              title="Change photo"
+            >
+              <PencilIcon />
+            </button>
+            </Menu.Button>
+          </div>
+        </div>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
         >
-          <PencilIcon />
-          
-        </button>}
-        <div className="absolute top-20 right-[115px] "><ProfileMenu  isClicked={isClicked}  /> </div>
-      </div>
-      {modalOpen && (
-        <Modal
-          updateAvatar={updateAvatar}
-          closeModal={() => setModalOpen(false)}
-        />
-      )}
+          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-black py-1 shadow-lg orange-300 orange-black ring-opacity-2 focus:outline-none">
+            <Menu.Item>
+              <h2
+                href="#"
+                className="block px-4 py-2 text-md text-orange-300 text-center uppercase"
+              >
+                {userData.surName}
+              </h2>
+            </Menu.Item>
+            <hr />
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? "bg-gray-900" : "",
+                    "block px-4 py-2 text-sm text-orange-300"
+                  )}
+                >
+                  Parametre
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? "bg-gray-900" : "",
+                    "block px-4 py-2 text-sm text-orange-300"
+                  )}
+                  onClick={toggleDrawer}
+                >
+                  Amis
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? "bg-gray-900" : "",
+                    "block px-4 py-2 text-sm text-orange-300"
+                  )}
+                >
+                  Classement
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={disconnect}
+                  href="#"
+                  className={classNames(
+                    active ? "bg-gray-900" : "",
+                    "block px-4 py-2 text-sm text-orange-300"
+                  )}
+                >
+                  Deconnexion
+                </a>
+              )}
+            </Menu.Item>
+          </Menu.Items>
+        </Transition>
+      </Menu>
     </div>
   );
 };
 
-export default Profile;
+export default ProfileUser;

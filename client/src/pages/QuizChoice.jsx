@@ -1,6 +1,4 @@
 import React,{useState,useEffect} from 'react';
-// import Axios from 'axios';
-import NavigBar from '../components/NavBar.component';
 import ThemeChoice from '../components/Games/Quiz/ThemeChoice';
 
 
@@ -12,7 +10,6 @@ function QuizChoice() {
   return (
     
       <div className="w-full h-screen bg-cover bg-center overflow-y-auto" style={{backgroundImage: "url('/images/Background/theme_bg.png')"}}>
-        <NavigBar />
         <ThemeChoice />
       </div>
       
