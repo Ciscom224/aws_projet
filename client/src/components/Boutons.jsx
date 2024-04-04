@@ -1,19 +1,35 @@
-import React from "react";
+import React,{useContext} from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Composant responsable du bouton jouer et des futurs boutons (1 joueur, multijoueur etc etc)
-const Boutons = () => {
+const Boutons = ({uid}) => {
     const navigate = useNavigate();
 
     const jouer = () => {
         // Verifie si la donnée stocké détient la valeur String true et affiche une alerte en fonction de cette valeur
-        return localStorage.getItem("isAuthenticated") === 'true' ? 
-            navigate("/games") : 
-            alert("Connectez vous d'abord sss!");
+        if (uid) {
+            navigate("/games")
+        }
+        else {
+            toast.error('Connectez-Vous !!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+               
+                });
+        }
+            
     };
 
     return (
+        <>
         <div className="flex items-center justify-center h-screen py-16 px-8">
             <div className="flex flex-col items-center">
               
@@ -24,6 +40,8 @@ const Boutons = () => {
                 </button>
             </div>
         </div>
+        <ToastContainer />
+        </>
     );
 };
 
