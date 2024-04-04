@@ -8,10 +8,11 @@ import Alert from '@mui/joy/Alert';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 
+
+// pas utilisé actuellement mais permettra de gérer les Alerte d'authentifications  (code de MUI)
 const AlertVariousStates = (props)=> {
 
     const [color,setColor] = useState(props.type ? 'success' : 'danger')
-    const [msg,_] = useState(props.message)
     const [title,setTitle] = useState(props.type ? 'Succes' : 'Erreur')
     const [icon,setIcon] = useState(props.type ? <CheckCircleIcon /> : <ReportIcon />)
 
@@ -34,7 +35,7 @@ const AlertVariousStates = (props)=> {
           <div>
             <div>{title}</div>
             <Typography level="body-sm" color={color}>
-              {msg}
+              {props.msg}
             </Typography>
           </div>
         </Alert>
