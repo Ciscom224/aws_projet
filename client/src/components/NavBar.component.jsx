@@ -54,13 +54,13 @@ const NavBar = () => {
             </button>
           ) : (
             <div className="flex justify-between ">
-              <div className="hidden  md:flex" title="Notifications">
+              <div className="hidden  md:flex mr-4" title="Notifications">
                 <NotificationIcon type={"notif"} />
               </div>
-              <div className="hidden  md:flex" title="Messages">
+              <div className="hidden mr-4 md:flex" title="Messages">
                 <NotificationIcon type={"msg"} />
               </div>
-              <div className="hidden  md:flex" title="Classements">
+              <div className="hidden  md:flex mr-4" title="Classements">
                 <NotificationIcon type={"classment"} />
               </div>
               <div className="flex ">

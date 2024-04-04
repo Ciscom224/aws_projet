@@ -55,7 +55,7 @@ const ProfileUser = ({ setIsLogin }) => {
               </div>
             )}
             <button
-              className="absolute -bottom-3 left-0 right-0 m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600"
+              className="absolute -bottom-3 left-0 right-0  m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-amber-500 border border-gray-600"
               title="Change photo"
             >
               <PencilIcon />
@@ -72,11 +72,11 @@ const ProfileUser = ({ setIsLogin }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-black py-1 shadow-lg orange-300 orange-black ring-opacity-2 focus:outline-none">
+          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-black opacity-75 py-1 shadow-lg orange-300 orange-black ring-opacity-2 focus:outline-none">
             <Menu.Item>
               <h2
                 href="#"
-                className="block px-4 py-2 text-md text-orange-300 text-center uppercase"
+                className="block px-4 py-2 text-md font-semibold text-white text-center uppercase"
               >
                 {userData.surName}
               </h2>
@@ -88,7 +88,7 @@ const ProfileUser = ({ setIsLogin }) => {
                   href="#"
                   className={classNames(
                     active ? "bg-gray-900" : "",
-                    "block px-4 py-2 text-sm text-orange-300"
+                    "block px-4 py-2 text-sm font-semibold text-white"
                   )}
                 >
                   Parametre
@@ -101,7 +101,7 @@ const ProfileUser = ({ setIsLogin }) => {
                   href="#"
                   className={classNames(
                     active ? "bg-gray-900" : "",
-                    "block px-4 py-2 text-sm text-orange-300"
+                    "block px-4 py-2 text-sm font-semibold text-white"
                   )}
                   onClick={toggleDrawer}
                 >
@@ -115,7 +115,7 @@ const ProfileUser = ({ setIsLogin }) => {
                   href="#"
                   className={classNames(
                     active ? "bg-gray-900" : "",
-                    "block px-4 py-2 text-sm text-orange-300"
+                    "block px-4 py-2 text-sm font-semibold text-white"
                   )}
                 >
                   Classement
@@ -129,7 +129,7 @@ const ProfileUser = ({ setIsLogin }) => {
                   href="#"
                   className={classNames(
                     active ? "bg-gray-900" : "",
-                    "block px-4 py-2 text-sm text-orange-300"
+                    "block px-4 py-2 text-sm text-white font-semibold"
                   )}
                 >
                   Deconnexion
