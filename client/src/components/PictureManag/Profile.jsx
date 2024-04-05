@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import userReducer from "../../reducers/user.reducer";
 // import Friends from "./frends.component";
 import PencilIcon from "./PencilIcon";
+import Friends from "../Friends.component";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -51,7 +52,7 @@ const ProfileUser = ({ setIsLogin }) => {
               />
               {userData.online && (
               <div className="absolute  -bottom-0.5 left-1 right-0 m-auto w-fit  rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-950">
-                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
             )}
             <button
@@ -139,6 +140,7 @@ const ProfileUser = ({ setIsLogin }) => {
           </Menu.Items>
         </Transition>
       </Menu>
+      <Friends isOpen={openDrawer} onClose={toggleDrawer} />
     </div>
   );
 };
