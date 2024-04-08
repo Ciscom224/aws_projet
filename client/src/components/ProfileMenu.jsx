@@ -36,7 +36,7 @@ return props.isClicked ? (
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 md:hidden"><ChatBubbleOutlineOutlinedIcon sx={{ fontSize: 16 }} className="mr-3"/> Messages</li>
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 md:hidden" onClick={() => navigate("/classement")}><GoTrophy className="mr-3"/> Classement</li>
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300" onClick={() => navigate("/amis")}><FaUserFriends className="mr-3" /> Amis</li>
-        <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300"><HiUser className="mr-3"/> Profil</li>
+        <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300" onClick={() => navigate("/profile")}><HiUser className="mr-3"/> Profil</li>
         <li className="p-2 flex items-center text-[#FFFFFF] hover:bg-[#e0c758] hover:text-[#070707] cursor-pointer hover:scale-105 duration-300 border-t border-[#4e4b4b]" onClick={handleDisconnect}><HiArrowSmRight className="mr-3"/> Se déconnecter</li>
       </ul>
     </div>

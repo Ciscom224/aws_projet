@@ -8,7 +8,7 @@ import {createBrowserRouter,RouterProvider} from 'react-router-dom';
 import Quiz from './pages/Quiz';
 import Classement from './pages/Classement';
 import Amis from './pages/Amis';
-
+import Profile from './pages/Profile';
 
 
 // On crée un routeur qui spécifie plusieurs routes avec chacune une page (composantes) associé
@@ -20,6 +20,10 @@ const route = createBrowserRouter([
   {
     path: "/games", // path c'est le chemin
     element: <Games />, // element le composant ou page associé
+  },
+  {
+    path: "/profile",
+    element: <Profile />, 
   },
   {
     path: "/games/quizchoice", 

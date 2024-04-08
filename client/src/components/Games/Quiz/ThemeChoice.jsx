@@ -25,10 +25,10 @@ const GamesChoice = () => {
         
         <div className="fixed inset-0 top-24 py-8 px-8">
         <div className="flex items-center justify-center">
-          <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+        <p className=" italic font-bold text-4xl sm:text-7xl text-[#000000]" style={{ textShadow: '2px 2px 4px rgba(240, 240, 240, 1)' }}>
             Choisis ton Quiz
-          </p>
-          <div className="absolute  left-3 top-16 h-full w-full m-4 items-center justify-center py-16 px-10 flex flex-wrap overflow-y-scroll">
+        </p>
+        <div className="absolute left-3 right-3 top-16 bottom-4  m-4 items-center justify-center py-16 px-10 flex flex-wrap overflow-y-scroll">
             <img src="/images/Themes/histoire.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Histoire")}/>
             <img src="/images/Themes/musique.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Musique")}/>
             <img src="/images/Themes/culture_generale.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Culture Générale")}/>

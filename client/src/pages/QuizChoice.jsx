@@ -12,6 +12,7 @@ function QuizChoice() {
   return (
     
       <div className="w-full h-screen bg-cover bg-center overflow-y-auto" style={{backgroundImage: "url('/images/Background/theme_bg.png')"}}>
+        <div className="fixed w-full h-full bg-black opacity-20"></div>
         <NavigBar />
         <ThemeChoice />
       </div>
