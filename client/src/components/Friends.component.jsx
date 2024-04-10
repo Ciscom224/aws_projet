@@ -22,7 +22,7 @@ function Friends({ isOpen, onClose }) {
   }
 
   useEffect(() => {
-  
+    console.log(usersData)
   }, [userData]);
 
   return (
@@ -118,7 +118,7 @@ function Friends({ isOpen, onClose }) {
             return (
               <li
                 key={user._id}
-                className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 rounded-sm hover:bg-orange-300 cursor-pointer"
+                className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 text-white rounded-sm hover:bg-orange-300 cursor-pointer"
               >
                 <div className="flex min-w-0 gap-x-4">
                   <img

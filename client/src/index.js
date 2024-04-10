@@ -9,7 +9,6 @@ import rootReducer from './reducers/reducers';
 import App from './pages/App';
 
 import { getUsers } from './actions/users.actions';
-import NavBar from './components/NavBar.component';
 import './index.css';
 // Redux store
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

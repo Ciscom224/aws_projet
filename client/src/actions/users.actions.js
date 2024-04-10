@@ -6,6 +6,7 @@ export const getUsers=    ()=> {
         return   await axios
         .get( `${process.env.REACT_APP_API_URL}api/user/all`)
         .then((res)=> {
+            // console.log(res.data)
             dispatch({type:GET_USERS,payload:res.data})
         })
         .catch((err)=> console.log(err))
