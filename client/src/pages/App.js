@@ -38,7 +38,7 @@ function App() {
       <Router>
         <div className="w-full h-screen bg-cover  bg-center overflow-hidden " style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
           <NavBar/>
-          <main className='border-2 border-rose-300 h-screen '>
+          <main className='h-screen '>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/games" element={<Games />} />
