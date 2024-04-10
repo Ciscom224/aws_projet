@@ -1,0 +1,70 @@
+
+# Rapport 4 du Projet
+
+Cette semaine, étant donné que nous disposions de moins de temps par rapport aux semaines précédentes, nous avons essayé de faire de notre mieux pour avancer. Nous avons progressé sur les pages et effectué des tests avec le backend.
+
+### Implémentation 
+
+Depuis la dernière fois, nous avons implementé la page profil du joueur qui est responsive. Cette page sert de "page paramètres" pour que le joueur puisse modifier son pseudo, mail, mot de passe etc...
+
+Nous avons également préparé les pages pour les jeux '60 sec' et 'Guessr'.
+
+Nous avons réfléchi et modifié notre code pour le faire correspondre à l'API du quiz en adaptant le format du quiz dans la base de données pour qu'il s'adapte facilement à l’API.
+
+Nous avons établi la connexion à la base de données pour l'authentification et intégré la fonctionnalité d'amis
+
+Nous avons optimisé l'utilisation de notre composant 'navigbar' qui était appelé sur chaque page en créant un fichier APP dans lequel on appelle la navigbar et on met les routes vers les autres pages.
+
+
+
+### Difficultés Rencontrées
+- Ajustement du code pour améliorer la connexion à la base de données.
+
+
+### Recherches
+
+- Comment connecter l'API à notre backend
+- Comment utiliser Redux, pour la gestion des questions
+- Adapter les requêtes de bd pour l'API
+
+
+
+
+### Objectifs pour le futur
+
+- finir de lier le front-end et le back-end.
+- Implémenter l'API du quiz.
+- Améliorer l'affichage de certaines pages sur les écrans de téléphones.
+- Rendre le jeu de quiz plus intéressant en ajoutant un mode contre la montre et un mode où on peut perdre des vies.
+- Rendre le jeu possible en multijoueur dans des rooms privées.
+
+
+### Planning
+
+ ##### La semaine prochaine:
+Établir la connexion de la base de données avec l'API + Intégrer le Quiz au front-end et finaliser la connexion entre le front-end et le back-end
+
+##### Dans 2 semaines : 
+Ajout du multijoueur (games/id) + Menu des lobbys privés + ajouter les points des joueurs pendant qu'ils jouent.
+
+##### Dans 3 semaines : 
+Mise en place de site + programmation des derniers jeux (60 sec + guessR si le temps nous le permet) + sécurité
+
+##### Dans 4 semaines : 
+Fin du projet et fin du rapport
+
+
+
+### Sources et Références
+- https://tailwindcss.com/
+- https://mui.com/material-ui/
+- https://stackoverflow.com/questions/71663356/how-to-set-the-value-of-input-from-state-react-app
+- https://legacy.reactjs.org/docs/forms.html
+- https://react-hook-form.com/docs/useform/register
+- https://upmostly.com/tutorials/react-onchange-events-with-examples
+- https://api.openquizzdb.org/?key=S4U9QC24X2&choice=4&categ=archeologie&diff=1
+- https://api.openquizzdb.org/?key=S4U9QC24X2&choice=4&categ=archeologie&diff=1
+- https://www.youtube.com/watch?v=N7zlfRyXQes
+- https://docs.passage.id/embedded-login/examples-by-framework/connecting-to-api-backend
+
+
