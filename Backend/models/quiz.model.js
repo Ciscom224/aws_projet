@@ -9,13 +9,15 @@ const qSchema= new mongoose.Schema(
         questions: [{
             text: String,
             timestamp: Number,
-            answers: [
+            proposition: [
                 {
                     text: String,
                     timestamp: Number,
-                    
                 }
-            ]
+            ],
+            answers: {
+                type: [String]
+            }
         }]
     }
 )

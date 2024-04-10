@@ -1,5 +1,6 @@
 import React from "react";
 
+// C'est pour l'alerte des entrées dans l'authentification (identifiant,password etc)
 export const SpanAlerte = (props) => {
     const message = props.message
     return(
