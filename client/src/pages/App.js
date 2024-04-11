@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes,Navigate  } from 'react-router-dom';
 import axios from 'axios';
 import { UidContext } from '../AppContext';
 import { useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import Home from './Home.page';
 import Games from './Games';
 import QuizChoice from './QuizChoice';
 import NavBar from '../components/NavBar.component';
+import Error from './Error.page';
 
 function App() {
   const dispatch = useDispatch()
@@ -41,8 +42,9 @@ function App() {
           <main className='h-screen '>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/games" element={<Games />} />
-              <Route path="/games/quizchoice" element={<QuizChoice />} />
+              <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
+              <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
+              <Route path="*" element={<Error/>} />
             </Routes>
           </main>
         </div>

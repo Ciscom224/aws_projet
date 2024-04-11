@@ -24,8 +24,11 @@ const ProfileUser = ({ setIsLogin }) => {
       url: `${process.env.REACT_APP_API_URL}api/user/logout`,
       withCredentials: true,
     }).then((res) => {
-      navigate("/");
       setIsLogin(false);
+      navigate("/");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
 
       //   toast(res.data.message)
     });

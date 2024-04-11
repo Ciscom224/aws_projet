@@ -29,9 +29,7 @@ const NavBar = () => {
         <div className=" text-3xl font-bold flex items-center">
           <button
             onClick={() => {
-              if (location.pathname !== "/") {
-                navigate("/");
-              }
+              navigate("/");
             }}
           >
             <img

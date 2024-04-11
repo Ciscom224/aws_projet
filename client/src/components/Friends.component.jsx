@@ -180,7 +180,7 @@ function Friends({ isOpen, onClose }) {
         {usersData.map((user) => {
           if(!isEmpty(userData)){
             for (let i = 0; i < Object.keys(userData.friends).length; i++) {
-              if ((user._id !== userData.friends[i]) & (user._id !== userData._id)) {
+              if ((1)) {
                 return (
                   <li
                     key={user._id}

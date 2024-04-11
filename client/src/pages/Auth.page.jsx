@@ -41,6 +41,10 @@ export default function AuthUser({ openAuth, onClose, setIsLogin }) {
         if (res.status !== 200) {
           onClose();
           setIsLogin(true);
+          navigate("/")
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         } else {
           setErrors({
             email: res.data.email,
