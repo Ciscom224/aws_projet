@@ -1,5 +1,4 @@
 import React,{useState,useEffect,useContext} from 'react';
-import Boutons from '../components/Boutons';
 import { UidContext } from "../AppContext";
 import NavBar from '../components/NavBar.component';
 import { useNavigate } from "react-router-dom";
