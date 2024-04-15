@@ -16,7 +16,7 @@ module.exports.getQuestionsOf= async (req,res)=>{
 
 module.exports.addCategory=async (req,res)=> {
     const {categoryName}=req.body
-    console.log(req)
+   
     try {
         const category= await  QuizModel.create({name:categoryName})
         res.status(201).json({category:category})
@@ -26,24 +26,19 @@ module.exports.addCategory=async (req,res)=> {
 }
 
 module.exports.addQuestion=async (req,res)=> {
-    console.log(req.body.answers)
-    const question=req.body;
-
     try {
-        const category = await QuizModel.findByIdAndUpdate(
-            { _id: req.params.idCategory }, 
-            { $push: { questions: { 
-                text: question.text,
-                timestamp: Date.now(),
-                answers: question.answers.map(answer => ({
-                    text: answer.text,
-                    timestamp: Date.now()
-                }))
-            }}},
-            { new: true, upsert: true }
-        );
-        res.send(category)
+        const category = await QuizModel.findOne({ name: req.params.name});
+        category.questions.push({ 
+            text: req.body.text,
+            choices: req.body.choices,
+            answers: req.body.answers,
+            info: req.body.info,
+            timestamp: Date.now()
+        });
+        await category.save();
+        res.send(req.body);
     } catch (err) {
         console.log(err);
     }
+    
 }

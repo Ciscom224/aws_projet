@@ -5,7 +5,7 @@ import AmisComp from '../components/AmisComp';
 
 function Amis() {
   return (
-    <div className="fixed w-full h-full bg-cover bg-center " style={{backgroundImage: "url('/images/Background/classement_bg.png')"}}>
+    <div className="w-full h-full bg-cover bg-center " style={{backgroundImage: "url('/images/Background/classement_bg.png')"}}>
       <div className="ml-2 mt-28" > 
         <AmisComp /> 
       </div>

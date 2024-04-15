@@ -10,6 +10,7 @@ import Games from './Games';
 import QuizChoice from './QuizChoice';
 import NavBar from '../components/NavBar.component';
 import Error from './Error.page';
+import Admin from './admin/home.admin.page';
 
 function App() {
   const dispatch = useDispatch()
@@ -41,7 +42,8 @@ function App() {
           <NavBar/>
           <main className='h-screen '>
             <Routes>
-              <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
+              <Route path="/admin" element={<Admin/>} />
               <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
               <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
               <Route path="*" element={<Error/>} />

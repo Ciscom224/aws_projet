@@ -202,6 +202,7 @@ function Friends({ isOpen, onClose }) {
         user.surName.toLowerCase().includes(search.toLowerCase())
       )
         .map((user) => {
+          
           if (!userData.friends.includes(user._id)) {
             return (
               <li

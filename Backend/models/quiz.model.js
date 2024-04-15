@@ -9,16 +9,16 @@ const qSchema= new mongoose.Schema(
         questions: [{
             text: String,
             timestamp: Number,
-            proposition: [
-                {
-                    text: String,
-                    timestamp: Number,
-                }
-            ],
+            choices: {
+                type: [String]
+            },
             answers: {
                 type: [String]
             }
-        }]
+        }],
+        info:{
+            type:String,
+        }
     }
 )
 const QuizModel = mongoose.model('Quiz', qSchema);
