@@ -8,7 +8,7 @@ import { UidContext } from "../AppContext";
 import AuthUser from "../pages/Auth.page";
 
 // Composant permettant d'afficher la barre de navigation dans notre page
-const NavBar = () => {
+const NavBar = ({setLoginOpen}) => {
   const [isLogin, setIsLogin] = useState(false);
   const [openAuth, setOpenAuth] = useState(false);
   const uid = useContext(UidContext);
@@ -18,6 +18,7 @@ const NavBar = () => {
   }, [uid]);
   const closeAuth = () => {
     setOpenAuth(false);
+    setLoginOpen(false);
   };
 
   const location = useLocation();
@@ -43,7 +44,10 @@ const NavBar = () => {
           {!isLogin ? (
             <button>
               <a
-                onClick={() => setOpenAuth(true)}
+                onClick={() => {
+                  setOpenAuth(true)
+                  setLoginOpen(true)
+                }}
                 href="#"
                 className="text-gray-300 font-semibold border-2 border-yellow-500 hover:bg-yellow-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium "
               >
