@@ -26,8 +26,8 @@ const NavBar = ({setLoginOpen}) => {
 
   return (
     <>
-      <div className="py-2 px-7 flex justify-between mb-2 flex items-center bg-[#181717] bg-opacity-65">
-        <div className=" text-3xl font-bold flex items-center">
+      <div className="py-3 px-7 flex justify-between  items-center bg-[#181717] bg-opacity-65">
+        <div className=" text-3xl font-bold flex items-center px-5 ">
           <button
             onClick={() => {
               navigate("/");
@@ -38,18 +38,23 @@ const NavBar = ({setLoginOpen}) => {
               alt="Logo"
               className="hidden sm:inline-block"
             />
+            <img
+              src="/images/LogoNav.png"
+              alt="Logo"
+              className="sm:hidden"
+            />
           </button>
         </div>
         <div className="">
           {!isLogin ? (
             <button>
               <a
-                onClick={() => {
+                onClick={() =>{
                   setOpenAuth(true)
                   setLoginOpen(true)
                 }}
                 href="#"
-                className="text-gray-300 font-semibold border-2 border-yellow-500 hover:bg-yellow-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium "
+                className="text-gray-300  border-2 border-yellow-500 hover:bg-yellow-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium "
               >
                 Connexion
               </a>
@@ -78,6 +83,7 @@ const NavBar = ({setLoginOpen}) => {
       </div>
       {openAuth ? (
         <AuthUser
+          setLoginOpen = {setLoginOpen}
           openAuth={openAuth}
           onClose={closeAuth}
           setIsLogin={setIsLogin}
