@@ -9,6 +9,7 @@ import userReducer from "../../reducers/user.reducer";
 // import Friends from "./frends.component";
 import PencilIcon from "./PencilIcon";
 import Friends from "../Friends.component";
+import Settings from "../Settings.component";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -16,8 +17,10 @@ const ProfileUser = ({ setIsLogin }) => {
   const userData = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSetting, setOpenSetting] = useState(false);
 
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
+  const toggleSetting = () => setOpenSetting(!openSetting);
   const disconnect = async () => {
     await axios({
       method: "get",
@@ -46,24 +49,18 @@ const ProfileUser = ({ setIsLogin }) => {
               <span className="absolute -inset-1.5" />
               <span className="sr-only">Open user menu</span>
               <img
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                src={userData.profilImage}
                 alt="Avatar"
                 className="w-[45px] rounded-full border-2 border-gray-400 "
                 title="Profil"
                 id="Profil"
                 // onClick={}
               />
-              {userData.online && (
+              {userData.online ? (
               <div className="absolute  -bottom-0.5 left-1 right-0 m-auto w-fit  rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-950">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
-            )}
-            <button
-              className="absolute -bottom-3 left-0 right-0  m-auto w-fit p-[.35rem] rounded-full bg-gray-800 hover:bg-amber-500 border border-gray-600"
-              title="Change photo"
-            >
-              <PencilIcon />
-            </button>
+            ):null}
             </Menu.Button>
           </div>
         </div>
@@ -94,8 +91,9 @@ const ProfileUser = ({ setIsLogin }) => {
                     active ? "bg-gray-900" : "",
                     "block px-4 py-2 text-sm font-semibold text-white"
                   )}
+                  onClick={toggleSetting}
                 >
-                  Parametre
+                  Paramètres
                 </a>
               )}
             </Menu.Item>
@@ -144,6 +142,7 @@ const ProfileUser = ({ setIsLogin }) => {
         </Transition>
       </Menu>
       <Friends isOpen={openDrawer} onClose={toggleDrawer} />
+      <Settings isOpen={openSetting} onClose={toggleSetting}/>
     </div>
   );
 };

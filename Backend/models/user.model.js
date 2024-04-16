@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
         },
         profilImage: {
             type: String,
-            default: "./uploads/profils/ramdon-image.png"
+            default: "/images/profils/ramdon-image.png"
         },
         email: {
             type: String,

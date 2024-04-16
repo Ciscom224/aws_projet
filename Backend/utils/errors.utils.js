@@ -22,9 +22,20 @@ module.exports.signInErrors = (err) => {
 
     const errors = { email: "", password: "" }
     if (err.message.includes("email"))
-         errors.email = "Email inconrrect";
+        errors.email = "Email inconrrect";
 
     if (err.message.includes("password"))
         errors.password = "Le mot de passe ne correspond pas"
+    return errors;
+}
+module.exports.uploadErrors = (err) => {
+    let errors = { format: "", maxSize: "" };
+
+    if (err.message.includes("invalide file"))
+        errors.format = "Format incompatible";
+
+    if (err.message.includes("max size"))
+        errors.masxize = "Le fichier depasse 500 KO";
+
     return errors;
 }

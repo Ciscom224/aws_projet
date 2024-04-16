@@ -1,26 +1,25 @@
 // Friends.jsx
 import React, { useEffect, useState } from "react";
 import { Drawer, Typography, IconButton } from "@material-tailwind/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus,faTrash  } from '@fortawesome/free-solid-svg-icons'
-import {useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import userReducer from "./../reducers/user.reducer";
 import usersReducer from "../reducers/users.reducer";
 import { isEmpty } from "../Utils";
 import { addFriend, delFriend } from "../actions/user.actions";
 
 function Friends({ isOpen, onClose }) {
-
-  const [search,setSearch]=useState("");
+  const [search, setSearch] = useState("");
   const userData = useSelector((state) => state.userReducer);
   const usersData = useSelector((state) => state.usersReducer);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
-  const addFriends=(user)=>{
-    dispatch(addFriend(userData._id,user._id))
-    toast.success('Vous avez ajoute '+ user.surName+" en tant qu'ami", {
+  const addFriends = (user) => {
+    dispatch(addFriend(userData._id, user._id));
+    toast.success("Vous avez ajoute " + user.surName + " en tant qu'ami", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -29,28 +28,29 @@ function Friends({ isOpen, onClose }) {
       draggable: true,
       progress: undefined,
       theme: "dark",
-     
-      });
-  }
+    });
+  };
 
-  const delFriends=(user)=>{
-    dispatch(delFriend(userData._id,user._id))
-    toast.info('Vous avez Supprime '+ user.surName+" dans votre liste d'amis", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-     
-      });
-  }
+  const delFriends = (user) => {
+    dispatch(delFriend(userData._id, user._id));
+    toast.info(
+      "Vous avez Supprime " + user.surName + " dans votre liste d'amis",
+      {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      }
+    );
+  };
 
   useEffect(() => {
-    console.log(usersData)
-  }, [userData,usersData]);
+    console.log(usersData);
+  }, [userData, usersData]);
 
   return (
     <Drawer
@@ -89,7 +89,12 @@ function Friends({ isOpen, onClose }) {
             </label>
             <div className="relative w-full">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                 <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
                   <path
                     fillRule="evenodd"
                     d="M10 12a4 4 0 100-8 4 4 0 000 8z"
@@ -134,62 +139,60 @@ function Friends({ isOpen, onClose }) {
             </div>
           </form>
         </li>
-    {
-      !isEmpty(userData.friends) ?
-      usersData.map((user) => {
-        for (let i = 0; i < Object.keys(userData.friends).length; i++) {
-          if ((user._id === userData.friends[i]) & (user._id !== userData._id)) {
-            return (
-              <li
-                key={user._id}
-                className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 text-white rounded-sm hover:bg-orange-300 cursor-pointer"
-              >
-                <div className="flex min-w-0 gap-x-4">
-                  <img
-                    className="h-10 w-10 flex-none rounded-full bg-gray-50"
-                    src="/images/hibou.png"
-                    alt=""
-                  />
-                  <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-white">
-                      {user.surName}
-                    </p>
-                  </div>
-                </div>
-                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                  <div className="flex gap-4  p-1  text-red"
-                  onClick={()=> delFriends(user)}
+        {!isEmpty(userData.friends) ? (
+          usersData.map((user) => {
+            for (let i = 0; i < Object.keys(userData.friends).length; i++) {
+              if (
+                (user._id === userData.friends[i]) &
+                (user._id !== userData._id)
+              ) {
+                return (
+                  <li
+                    key={user._id}
+                    className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 text-white rounded-sm hover:bg-orange-300 cursor-pointer"
                   >
-                      <FontAwesomeIcon icon={faTrash} />
-                  
-                  </div>
-
-                  <div className="mt-1 flex items-center gap-x-1.5">
-                    {
-                      user.online ? 
-                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <div className="flex min-w-0 gap-x-4">
+                      <img
+                        className="h-10 w-10 flex-none rounded-full bg-gray-50"
+                        src={user.profilImage}
+                        alt=""
+                      />
+                      <div className="min-w-0 flex-auto">
+                        <p className="text-sm font-semibold leading-6 text-white">
+                          {user.surName}
+                        </p>
+                      </div>
                     </div>
-                      :
-                      <div className="flex-none rounded-full bg-red-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    </div>
+                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                      <div
+                        className="flex gap-4  p-1  text-red"
+                        onClick={() => delFriends(user)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </div>
 
-                    }
-                  
-                    <p className="text-xs leading-5 text-white">Online</p>
-                  </div>
-                </div>
-              </li>
-            );
-          }
-        }
-      })
-      
-      : <p>Liste vide </p>
-    }
- 
-      
+                      <div className="mt-1 flex items-center gap-x-1.5">
+                        {user.online ? (
+                          <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          </div>
+                        ) : (
+                          <div className="flex-none rounded-full bg-red-500/20 p-1">
+                            <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                          </div>
+                        )}
+
+                        <p className="text-xs leading-5 text-white">Online</p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              }
+            }
+          })
+        ) : (
+          <p>Liste vide </p>
+        )}
       </ul>
 
       <ul className="divide-y divide-gray-100 mt-5">
@@ -197,62 +200,60 @@ function Friends({ isOpen, onClose }) {
           Suggessions d'amis
         </h2>
         <hr />
-        {usersData
-        .filter((user) =>
-        user.surName.toLowerCase().includes(search.toLowerCase())
-      )
-        .map((user) => {
-          
-          if (!userData.friends.includes(user._id)) {
-            return (
-              <li
-                key={user._id}
-                className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 rounded-sm hover:bg-orange-300 cursor-pointer"
-                
-              >
-                <div className="flex min-w-0 gap-x-4">
-                  <img
-                    className="h-10 w-10 flex-none rounded-full bg-gray-50"
-                    src="/images/hibou.png"
-                    alt=""
-                  />
-                  <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-white">
-                      {user.surName}
-                    </p>
-                  </div>
-                </div>
-                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                  <div className="flex gap-4 bg-amber-700 p-1 rounded-full text-white"
-                  onClick={()=>addFriends(user)}
-                  >
-                    <FontAwesomeIcon icon={faUserPlus} />
-                  </div>
-  
-                  <div className="mt-1 flex items-center gap-x-1.5">
-                    {
-                      user.online ?
-                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    </div>
-                      :
-                      <div className="flex-none rounded-full bg-red-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    </div>
-                    }
-                   
-                    <p className="text-xs leading-5 text-white">Online</p>
-                  </div>
-                </div>
-              </li>
-            );
-          }
-       
-       
-        })}
+        {!isEmpty(userData.friends)
+          ? usersData
+              .filter((user) =>
+                user.surName.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((user) => {
+                if (!userData.friends.includes(user._id)) {
+                  return (
+                    <li
+                      key={user._id}
+                      className="flex justify-between gap-x-6 py-2 px-1 mt-2 bg-slate-600 rounded-sm hover:bg-orange-300 cursor-pointer"
+                    >
+                      <div className="flex min-w-0 gap-x-4">
+                        <img
+                          className="h-10 w-10 flex-none rounded-full bg-gray-50"
+                          src={user.profilImage}
+                          alt=""
+                        />
+                        <div className="min-w-0 flex-auto">
+                          <p className="text-sm font-semibold leading-6 text-white">
+                            {user.surName}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                        <div
+                          className="flex gap-4 bg-amber-700 p-1 rounded-full text-white"
+                          onClick={() => addFriends(user)}
+                        >
+                          <FontAwesomeIcon icon={faUserPlus} />
+                        </div>
+
+                        <div className="mt-1 flex items-center gap-x-1.5">
+                          {user.online ? (
+                            <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                            </div>
+                          ) : (
+                            <div className="flex-none rounded-full bg-red-500/20 p-1">
+                              <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                            </div>
+                          )}
+
+                          <p className="text-xs leading-5 text-white">Online</p>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+              })
+          : null}
       </ul>
 
-      <ToastContainer className="z-60"/>
+      <ToastContainer className="z-60" />
     </Drawer>
   );
 }
