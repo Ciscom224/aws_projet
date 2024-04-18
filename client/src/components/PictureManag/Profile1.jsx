@@ -18,7 +18,7 @@ const Profile1 = (props) => {
     localStorage.setItem("img",imgSrc)
     avatarUrl.current = imgSrc;
   };
-
+  // Rajout test
   // Fonction pour le cas du menu et savoir si on a cliqué sur la Photo de profil de la navigBar ou pas
   const handlePicture = () => {
     if (props.navig) {
