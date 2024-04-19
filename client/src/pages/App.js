@@ -5,6 +5,7 @@ import { UidContext } from '../AppContext';
 import { useDispatch } from 'react-redux';
 
 import { getUser } from '../actions/user.actions';
+import { getQuiz } from '../actions/quiz.actions';
 import Home from './Home.page';
 import Games from './Games';
 import QuizChoice from './QuizChoice';
@@ -31,7 +32,11 @@ function App() {
     }
     checkAuth()
 
-    if (uid) dispatch(getUser(uid));
+    if (uid) {
+      dispatch(getUser(uid));
+      dispatch(getQuiz())
+      
+    }
 
   }, [uid])
 

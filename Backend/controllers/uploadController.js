@@ -5,7 +5,7 @@ const { uploadErrors } = require("../utils/errors.utils");
 const pipeline=promisify(require("stream").pipeline);
 
 module.exports.uploadProfil = async (req, res) => {
-    console.log(__dirname)
+    console.log(req.file)
     try {
         if (
             req.file.mimetype != "image/jpg" &&
@@ -20,12 +20,12 @@ module.exports.uploadProfil = async (req, res) => {
 
         const fileName = req.body.name + ".jpg";
 
-        // await pipeline(
-        //     req.file.stream,
-        //     fs.createWriteStream(
-        //         `${__dirname}/../client/public/images/Profils/${fileName}`
-        //     )
-        // );
+        await pipeline(
+            req.file.stream,
+            fs.createWriteStream(
+                `${__dirname}/../client/public/images/Profils/${fileName}`
+            )
+        );
 
         return res.status(200).json({ success: true, fileName: fileName });
     } catch (err) {
