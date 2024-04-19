@@ -9,7 +9,7 @@ const Profile1 = (props) => {
 
   // ce UseRef va nous permettre de récupérer l'image locale de l'utilisateur s'il en a une et sinon on en met une personnalisé
   // Bien sur quand elle sera connecté au backend on demandera juste la photo car le backend gère déja les photo par défault
-  const avatarUrl = useRef(localStorage.getItem("img") !== null ? localStorage.getItem("img") : "https://avatarfiles.alphacoders.com/161/161002.jpg")
+  const avatarUrl = useRef("https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80")
   const [modalOpen, setModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   

@@ -21,27 +21,27 @@ const GamesChoice = () => {
     navigate("/games/quiz")
   }
     return(
-        <>
+       
         
-        <div className="inset-0 top-24 py-8 px-8">
-        <div className="flex items-center justify-center">
+        <div className="py-8 px-8 flex flex-col  items-center justify-center">
+
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
             Choisis ton Quiz
           </p>
-          <div className="m-4 items-center justify-center py-16 px-10 flex flex-wrap ">
-            <img src="/images/Themes/histoire.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Histoire")}/>
-            <img src="/images/Themes/musique.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Musique")}/>
-            <img src="/images/Themes/culture_generale.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Culture Générale")}/>
-            <img src="/images/Themes/geographie.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300  mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Géographie")}/>
-            <img src="/images/Themes/animaux.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Animaux")}/>
-            <img src="/images/Themes/celebrites.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Célebrités")}/>
-            <img src="/images/Themes/cinema.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0"onClick={() => onClick("Cinema")}/>
-            <img src="/images/Themes/informatique.png" alt="bug" className="w-1/2 md:w-[11%] h-auto rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 md:mb-0" onClick={() => onClick("Informatique")}/>
-        </div>
-      </div>
+          <div className="m-4  items-center justify-center py-16 px-10 flex flex-wrap ml-20 ">
+            <img src="/images/Themes/histoire.png" alt="bug" className="w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Histoire")}/>
+            <img src="/images/Themes/musique.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Musique")}/>
+            <img src="/images/Themes/culture_generale.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Culture Générale")}/>
+            <img src="/images/Themes/geographie.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300  mr-12 cursor-pointer mb-10 " onClick={() => onClick("Géographie")}/>
+            <img src="/images/Themes/animaux.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Animaux")}/>
+            <img src="/images/Themes/celebrites.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Célebrités")}/>
+            <img src="/images/Themes/cinema.png" alt="bug" className="w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 "onClick={() => onClick("Cinema")}/>
+            <img src="/images/Themes/informatique.png" alt="bug" className="w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 " onClick={() => onClick("Informatique")}/>
         </div>
 
-        </>
+        </div>
+
+       
     );
 }
 

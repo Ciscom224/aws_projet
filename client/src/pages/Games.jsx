@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react';
 // import Axios from 'axios';
-import NavigBar from '../components/NavBar.component';
 import GamesChoice from '../components/Games/GamesChoice';
 
 
@@ -11,7 +10,7 @@ function Games() {
 
   return (
     
-      <div className="w-full h-screen bg-cover bg-center overflow-y-auto" style={{backgroundImage: "url('/images/Background/games_bg.png')"}}>
+      <div className="w-full h-screen bg-cover bg-center overflow-y-auto">
         <GamesChoice />
       </div>
       

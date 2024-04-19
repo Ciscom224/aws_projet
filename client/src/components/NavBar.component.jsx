@@ -21,7 +21,6 @@ const NavBar = ({setLoginOpen}) => {
     setLoginOpen(false);
   };
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (

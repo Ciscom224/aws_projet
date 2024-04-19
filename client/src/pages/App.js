@@ -12,6 +12,7 @@ import NavBar from '../components/NavBar.component';
 import Error from './Error.page';
 import Admin from './admin/home.admin.page';
 import Classement from './Classement.jsx';
+import Quiz from './Quiz.jsx';
 
 function App() {
   const dispatch = useDispatch()
@@ -41,14 +42,15 @@ function App() {
   return (
     <UidContext.Provider value={uid}>
       <Router>
-        <div className="w-full h-screen bg-cover  bg-center overflow-hidden " style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
+        <div className="w-full h-screen bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
           <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>
-          <main className='h-screen '>
+          <main >
             <Routes>
             <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
               <Route path="/admin" element={<Admin/>} />
               <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
               <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
+              <Route path="/games/quiz" element={ uid ? <Quiz />:<Navigate to="/" />}/>
               <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
               <Route path="*" element={<Error/>} />
             </Routes>

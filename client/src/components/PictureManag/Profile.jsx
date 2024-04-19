@@ -5,9 +5,7 @@ import AccessibleBadges from "../NotificationIcon";
 import { Menu, Transition } from "@headlessui/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import userReducer from "../../reducers/user.reducer";
 // import Friends from "./frends.component";
-import PencilIcon from "./PencilIcon";
 import Friends from "../Friends.component";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
