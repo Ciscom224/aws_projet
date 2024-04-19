@@ -8,7 +8,7 @@ import { UidContext } from "../AppContext";
 import AuthUser from "../pages/Auth.page";
 
 // Composant permettant d'afficher la barre de navigation dans notre page
-const NavBar = () => {
+const NavBar = ({setLoginOpen}) => {
   const [isLogin, setIsLogin] = useState(false);
   const [openAuth, setOpenAuth] = useState(false);
   const uid = useContext(UidContext);
@@ -18,6 +18,7 @@ const NavBar = () => {
   }, [uid]);
   const closeAuth = () => {
     setOpenAuth(false);
+    setLoginOpen(false);
   };
 
   const location = useLocation();
@@ -25,8 +26,8 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="py-2 px-7 flex justify-between mb-2 flex items-center bg-[#181717] bg-opacity-65">
-        <div className=" text-3xl font-bold flex items-center">
+      <div className="py-3 px-7 flex justify-between  items-center bg-[#181717] bg-opacity-65">
+        <div className=" text-3xl font-bold flex items-center px-5 ">
           <button
             onClick={() => {
               navigate("/");
@@ -37,15 +38,23 @@ const NavBar = () => {
               alt="Logo"
               className="hidden sm:inline-block"
             />
+            <img
+              src="/images/LogoNav.png"
+              alt="Logo"
+              className="sm:hidden"
+            />
           </button>
         </div>
         <div className="">
           {!isLogin ? (
             <button>
               <a
-                onClick={() => setOpenAuth(true)}
+                onClick={() =>{
+                  setOpenAuth(true)
+                  setLoginOpen(true)
+                }}
                 href="#"
-                className="text-gray-300 font-semibold border-2 border-yellow-500 hover:bg-yellow-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium "
+                className="text-gray-300  border-2 border-yellow-500 hover:bg-yellow-900 hover:text-white rounded-md px-3 py-2 text-sm font-medium "
               >
                 Connexion
               </a>
@@ -72,6 +81,7 @@ const NavBar = () => {
       </div>
       {openAuth ? (
         <AuthUser
+          setLoginOpen = {setLoginOpen}
           openAuth={openAuth}
           onClose={closeAuth}
           setIsLogin={setIsLogin}

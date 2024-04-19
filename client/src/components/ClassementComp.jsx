@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Profile from "./PictureManag/Profile";
+import Profile1 from "./PictureManag/Profile1";
+
 
 const ClassementComponent = () =>  {
   // Pour le classement, on fait des test avec ces States la afin de pouvoir tester comment les données pourraient s'afficher
@@ -39,7 +40,7 @@ const ClassementComponent = () =>  {
             {selectedLB.map((userData, index) => (
               <div key={index} className="mb-2 p-4 rounded-md bg-[#4b4848] flex bg-opacity-55 items-center justify-center">
                    <p className="text-sm text-gray-400 min-w-[60px] ">{index +1 }</p>
-                   <p className="text-sm text-gray-400 min-w-[80px]"><Profile navig={false} classment={true} /></p>
+                   <p className="text-sm text-gray-400 min-w-[80px]"><Profile1 navig={false} classment={true} /></p>
                    <p className="text-sm  text-gray-400 min-w-[120px] ">{userData[1]}</p>
                    <p className="text-sm  text-gray-400 w-[100px] ml-auto">{userData[2]}</p>
               </div>
