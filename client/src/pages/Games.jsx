@@ -9,12 +9,9 @@ function Games() {
   
 
   return (
-    
       <div className="w-full h-screen bg-cover bg-center overflow-y-auto">
         <GamesChoice />
       </div>
-      
-
   )
 }
 
