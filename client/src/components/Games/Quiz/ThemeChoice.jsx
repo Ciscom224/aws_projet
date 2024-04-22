@@ -130,7 +130,7 @@ const GamesChoice = () => {
     console.log(questionsChoices)
     console.log(questionsAnswers)
 
-    if (questionsTexts.length === 0) 
+    if (questionsTexts.length < 5) 
       {
         alert("Les questions des thèmes " + themeSelect + " ne sont pas encore implementé, ca Arrive ! " )
       }
