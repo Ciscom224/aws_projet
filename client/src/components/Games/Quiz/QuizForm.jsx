@@ -44,7 +44,6 @@ const QuizForm = () => {
 
   // Pour mettre a jour le temps 
     useEffect(() => {
-      
       // Si on recharge la page, on sera renvoyé au menu car theme vaudra 0 dans ce cas
       if (theme === "") {
         navigate("/games");
@@ -62,7 +61,7 @@ const QuizForm = () => {
             setTimeout(() => {
              setColor("border-black");
              setSelectedValues([])
-            if (progressValue!=5)
+            if (progressValue!=20)
             {
             setProgressValue(progressValue+1)
             setCountdown(20);
@@ -120,7 +119,7 @@ const QuizForm = () => {
         if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
           setPoints(countdown)
         }
-        if (progressValue !== 5) {
+        if (progressValue !== 20) {
           setProgressValue(progressValue+1)
         }
         else {
@@ -142,9 +141,9 @@ const QuizForm = () => {
             <div className={`w-full h-screen ${distancePy < 73 ? "space-y-2" : "space-y-5"} bg-white sm:rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent  sm:h-auto `}>
             
                 <h2 className="font-bold px-3  text-md text-x sm:text-xl text-[#070707] text-shadow">Thème : {theme[progressValue-1]}</h2>
-                <p className="font-bold px-3  text-md sm:text-xl text-[#070707] text-shadow hidden sm:block">Question {progressValue} / 5</p>
+                <p className="font-bold px-3  text-md sm:text-xl text-[#070707] text-shadow hidden sm:block">Question {progressValue} / 20</p>
                 <div className="px-5 w-[80%] "><BorderLinearProgress variant="determinate" value={100 - Math.floor((20 - countdown) / 20 * 100)} />
-                <p className=" sm:hidden">{progressValue} / 5 </p>
+                <p className=" sm:hidden">{progressValue} / 20</p>
                 </div>
                 
                 <div className={`px-8 py-4 space-y-4 ${distancePy < 73 ? "space-y-0" : "space-y-5"}  relative `}>

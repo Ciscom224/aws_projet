@@ -78,9 +78,10 @@ const GamesChoice = () => {
     let questionsTexts = []
     let questionsChoices = []
     let questionsAnswers = []
+    let selectedQuestionIndices = new Set();
     const totalTheme = themeSelect.length
-    const questionsperTheme = Math.floor(5 / totalTheme)
-    let remainingQuestions = 5 % totalTheme
+    const questionsperTheme = Math.floor(20 / totalTheme)
+    let remainingQuestions = 20 % totalTheme
 
 
     themeSelect.forEach((theme) => {
@@ -93,29 +94,24 @@ const GamesChoice = () => {
       const questionsForThisTheme = questionsperTheme + (remainingQuestions > 0 ? 1 : 0)
       if (remainingQuestions > 0) {remainingQuestions = remainingQuestions-1}
 
-      const questions = themeQuestions.slice(0, questionsForThisTheme)
-      const choices = themeQuestions.slice(0, questionsForThisTheme)
-      const answers = themeQuestions.slice(0, questionsForThisTheme)
+      while (selectedQuestionIndices.size < questionsForThisTheme) {
+        const randomIndex = Math.floor(Math.random() * themeQuestions.length);
+        if (!selectedQuestionIndices.has(randomIndex)) {
+            selectedQuestionIndices.add(randomIndex);
 
-      questions.forEach((question) => {
-        questionsTheme.push(theme)
-        questionsTexts.push(question.text)
-      })
-
-      choices.forEach((choice) => {
-        questionsChoices.push(choice.choices)
-      })
-
-      answers.forEach((answer) => {
-        questionsAnswers.push(answer.answers)
-      })
-
-
+            const selectedQuestion = themeQuestions[randomIndex];
+            questionsTheme.push(theme);
+            questionsTexts.push(selectedQuestion.text);
+            questionsChoices.push(selectedQuestion.choices);
+            questionsAnswers.push(selectedQuestion.answers);
+        }
+    }
+    selectedQuestionIndices = new Set()
     })
-    console.log(questionsTheme)
-    console.log(questionsTexts)
-    console.log(questionsChoices)
-    console.log(questionsAnswers)
+    // console.log(questionsTheme)
+    // console.log(questionsTexts)
+    // console.log(questionsChoices)
+    // console.log(questionsAnswers)
 
     const shuffleResult = shuffleAll(questionsTheme, questionsTexts, questionsChoices, questionsAnswers);
 
@@ -124,11 +120,11 @@ const GamesChoice = () => {
     questionsChoices = shuffleResult.shuffledChoices;
     questionsAnswers = shuffleResult.shuffledAnswers;
 
-    console.log("--------------------------------------------------")
-    console.log(questionsTheme)
-    console.log(questionsTexts)
-    console.log(questionsChoices)
-    console.log(questionsAnswers)
+    // console.log("--------------------------------------------------")
+    // console.log(questionsTheme)
+    // console.log(questionsTexts)
+    // console.log(questionsChoices)
+    // console.log(questionsAnswers)
 
     if (questionsTexts.length < 5) 
       {
