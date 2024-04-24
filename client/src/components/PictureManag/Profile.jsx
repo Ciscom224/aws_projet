@@ -87,11 +87,12 @@ const ProfileUser = ({ setIsLogin }) => {
                     active ? "bg-gray-900" : "",
                     "block px-4 py-2 text-sm font-semibold text-white"
                   )}
+                  onClick={() => navigate("/parametres")}
                 >
-                  Parametre
+                  Paramètres
                 </a>
               )}
-            </Menu.Item>
+            </Menu.Item> 
             <Menu.Item>
               {({ active }) => (
                 <a

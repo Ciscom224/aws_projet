@@ -14,6 +14,7 @@ import Error from './Error.page';
 import Admin from './admin/home.admin.page';
 import Classement from './Classement.jsx';
 import Quiz from './Quiz.jsx';
+import Parametres from './Parametres.pages';
 
 function App() {
   const dispatch = useDispatch()
@@ -52,6 +53,7 @@ function App() {
             <Routes>
             <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
               <Route path="/admin" element={<Admin/>} />
+              <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
               <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
               <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
               <Route path="/games/quiz" element={ uid ? <Quiz />:<Navigate to="/" />}/>
