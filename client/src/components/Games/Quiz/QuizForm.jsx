@@ -141,6 +141,7 @@ const QuizForm = () => {
         
 
     }
+    // MULTI
       return  (
         <div className="inset-0 flex">
         
@@ -203,6 +204,7 @@ const QuizForm = () => {
          </div>
         </> }
   </div>
+
   {multi && <div className="h-screen bg-[#292727] w-[300px] overflow-hidden">
       <div className="h-[85vh] overflow-hidden">
       {messages.map((userData, index) => (
