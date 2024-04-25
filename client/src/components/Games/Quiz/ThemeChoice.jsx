@@ -73,7 +73,7 @@ const GamesChoice = () => {
   }
 
   const onClick = () => {
-    if (isMulti) {return alert("le Multijoueur n'est pas encore disponible !!!")}
+    
     let questionsTheme = []
     let questionsTexts = []
     let questionsChoices = []
@@ -138,7 +138,8 @@ const GamesChoice = () => {
         questions:questionsTexts,
         choice:questionsChoices,
         answers:questionsAnswers,
-        theme:questionsTheme
+        theme:questionsTheme,
+        multi:isMulti
       }
     })
   }

@@ -14,11 +14,14 @@ const QuizForm = () => {
   
   //const distancePy = HeighPage() Ca nous aidera plus tard pour la responsive mais en hauteur et pas largeur
   const location = useLocation()
-  const { questions, choice, answers, theme } = location.state;
+  const { questions, choice, answers, theme , multi } = location.state;
   const distancePy = HeighPage()
+  const [messages,setMessages] = useState([["Pseudo1","Bonjour je m'appelle Farouk, comment allez-vous, moi je vais super bien"],["Pseudo2","Message du joueur 2"],["Pseudo1","Message du joueur 1"],["Pseudo1","Bonjour je m'appelle Farouk, comment allez-vous, moi je vais super bien"]])
 
   const {
+      register,
       handleSubmit,
+      reset
   } = useForm()
   const navigate = useNavigate()
   
@@ -33,7 +36,7 @@ const QuizForm = () => {
 
   const [progressValue,setProgressValue] = useState(1)
   const [selectedValues, setSelectedValues] = useState([]);
-  const [countdown, setCountdown] = useState(20);
+  const [countdown, setCountdown] = useState(200);
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
   const [isDisable,setIsDisable] = useState(false)
@@ -64,7 +67,7 @@ const QuizForm = () => {
             if (progressValue!=20)
             {
             setProgressValue(progressValue+1)
-            setCountdown(20);
+            setCountdown(200);
             }
             else {
               setInGame(false)
@@ -110,12 +113,17 @@ const QuizForm = () => {
             setSelectedValues([...selectedValues, value]);
           }
     }
+    const onSubmit2 = (data) => {
+      const updatedMessages = [...messages, ["Farouk", data.message]];
+      setMessages(updatedMessages)
+      reset()
+    }
     // Fonction du submit, ou on met en place le submit pour chaque question et on calcule les points + le countdown 
     const onSubmit =  () => {
       setColor("border-[#008000]")
       setIsDisable(true)
       setTimeout(() => {
-        setCountdown(20);
+        setCountdown(200);
         if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
           setPoints(countdown)
         }
@@ -133,12 +141,12 @@ const QuizForm = () => {
         
 
     }
-      return theme !== "" && (
-        <div className="inset-0 flex sm:py-5">
+      return  (
+        <div className="inset-0 flex">
         
-        <div className="  sm:mt-5 mx-auto  sm:max-w-md  lg:py-0  w-full  ">
+        <div className="  sm:mt-5 mx-auto  sm:max-w-md  lg:py-0  w-full ">
         {inGame ? <> 
-            <div className={`w-full h-screen ${distancePy < 73 ? "space-y-2" : "space-y-5"} bg-white sm:rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent  sm:h-auto `}>
+            <div className={`w-full sm:mt-10 h-screen ${distancePy < 73 ? "space-y-2" : "space-y-5"} bg-white sm:rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent  sm:h-auto `}>
             
                 <h2 className="font-bold px-3  text-md text-x sm:text-xl text-[#070707] text-shadow">Thème : {theme[progressValue-1]}</h2>
                 <p className="font-bold px-3  text-md sm:text-xl text-[#070707] text-shadow hidden sm:block">Question {progressValue} / 20</p>
@@ -195,6 +203,35 @@ const QuizForm = () => {
          </div>
         </> }
   </div>
+  {multi && <div className="h-screen bg-[#292727] w-[300px] overflow-hidden">
+      <div className="h-[85vh] overflow-hidden">
+      {messages.map((userData, index) => (
+              <div key={index} className=" rounded-md mb-3 bg-transparent border-none flex">
+                   <p className="text-md font-bold  text-gray-400 ml-2 break-normal">{userData[0]}: </p>
+                   <p className="text-md text-gray-400 ml-2 break-normal">{userData[1]}</p>
+              </div>
+            ))}
+      </div>
+    <div className="fixed bottom-[64px] px-2 w-full border-b border-[#8a8b3d]"></div>
+    <div className="fixed bottom-2">
+      <form onSubmit={handleSubmit(onSubmit2)} className="w-full">
+        <div className="flex items-center border-b  px-2 border-[#8a8b3d] py-2">
+          <input
+            className="appearance-none bg-transparent border-none w-full text-[#FFFFFF] mr-3 py-1 px-2  focus:outline-none"
+            type="text"
+            placeholder="Entrez votre message..."
+            {...register("message",{required: true})}
+          />
+          <button
+            className="flex-shrink-0 bg-[#8a8b3d] hover:bg-[#8a8b3d] border-[#8a8b3d] hover:border-[#8a8b3d] text-sm border-4 text-white py-1 px-2 rounded"
+            type="submit"
+          >
+            Envoyer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>}
   </div> )
   }
 
