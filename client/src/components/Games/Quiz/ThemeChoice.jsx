@@ -2,6 +2,7 @@ import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
 import quizReducer from "../../../reducers/quiz.reducer"
 import {useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 
 
 
@@ -9,8 +10,13 @@ import {useSelector } from "react-redux";
 
 // Ceci represente le composant pour notre choix de jeu qui sera dans la page de menu represente par les images/
 const GamesChoice = () => {
-  
-  const listeQuiz = ["Informatique","Animaux","Celebrites","Cinema","Culture","Geographie","Histoire","Musique","Sciences"]
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+} = useForm()
+
+  const listeQuiz = ["informatique","animaux","celebrites","cinema","culture","geographie","histoire","musique","sciences"]
   const [themeSelect,setThemeSelect] = useState([])
   const [isMulti,setIsMulti] = useState(false)
   const quizData = useSelector((state) => state.quizReducer);
@@ -126,22 +132,35 @@ const GamesChoice = () => {
     // console.log(questionsChoices)
     // console.log(questionsAnswers)
 
-    if (questionsTexts.length < 5) 
-      {
+    if (questionsTexts.length < 5){
         alert("Les questions des thèmes " + themeSelect + " ne sont pas encore implementé, ca Arrive ! " )
       }
 
-     else {
+    else {
       questionsChoices = shuffleChoices(questionsChoices)
-      navigate("/games/quiz",{
-      state: {
-        questions:questionsTexts,
-        choice:questionsChoices,
-        answers:questionsAnswers,
-        theme:questionsTheme,
-        multi:isMulti
+      if (isMulti) {
+        navigate("/room",{
+          state: {
+            questions:questionsTexts,
+            choice:questionsChoices,
+            answers:questionsAnswers,
+            theme:questionsTheme,
+            themeSelect:themeSelect
+          }
+        })
       }
-    })
+      else {
+        navigate("/games/quiz",{
+          state: {
+            questions:questionsTexts,
+            choice:questionsChoices,
+            answers:questionsAnswers,
+            theme:questionsTheme,
+            multi:false,
+            usersData:null
+          }
+        })
+      }  
   }
   }
     return(
@@ -152,19 +171,28 @@ const GamesChoice = () => {
             Choisis ton Quiz
           </p>
           <button className={`mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#3db967]  bg-opacity-60`} onClick={() => setIsMulti(!isMulti)}>{isMulti ? "Multijoueur" : "Solo"}</button>
-          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onClick}>Lancer la partie</button>
+          <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onClick}>Créer la partie</button>
+          {isMulti && 
+            <form className="space-x-6">
+                <input type="text" placeholder="ID de la room"
+                {...register("RoomID",{required: true,maxLength:30})}
+                />
+                  <button type="submit" className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#ce81c1]">Rejoindre</button>
+            </form>
+          }
+          
         </div>
         
         <div className="flex flex-col items-center justify-center">
           <div className="m-4  items-center justify-center py-16 px-10 flex flex-wrap ml-20 ">
-            <img src="/images/Themes/histoire.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10  ${themeSelect.includes("Histoire") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Histoire")}/>
-            <img src="/images/Themes/musique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Musique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Musique")}/>
-            <img src="/images/Themes/culture_generale.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Culture") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Culture")}/>
-            <img src="/images/Themes/geographie.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300  mr-12 cursor-pointer mb-10 ${themeSelect.includes("Geographie") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Geographie")}/>
-            <img src="/images/Themes/animaux.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Animaux") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Animaux")}/>
-            <img src="/images/Themes/celebrites.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Celebrites") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Celebrites")}/>
-            <img src="/images/Themes/cinema.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Cinema") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Cinema")}/>
-            <img src="/images/Themes/informatique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("Informatique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("Informatique")}/>
+            <img src="/images/Themes/histoire.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10  ${themeSelect.includes("histoire") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("histoire")}/>
+            <img src="/images/Themes/musique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("musique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("musique")}/>
+            <img src="/images/Themes/culture.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("culture") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("culture")}/>
+            <img src="/images/Themes/geographie.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300  mr-12 cursor-pointer mb-10 ${themeSelect.includes("geographie") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("geographie")}/>
+            <img src="/images/Themes/animaux.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("animaux") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("animaux")}/>
+            <img src="/images/Themes/celebrites.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("celebrites") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("celebrites")}/>
+            <img src="/images/Themes/cinema.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("cinema") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("cinema")}/>
+            <img src="/images/Themes/informatique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("informatique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("informatique")}/>
         </div>
 
         </div>

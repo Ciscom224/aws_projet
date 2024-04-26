@@ -14,15 +14,16 @@ const QuizForm = () => {
   
   //const distancePy = HeighPage() Ca nous aidera plus tard pour la responsive mais en hauteur et pas largeur
   const location = useLocation()
-  const { questions, choice, answers, theme , multi } = location.state;
+  const { questions, choice, answers, theme , multi , usersData } = location.state;
   const distancePy = HeighPage()
-  const [messages,setMessages] = useState([["Pseudo1","Bonjour je m'appelle Farouk, comment allez-vous, moi je vais super bien"],["Pseudo2","Message du joueur 2"],["Pseudo1","Message du joueur 1"],["Pseudo1","Bonjour je m'appelle Farouk, comment allez-vous, moi je vais super bien"]])
+  const [messages,setMessages] = useState([])
 
   const {
       register,
       handleSubmit,
-      reset
   } = useForm()
+
+  const { handleSubmit: handleSubmit2, register: register2 ,reset} = useForm();
   const navigate = useNavigate()
   
 
@@ -36,7 +37,7 @@ const QuizForm = () => {
 
   const [progressValue,setProgressValue] = useState(1)
   const [selectedValues, setSelectedValues] = useState([]);
-  const [countdown, setCountdown] = useState(200);
+  const [countdown, setCountdown] = useState(10);
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
   const [isDisable,setIsDisable] = useState(false)
@@ -67,7 +68,7 @@ const QuizForm = () => {
             if (progressValue!=20)
             {
             setProgressValue(progressValue+1)
-            setCountdown(200);
+            setCountdown(10);
             }
             else {
               setInGame(false)
@@ -123,7 +124,7 @@ const QuizForm = () => {
       setColor("border-[#008000]")
       setIsDisable(true)
       setTimeout(() => {
-        setCountdown(200);
+        setCountdown(10);
         if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
           setPoints(countdown)
         }
@@ -143,6 +144,7 @@ const QuizForm = () => {
     }
     // MULTI
       return  (
+        <>
         <div className="inset-0 flex">
         
         <div className="  sm:mt-5 mx-auto  sm:max-w-md  lg:py-0  w-full ">
@@ -151,7 +153,7 @@ const QuizForm = () => {
             
                 <h2 className="font-bold px-3  text-md text-x sm:text-xl text-[#070707] text-shadow">Thème : {theme[progressValue-1]}</h2>
                 <p className="font-bold px-3  text-md sm:text-xl text-[#070707] text-shadow hidden sm:block">Question {progressValue} / 20</p>
-                <div className="px-5 w-[80%] "><BorderLinearProgress variant="determinate" value={100 - Math.floor((20 - countdown) / 20 * 100)} />
+                <div className="px-5 w-[80%] "><BorderLinearProgress variant="determinate" value={100 - Math.floor((10 - countdown) / 10 * 100)} />
                 <p className=" sm:hidden">{progressValue} / 20</p>
                 </div>
                 
@@ -205,7 +207,24 @@ const QuizForm = () => {
         </> }
   </div>
 
-  {multi && <div className="h-screen bg-[#292727] w-[300px] overflow-hidden">
+  {multi &&
+  <>
+  <div className="sm:w-[280px] h-screen bg-[#2c2c2c] mr-5">
+  <div className=" h-[92vh] overflow-y-auto">
+  
+    {usersData.map((user, index) => (
+      <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center ">
+        <div className="flex flex-row items-center">
+          <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
+          <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
+        </div>
+        <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Questions :  </p>
+        <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Points :  </p>
+      </div>
+      ))}
+  </div>
+</div>
+  <div className="h-screen bg-[#292727] w-[300px] overflow-hidden">
       <div className="h-[85vh] overflow-hidden">
       {messages.map((userData, index) => (
               <div key={index} className=" rounded-md mb-3 bg-transparent border-none flex">
@@ -216,13 +235,13 @@ const QuizForm = () => {
       </div>
     <div className="fixed bottom-[64px] px-2 w-full border-b border-[#8a8b3d]"></div>
     <div className="fixed bottom-2">
-      <form onSubmit={handleSubmit(onSubmit2)} className="w-full">
+      <form onSubmit={handleSubmit2(onSubmit2)} className="w-full">
         <div className="flex items-center border-b  px-2 border-[#8a8b3d] py-2">
           <input
             className="appearance-none bg-transparent border-none w-full text-[#FFFFFF] mr-3 py-1 px-2  focus:outline-none"
             type="text"
             placeholder="Entrez votre message..."
-            {...register("message",{required: true})}
+            {...register2("message",{required: true})}
           />
           <button
             className="flex-shrink-0 bg-[#8a8b3d] hover:bg-[#8a8b3d] border-[#8a8b3d] hover:border-[#8a8b3d] text-sm border-4 text-white py-1 px-2 rounded"
@@ -233,8 +252,13 @@ const QuizForm = () => {
         </div>
       </form>
     </div>
-  </div>}
-  </div> )
+  </div>
+  </>
+  }
+  </div>
+
+</>)
+  
   }
 
   export default QuizForm

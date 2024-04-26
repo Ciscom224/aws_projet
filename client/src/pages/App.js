@@ -15,6 +15,8 @@ import Admin from './admin/home.admin.page';
 import Classement from './Classement.jsx';
 import Quiz from './Quiz.jsx';
 import Parametres from './Parametres.pages';
+import Room from './RoomLobby.jsx';
+// import io from "socket.io-client"
 
 function App() {
   const dispatch = useDispatch()
@@ -51,7 +53,8 @@ function App() {
           <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>
           <main >
             <Routes>
-            <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
+              <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
+              <Route path="/room" element={<Room/>} />
               <Route path="/admin" element={<Admin/>} />
               <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
               <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
