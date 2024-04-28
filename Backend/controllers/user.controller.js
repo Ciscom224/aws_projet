@@ -159,3 +159,32 @@ module.exports.updateMessage = async (req, res) => {
 module.exports.removeMessage = (req, res) => {
 
 }
+module.exports.updateScore = async (req, res) => {
+    if (!objID.isValid(req.params.id))
+        return res.status(400).send("ID inconnu : " + req.params.id);
+
+    try {
+        const { categorie, level } = req.body;
+
+        let user = await UserModel.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé");
+        }
+
+        // cherche de la categorie
+        const currentScore = user.score.findIndex(score => score.categorieName === categorie);
+
+        if (currentScore !== -1) {
+            
+            user.score[currentScore].level = level;
+        } else {
+            user.score.push({ categorieName: categorie, level: level });
+        }
+        user = await user.save();
+
+        return res.send("Score mis à jour avec succès pour la catégorie : " + categorie);
+    } catch (err) {
+        return res.status(500).send(err.message);
+    }
+};

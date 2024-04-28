@@ -13,10 +13,20 @@ import { useDispatch, useSelector } from "react-redux";
 import userReducer from "../reducers/user.reducer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { uploadImg } from "../actions/user.actions";
 
 function Settings({ isOpen, onClose }) {
   const userData = useSelector((state) => state.userReducer);
-
+  const [file,setFile]=useState();
+  const dispatch=useDispatch();
+  const changeImage = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("name",userData.surName);
+    data.append("file",file);
+    console.log(data)
+    dispatch(uploadImg(data,userData._id))
+  }
   useEffect(() => {}, []);
 
   return (
@@ -48,7 +58,7 @@ function Settings({ isOpen, onClose }) {
         </IconButton>
       </div>
       <hr />
-      <form className="flex justify-center flex-col gap-6 p-4">
+      <form className="flex justify-center flex-col gap-6 p-4" onSubmit={changeImage}>
         <img
           src={userData.profilImage}
           alt="profile"
@@ -59,7 +69,10 @@ function Settings({ isOpen, onClose }) {
             <input
               type="file"
               id="guests"
+              name="file"
+              accept=".jpg , .jpeg , .png"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border  focus:ring-amber-500 focus:border-amber-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-amber-500 dark:focus:border-amber-500"
+              onChange={(e)=>setFile(e.target.files[0])}
               placeholder="Nom du fichier ..."
               required
               readOnly

@@ -2,7 +2,7 @@ const router=require('express').Router();
 const authController=require('../controllers/auth.controller');
 const userController=require('../controllers/user.controller');
 const uploadController=require('../controllers/uploadController');
-const multer=require("multer");
+const multer = require('multer');
 const upload=multer();
 
 
@@ -19,12 +19,12 @@ router.get('/:id',userController.user);
 router.delete('/delete/:id',userController.deleteUser);
 router.put('/update/:id',userController.updateUser);
 // gestion d'image 
-router.post("/upload",upload.single("file"),uploadController.uploadProfil)
+router.post("/uploadImage/:id",upload.single("file"),uploadController.uploadProfil)
 // gestion d'amis
 router.patch('/addFriend/:id',userController.addFriend);
 router.patch('/delFriend/:id',userController.delFriend);
 // Gestion de score
-// router.put('/updateScore/:id',userController.updateScore);
+router.patch('/updateScore/:id',userController.updateScore);
 
 // Gestion de messagerie
 router.patch("/sendMessageTo/:id",userController.sendMessage);

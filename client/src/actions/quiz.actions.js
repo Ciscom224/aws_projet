@@ -9,6 +9,7 @@ export const getQuiz=()=>{
             `${process.env.REACT_APP_API_URL}api/quiz/categories`
         ).then((res) =>{
             dispatch({type:GET_QUIZ,payload:res.data})
+            console.log(res.data)
         })
         .catch((err)=>console.log(err))
     }

@@ -50,12 +50,11 @@ const userSchema = new mongoose.Schema(
         score:{
             type:[
                 {
-                    scoreId:String,
                     categorieName:String,
                     level:Number,
                 }
             ],
-            require:true
+            default: []
         },
         online: {
             type: Boolean,
