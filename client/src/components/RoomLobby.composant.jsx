@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import userReducer from "../reducers/user.reducer"
 import {useSelector } from "react-redux";
 import Profile1 from "./PictureManag/Profile1";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate,useParams} from "react-router-dom";
 import QuizForm from "./Games/Quiz/QuizForm";
 
 
@@ -11,6 +11,7 @@ const RoomLobby = () =>  {
     const [users,setUsers] = useState([[userData.surName,userData.profilImage],["Player2","Photo"],["Player2","Photo"],["Player2","Photo"],["finalPlayer","Photo"]])
     const location = useLocation()
     const navigate = useNavigate()
+    const {id} = useParams()
     const { questions, choice, answers, theme ,themeSelect } = location.state;
 
     const onClick = () => {
@@ -37,8 +38,6 @@ const RoomLobby = () =>  {
                 <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
                 <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
               </div>
-              {/* <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Questions :  </p>
-              <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Points :  </p> */}
             </div>
             ))}
         </div>
@@ -47,9 +46,9 @@ const RoomLobby = () =>  {
       
 
       <div className="flex-1 h-screen overflow-y-auto">
-        <div className="items-center justify-center flex py-8 space-y-8 sm:space-x-8 sm:space-y-0 sm:flex-row ">
+        <div className=" flex py-8 space-y-8 sm:space-x-8 sm:space-y-0 sm:flex-row ">
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
-            Room ID : {userData._id}
+            Room ID : {id}
           </p>
           <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onClick}>Lancer la partie</button>
           

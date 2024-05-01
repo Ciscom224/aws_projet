@@ -19,6 +19,8 @@ const GamesChoice = () => {
   const listeQuiz = ["informatique","animaux","celebrites","cinema","culture","geographie","histoire","musique","sciences"]
   const [themeSelect,setThemeSelect] = useState([])
   const [isMulti,setIsMulti] = useState(false)
+  const [createLob,setCreateLob] = useState(true)
+  const [lobbys,setLobbys] = useState([["Farouk",["Farouk","Arun"]],["Yanis",["Yanis","Mamadou","Charbel","LeProf"]]])
   const quizData = useSelector((state) => state.quizReducer);
 
   const navigate = useNavigate()
@@ -78,7 +80,14 @@ const GamesChoice = () => {
     return array;
   }
 
-  const onClick = () => {
+  const handleMode = () => { 
+    const newMulti = !isMulti
+    setIsMulti(newMulti)
+    if (!newMulti) {setCreateLob(true)}
+
+  }
+
+  const onclick = (roomID) => {
     
     let questionsTheme = []
     let questionsTexts = []
@@ -132,14 +141,10 @@ const GamesChoice = () => {
     // console.log(questionsChoices)
     // console.log(questionsAnswers)
 
-    if (questionsTexts.length < 5){
-        alert("Les questions des thèmes " + themeSelect + " ne sont pas encore implementé, ca Arrive ! " )
-      }
-
-    else {
+   
       questionsChoices = shuffleChoices(questionsChoices)
       if (isMulti) {
-        navigate("/room",{
+        navigate(`/room/${roomID}`,{
           state: {
             questions:questionsTexts,
             choice:questionsChoices,
@@ -161,29 +166,23 @@ const GamesChoice = () => {
           }
         })
       }  
-  }
+  
   }
     return(
 
       <>
         <div className="items-center justify-center flex flex-col py-8 space-y-8 sm:space-x-8 sm:space-y-0 sm:flex-row ">
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
-            Choisis ton Quiz
+            {(isMulti && !createLob) ? "Lobby Multi" : "Choisit ton Quiz"}
           </p>
-          <button className={`mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#3db967]  bg-opacity-60`} onClick={() => setIsMulti(!isMulti)}>{isMulti ? "Multijoueur" : "Solo"}</button>
-          <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onClick}>Créer la partie</button>
-          {isMulti && 
-            <form className="space-x-6">
-                <input type="text" placeholder="ID de la room"
-                {...register("RoomID",{required: true,maxLength:30})}
-                />
-                  <button type="submit" className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#ce81c1]">Rejoindre</button>
-            </form>
-          }
+          <button className={`mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#3db967]  bg-opacity-60`} onClick={handleMode}>{isMulti ? "Multijoueur" : "Solo"}</button>
+          <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={() => {onclick(lobbys.length + 1)}} disabled={createLob ? false : true}>{isMulti ? "Créer le lobby" : "Lancer la partie"}</button>
+          {isMulti && <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#bd74b1]" onClick={() => {setCreateLob(!createLob)}} >{createLob ? "Voir les lobbys":"Choix de Quiz"}</button>}
           
         </div>
         
-        <div className="flex flex-col items-center justify-center">
+       {createLob ?
+       <div className="flex flex-col items-center justify-center">
           <div className="m-4  items-center justify-center py-16 px-10 flex flex-wrap ml-20 ">
             <img src="/images/Themes/histoire.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10  ${themeSelect.includes("histoire") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("histoire")}/>
             <img src="/images/Themes/musique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("musique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("musique")}/>
@@ -195,7 +194,20 @@ const GamesChoice = () => {
             <img src="/images/Themes/informatique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("informatique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("informatique")}/>
         </div>
 
-        </div>
+        </div> : 
+        <div className="flex flex-col">
+        <div className="m-4  py-16 px-10 flex flex-wrap space-x-10 ">
+          {lobbys.map((lobby, index) => (
+              <div key={index} className=" rounded-md p-6 mb-3 bg-white bg-opacity-60 border-none flex flex-col space-y-6 ">
+                   <p className="text-md font-bold  text-black ml-2">Host : {lobby[0]} </p>
+                   <p className="text-md text-black ml-2 break-normal">Joueurs : {lobby[1].length} / 5 </p>
+                   <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={() => {onclick(index+1)}}>Rejoindre</button>
+
+              </div> ))}
+      </div>
+
+      </div>
+        }
         </>
 
        

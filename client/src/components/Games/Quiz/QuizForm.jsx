@@ -17,6 +17,7 @@ const QuizForm = () => {
   const { questions, choice, answers, theme , multi , usersData } = location.state;
   const distancePy = HeighPage()
   const [messages,setMessages] = useState([])
+  const [colorAnswer,setColorAnswer] = useState(null)
 
   const {
       register,
@@ -62,19 +63,25 @@ const QuizForm = () => {
           else {
             setColor("border-[#008000]")
             setIsDisable(true)
+            if (multi) {
+              if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
+                setColorAnswer("border-[#21F214]");
+              } else {setColorAnswer("border-[#F82205]");}}
             setTimeout(() => {
-             setColor("border-black");
-             setSelectedValues([])
-            if (progressValue!=20)
-            {
-            setProgressValue(progressValue+1)
-            setCountdown(10);
-            }
-            else {
-              setInGame(false)
-            }
-            setIsDisable(false)
+              setColor("border-black");
+              setSelectedValues([])
+              if (progressValue!=20)
+              {
+              setProgressValue(progressValue+1)
+              setCountdown(10);
+              }
+              else {
+                setInGame(false)
+              }
+              setIsDisable(false)
+              if (multi) {setColorAnswer(null)}
             }, 2000)
+            
             
           
           }
@@ -121,13 +128,15 @@ const QuizForm = () => {
     }
     // Fonction du submit, ou on met en place le submit pour chaque question et on calcule les points + le countdown 
     const onSubmit =  () => {
-      setColor("border-[#008000]")
       setIsDisable(true)
-      setTimeout(() => {
+      if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
+        setPoints(10 + countdown)
+      }
+      if (!multi) {
+        setColor("border-[#008000]")
+        setTimeout(() => {
         setCountdown(10);
-        if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
-          setPoints(countdown)
-        }
+        
         if (progressValue !== 20) {
           setProgressValue(progressValue+1)
         }
@@ -135,10 +144,13 @@ const QuizForm = () => {
           setInGame(false)
           // IcI le axios pour envoyé les points au BackEnd
         }
-        setSelectedValues([])
+        //setSelectedValues([])
         setColor("border-black");
         setIsDisable(false)
       }, 2000);
+    } else {
+      setColorAnswer("border-[#827C7B]")
+    }
         
 
     }
@@ -175,6 +187,7 @@ const QuizForm = () => {
                 <button
                   type="submit"
                   className="fixed bottom-[5%] w-[80%] text-black bg-[#b6af8f] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
+                  disabled={isDisable}
                 >
                   Submit
                 </button>
@@ -213,7 +226,7 @@ const QuizForm = () => {
   <div className=" h-[92vh] overflow-y-auto">
   
     {usersData.map((user, index) => (
-      <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center ">
+      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center border ${colorAnswer ? colorAnswer : "border-transparent"}`}>
         <div className="flex flex-row items-center">
           <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
           <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
