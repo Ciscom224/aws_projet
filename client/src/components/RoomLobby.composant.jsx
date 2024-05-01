@@ -1,30 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import userReducer from "../reducers/user.reducer"
 import {useSelector } from "react-redux";
 import Profile1 from "./PictureManag/Profile1";
 import { useLocation, useNavigate,useParams} from "react-router-dom";
 import QuizForm from "./Games/Quiz/QuizForm";
+import { useSocket } from "../pages/App";
 
 
 const RoomLobby = () =>  {
-    const userData = useSelector((state) => state.userReducer);
-    const [users,setUsers] = useState([[userData.surName,userData.profilImage],["Player2","Photo"],["Player2","Photo"],["Player2","Photo"],["finalPlayer","Photo"]])
-    const location = useLocation()
+    // const userData = useSelector((state) => state.userReducer);
+    const [users,setUsers] = useState([])
+    const [themeSelect,setThemeSelect] = useState([])
     const navigate = useNavigate()
     const {id} = useParams()
-    const { questions, choice, answers, theme ,themeSelect } = location.state;
+    const socket = useSocket();
+  
+    useEffect(() => {
+      socket.emit('getRoom',id,(success) => {
+        setUsers(success[0])
+        setThemeSelect(success[1])
+      })
+    }, []);
 
     const onClick = () => {
-      navigate("/games/quiz",{
-        state: {
-          questions,
-          choice,
-          answers,
-          theme,
-          multi:true,
-          usersData:users
-        }
-      })
+     
+      // navigate("/games/quiz",{
+      //   state: {
+      //     questions,
+      //     choice,
+      //     answers,
+      //     theme,
+      //     multi:true,
+      //     usersData:users
+      //   }
+      // })
     }
     return (
       <>
@@ -61,7 +70,7 @@ const RoomLobby = () =>  {
         <div className="flex flex-col items-center justify-center ">
         <div className="m-4  items-center justify-center py-16 px-10 flex flex-wrap ml-20 ">
           {themeSelect.map((theme, index) => (
-            <img src={`/images/Themes/${theme}.png`} alt="bug" className={`w-[200px]  rounded-2xl  mr-12  mb-10 `}/>
+            <img key={index} src={`/images/Themes/${theme}.png`} alt="bug" className={`w-[200px]  rounded-2xl  mr-12  mb-10 `}/>
           ))}
         </div>
         </div>

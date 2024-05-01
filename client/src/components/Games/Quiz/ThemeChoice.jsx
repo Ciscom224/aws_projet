@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import quizReducer from "../../../reducers/quiz.reducer"
 import {useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useSocket } from "../../../pages/App";
 
 
 
@@ -10,20 +11,37 @@ import { useForm } from "react-hook-form";
 
 // Ceci represente le composant pour notre choix de jeu qui sera dans la page de menu represente par les images/
 const GamesChoice = () => {
+  const socket = useSocket();
   const {
     register,
     handleSubmit,
     formState: {errors},
 } = useForm()
 
+  
+
   const listeQuiz = ["informatique","animaux","celebrites","cinema","culture","geographie","histoire","musique","sciences"]
   const [themeSelect,setThemeSelect] = useState([])
   const [isMulti,setIsMulti] = useState(false)
   const [createLob,setCreateLob] = useState(true)
-  const [lobbys,setLobbys] = useState([["Farouk",["Farouk","Arun"]],["Yanis",["Yanis","Mamadou","Charbel","LeProf"]]])
+  const [lobbys,setLobbys] = useState([])
   const quizData = useSelector((state) => state.quizReducer);
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    socket.emit('getRooms',(success) => {
+      setLobbys(success)
+    })
+  }, []);
+
+  useEffect(() => {
+    socket.on('lobby_created',() => {
+      socket.emit('getRooms',(success) => {
+        setLobbys(success)
+      })
+    })
+  }, [socket]);
 
   const handleThemeSelected = (theme) => {
     const themeIndex = themeSelect.indexOf(theme)
@@ -87,6 +105,13 @@ const GamesChoice = () => {
 
   }
 
+  const joinRoom = (roomID) => {
+    if (roomID!=0) {
+      socket.emit("join_room",roomID,"Roukfa","photo de profil")
+      // navigate()
+    }
+  }
+
   const onclick = (roomID) => {
     
     let questionsTheme = []
@@ -123,10 +148,6 @@ const GamesChoice = () => {
     }
     selectedQuestionIndices = new Set()
     })
-    // console.log(questionsTheme)
-    // console.log(questionsTexts)
-    // console.log(questionsChoices)
-    // console.log(questionsAnswers)
 
     const shuffleResult = shuffleAll(questionsTheme, questionsTexts, questionsChoices, questionsAnswers);
 
@@ -135,24 +156,15 @@ const GamesChoice = () => {
     questionsChoices = shuffleResult.shuffledChoices;
     questionsAnswers = shuffleResult.shuffledAnswers;
 
-    // console.log("--------------------------------------------------")
-    // console.log(questionsTheme)
-    // console.log(questionsTexts)
-    // console.log(questionsChoices)
-    // console.log(questionsAnswers)
-
    
       questionsChoices = shuffleChoices(questionsChoices)
       if (isMulti) {
-        navigate(`/room/${roomID}`,{
-          state: {
-            questions:questionsTexts,
-            choice:questionsChoices,
-            answers:questionsAnswers,
-            theme:questionsTheme,
-            themeSelect:themeSelect
-          }
-        })
+        if (createLob)
+        { 
+          socket.emit('create_room',"Roukfa","photo",themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
+            navigate(`/room/${success}`)
+          });
+        }
       }
       else {
         navigate("/games/quiz",{
@@ -162,7 +174,6 @@ const GamesChoice = () => {
             answers:questionsAnswers,
             theme:questionsTheme,
             multi:false,
-            usersData:null
           }
         })
       }  
@@ -176,7 +187,7 @@ const GamesChoice = () => {
             {(isMulti && !createLob) ? "Lobby Multi" : "Choisit ton Quiz"}
           </p>
           <button className={`mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#3db967]  bg-opacity-60`} onClick={handleMode}>{isMulti ? "Multijoueur" : "Solo"}</button>
-          <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={() => {onclick(lobbys.length + 1)}} disabled={createLob ? false : true}>{isMulti ? "Créer le lobby" : "Lancer la partie"}</button>
+          <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={() => {onclick()}} disabled={createLob ? false : true}>{isMulti ? "Créer le lobby" : "Lancer la partie"}</button>
           {isMulti && <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#bd74b1]" onClick={() => {setCreateLob(!createLob)}} >{createLob ? "Voir les lobbys":"Choix de Quiz"}</button>}
           
         </div>
@@ -199,9 +210,9 @@ const GamesChoice = () => {
         <div className="m-4  py-16 px-10 flex flex-wrap space-x-10 ">
           {lobbys.map((lobby, index) => (
               <div key={index} className=" rounded-md p-6 mb-3 bg-white bg-opacity-60 border-none flex flex-col space-y-6 ">
-                   <p className="text-md font-bold  text-black ml-2">Host : {lobby[0]} </p>
-                   <p className="text-md text-black ml-2 break-normal">Joueurs : {lobby[1].length} / 5 </p>
-                   <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={() => {onclick(index+1)}}>Rejoindre</button>
+                   <p className="text-md font-bold  text-black ml-2">Host : {lobby[0][0]} </p>
+                   <p className="text-md text-black ml-2 break-normal">Joueurs : {lobby.length} / 5 </p>
+                   <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={() => {joinRoom(index+1)}}>Rejoindre</button>
 
               </div> ))}
       </div>

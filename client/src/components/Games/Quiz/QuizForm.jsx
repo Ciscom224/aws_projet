@@ -222,11 +222,11 @@ const QuizForm = () => {
 
   {multi &&
   <>
-  <div className="sm:w-[280px] h-screen bg-[#2c2c2c] mr-5">
-  <div className=" h-[92vh] overflow-y-auto">
+  <div className="sm:w-[280px] h-screen bg-transparent mr-5">
+  <div className=" h-[92vh] overflow-y-auto py-16">
   
     {usersData.map((user, index) => (
-      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center border-4 ${colorAnswer ? colorAnswer : "border-transparent"}`}>
+      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col items-center justify-center border-4 ${colorAnswer ? colorAnswer : "border-transparent"}`}>
         <div className="flex flex-row items-center">
           <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
           <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>

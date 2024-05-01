@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes,Navigate  } from 'react-router-dom';
 import axios from 'axios';
-import { UidContext } from '../AppContext';
+import { UidContext,SocketContext} from '../AppContext';
 import { useDispatch } from 'react-redux';
 
 import { getUser } from '../actions/user.actions';
@@ -16,9 +16,17 @@ import Classement from './Classement.jsx';
 import Quiz from './Quiz.jsx';
 import Parametres from './Parametres.pages';
 import Room from './RoomLobby.jsx';
-// import io from "socket.io-client"
+import io from "socket.io-client"
+
+export function useSocket() {
+  return useContext(SocketContext);
+}
 
 function App() {
+  const socket = io.connect('http://localhost:5000');
+
+  // socket.on('connection',socket) 
+
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
   const [loginOpen,setLoginOpen] = useState(false)
@@ -48,24 +56,26 @@ function App() {
 
   return (
     <UidContext.Provider value={uid}>
-      <Router>
-        <div className="w-full h-screen bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
-          <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>
-          <main >
-            <Routes>
-              <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
-              <Route path="/room/:id" element={<Room/>} />
-              <Route path="/admin" element={<Admin/>} />
-              <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
-              <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
-              <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
-              <Route path="/games/quiz" element={ uid ? <Quiz />:<Navigate to="/" />}/>
-              <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
-              <Route path="*" element={<Error/>} />
-            </Routes>
-          </main>
-        </div>
-      </Router>
+      <SocketContext.Provider value={socket}>
+        <Router>
+          <div className="w-full h-screen bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
+            <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>
+            <main >
+              <Routes>
+                <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
+                <Route path="/room/:id" element={<Room/>} />
+                <Route path="/admin" element={<Admin/>} />
+                <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
+                <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
+                <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
+                <Route path="/games/quiz" element={ uid ? <Quiz />:<Navigate to="/" />}/>
+                <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
+                <Route path="*" element={<Error/>} />
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </SocketContext.Provider>
     </UidContext.Provider>
   );
 }
