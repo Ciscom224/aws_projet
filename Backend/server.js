@@ -64,6 +64,22 @@ io.on('connection',(socket) => {
         }
     })
 
+    socket.on('new_border', (roomID, username, color) => {
+        const room = rooms[parseInt(roomID,10)];
+        if (room) {
+            const playersDetails = room.playersDetails;
+            for (let i = 0; i < playersDetails.length; i++) {
+                const playerDetail = playersDetails[i];
+                const playerName = playerDetail[0];
+                if (playerName === username) {
+                    rooms[roomID].playersDetails[i][2] = color;
+                    console.log("La couleur du joueur", username, "dans la salle", roomID, "a été mise à jour avec", color);
+                    socket.to(parseInt(roomID, 10)).emit('color_changed');
+                    break; 
+                }
+            }
+        } 
+    });
     socket.on('create_room',(username,photo,themeSelect,theme,questions,choices,answers,callback) => {
 
         const newRoom = Object.keys(rooms).length + 1 ;
@@ -71,7 +87,7 @@ io.on('connection',(socket) => {
         socket.join(newRoom)
         rooms[newRoom] = {
             players:[socket.id],
-            playersDetails:[[username,photo]],
+            playersDetails:[[username,photo,"border-transparent"]],
             started:false,
             kicked:[],
             themeSelect:themeSelect,

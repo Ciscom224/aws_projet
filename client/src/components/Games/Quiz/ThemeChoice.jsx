@@ -166,7 +166,7 @@ const GamesChoice = () => {
       if (isMulti) {
         if (createLob)
         { 
-          socket.emit('create_room',"Roukfa","photo",themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
+          socket.emit('create_room',userData.surName,userData.profilImage,themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
             navigate(`/room/${success}`)
           });
         }

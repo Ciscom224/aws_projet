@@ -3,21 +3,27 @@ import { useForm } from "react-hook-form"
 import { useQuizStore } from "../../../store"
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { FormControlLabel, Radio, styled} from '@mui/material';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Profile1 from "../../PictureManag/Profile1";
 import HeighPage from "../../HeighPage";
+import { useSocket } from "../../../pages/App";
+import userReducer from "../../../reducers/user.reducer";
+import {useSelector } from "react-redux";
+
 
 
 
 
 const QuizForm = () => {
-  
+  const socket = useSocket();
+  const userData = useSelector((state) => state.userReducer);
   //const distancePy = HeighPage() Ca nous aidera plus tard pour la responsive mais en hauteur et pas largeur
+  const {id} = useParams()
   const location = useLocation()
   const { questions, choice, answers, theme , multi , usersData } = location.state;
   const distancePy = HeighPage()
   const [messages,setMessages] = useState([])
-  const [colorAnswer,setColorAnswer] = useState(null)
+
 
   const {
       register,
@@ -35,7 +41,7 @@ const QuizForm = () => {
   const resetPoints = useQuizStore((state)=> state.resetPoints)
 
   // States permettant la gestion de notre jeu
-
+  const [users,setUsers] = useState(usersData)
   const [progressValue,setProgressValue] = useState(1)
   const [selectedValues, setSelectedValues] = useState([]);
   const [countdown, setCountdown] = useState(10);
@@ -65,8 +71,15 @@ const QuizForm = () => {
             setIsDisable(true)
             if (multi) {
               if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
-                setColorAnswer("border-[#21F214]");
-              } else {setColorAnswer("border-[#F82205]");}}
+                // setColorAnswer("border-[#21F214]");
+                socket.emit('new_border',id,userData.surName,"border-[#21F214]")
+              } else {
+                // setColorAnswer("border-[#F82205]");
+                socket.emit('new_border',id,userData.surName,"border-[#F82205]")
+              }}
+              socket.emit('getRoom',id,(updatedUsers) => {
+                setUsers(updatedUsers[0])
+              })
             setTimeout(() => {
               setColor("border-black");
               setSelectedValues([])
@@ -79,7 +92,12 @@ const QuizForm = () => {
                 setInGame(false)
               }
               setIsDisable(false)
-              if (multi) {setColorAnswer(null)}
+              if (multi) {
+                socket.emit('new_border',id,userData.surName,"border-transparent")
+                socket.emit('getRoom',id,(updatedUsers) => {
+                  setUsers(updatedUsers[0])
+                })
+              }
             }, multi ? 5000 : 2000)
             
             
@@ -93,6 +111,14 @@ const QuizForm = () => {
       // Nettoie le timer lorsque le composant est démonté
       return () => clearTimeout(timer);
   }, [countdown]);
+
+  useEffect(() => {
+    socket.on('color_changed',() => {
+      socket.emit('getRoom',id,(updatedUsers) => {
+        setUsers(updatedUsers[0])
+      })
+    })
+  }, []);
     
     // La barre de progression qui nous permet de gérer le temps restant des questions
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -149,7 +175,10 @@ const QuizForm = () => {
         setIsDisable(false)
       }, 2000);
     } else {
-      setColorAnswer("border-[#827C7B]")
+      socket.emit('new_border',id,userData.surName,"border-[#ADA3A1]")
+      socket.emit('getRoom',id,(updatedUsers) => {
+        setUsers(updatedUsers[0])
+      })
     }
         
 
@@ -225,8 +254,8 @@ const QuizForm = () => {
   <div className="sm:w-[280px] h-screen bg-transparent mr-5">
   <div className=" h-[92vh] overflow-y-auto py-16">
   
-    {usersData.map((user, index) => (
-      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col items-center justify-center border-4 ${colorAnswer ? colorAnswer : "border-transparent"}`}>
+    {users.map((user, index) => (
+      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col items-center justify-center border-4 ${user[2] ? user[2] : "border-transparent"}`}>
         <div className="flex flex-row items-center">
           <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
           <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
