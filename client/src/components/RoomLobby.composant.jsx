@@ -3,7 +3,6 @@ import userReducer from "../reducers/user.reducer"
 import {useSelector } from "react-redux";
 import Profile1 from "./PictureManag/Profile1";
 import { useLocation, useNavigate,useParams} from "react-router-dom";
-import QuizForm from "./Games/Quiz/QuizForm";
 import { useSocket } from "../pages/App";
 
 
@@ -20,20 +19,53 @@ const RoomLobby = () =>  {
         setUsers(success[0])
         setThemeSelect(success[1])
       })
+      console.log(users)
     }, []);
 
-    const onClick = () => {
-     
-      // navigate("/games/quiz",{
-      //   state: {
-      //     questions,
-      //     choice,
-      //     answers,
-      //     theme,
-      //     multi:true,
-      //     usersData:users
-      //   }
-      // })
+    useEffect(() => {
+      socket.on('lobby_changed',() => {
+        socket.emit('getRoom',id,(success) => {
+          setUsers(success[0])
+          setThemeSelect(success[1])
+        })
+      })
+
+      socket.on('game_started',() => {
+        socket.emit('getQuiz',id,(success) => {
+          socket.emit('getRoom',id,(updatedUsers) => {
+            navigate(`/games/quiz/${id}`,{
+              state: {
+                questions:success[0],
+                choice:success[1],
+                answers:success[2],
+                theme:success[3],
+                multi:true,
+                usersData:updatedUsers[0]
+              }
+            })
+          })
+
+        })
+      })
+
+    }, [socket]);
+
+  
+
+    const onclick = () => {
+      socket.emit('start_game',id)
+      socket.emit('getQuiz',id,(success) => {
+        navigate(`/games/quiz/${id}`,{
+          state: {
+            questions:success[0],
+            choice:success[1],
+            answers:success[2],
+            theme:success[3],
+            multi:true,
+            usersData:users
+          }
+        })
+      })
     }
     return (
       <>
@@ -59,7 +91,7 @@ const RoomLobby = () =>  {
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
             Room ID : {id}
           </p>
-          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onClick}>Lancer la partie</button>
+          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onclick}>Lancer la partie</button>
           
         </div>
         <div className="items-center justify-center flex">

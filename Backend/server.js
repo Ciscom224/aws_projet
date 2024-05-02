@@ -18,7 +18,7 @@ app.use(cors({origin:process.env.URL_CLIENT,credentials:true}));
 
 const io = new Server(server,{cors:{origin:'http://localhost:3000'}});
 const rooms = {};
-
+console.log(rooms)
 
 io.on('connection',(socket) => {
     console.log(socket.id)
@@ -28,13 +28,13 @@ io.on('connection',(socket) => {
     })
 
     socket.on('getRoom',(roomID,callback) => {
-        const room = rooms[roomID]
-        callback([room.playersDetails,room.themeSelect])
+        const room = rooms[roomID];
+        callback([room.playersDetails,room.themeSelect]);
+
     })
 
     socket.on('getRooms',(callback) => {
         const allPlayersDetails = [];
-        console.log(rooms)
         for (const roomID in rooms) {
             if (Object.hasOwnProperty.call(rooms, roomID)) {
                 const room = rooms[roomID];
@@ -43,18 +43,25 @@ io.on('connection',(socket) => {
             }
         }
         callback(allPlayersDetails)
-        console.log(allPlayersDetails)
+    })
+    socket.on('getQuiz',(roomID,callback) => {
+        const room = rooms[roomID];
+        if(room) {callback([room.questions,room.choices,room.answers,room.theme])}
+        else {callback(null)}
     })
 
-    socket.on('join_room',(username,photo,roomID) => {
-        if (rooms[roomID].players.length < 5) {
-            rooms[roomID].players.push(socket.id)
-            rooms[roomID].playersDetails.push([username,photo])
-            socket.join(roomID);
-            console.log(rooms)
-            socket.emit('new_join',username,photo);
+    socket.on('join_room',(username,photo,roomID,callback) => {
+        if (rooms[roomID] && rooms[roomID].players) {
+            if (rooms[roomID].players.length < 5 && rooms[roomID].started === false) {
+                rooms[roomID].players.push(socket.id)
+                rooms[roomID].playersDetails.push([username,photo])
+                socket.join(roomID);
+                io.emit('lobby_changed');
+                callback(true);
+            } else {callback(false);}
+        } else {
+            callback(false);
         }
-        
     })
 
     socket.on('create_room',(username,photo,themeSelect,theme,questions,choices,answers,callback) => {
@@ -73,8 +80,10 @@ io.on('connection',(socket) => {
             choices:choices,
             answers:answers
         }
-        io.emit('lobby_created');
+        io.emit('lobby_changed');
         callback(newRoom);
+        
+        
 
         
     })
@@ -82,8 +91,8 @@ io.on('connection',(socket) => {
     socket.on('start_game', (roomID) => {
         if (rooms[roomID]) {
             rooms[roomID].started = true;
-            socket.to(roomID).emit('game_started');
-            console.log(rooms)
+            console.log("Game numéro lancé : "+ roomID)
+            socket.to(parseInt(roomID, 10)).emit('game_started');
         }
     });
 })

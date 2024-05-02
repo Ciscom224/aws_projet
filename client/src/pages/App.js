@@ -68,7 +68,7 @@ function App() {
                 <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
                 <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />
                 <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
-                <Route path="/games/quiz" element={ uid ? <Quiz />:<Navigate to="/" />}/>
+                <Route path="/games/quiz/:id" element={ uid ? <Quiz />:<Navigate to="/" />}/>
                 <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
                 <Route path="*" element={<Error/>} />
               </Routes>

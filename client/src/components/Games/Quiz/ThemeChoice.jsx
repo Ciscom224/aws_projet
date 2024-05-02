@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import quizReducer from "../../../reducers/quiz.reducer"
+import userReducer from "../../../reducers/user.reducer"
 import {useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useSocket } from "../../../pages/App";
@@ -26,6 +27,7 @@ const GamesChoice = () => {
   const [createLob,setCreateLob] = useState(true)
   const [lobbys,setLobbys] = useState([])
   const quizData = useSelector((state) => state.quizReducer);
+  const userData = useSelector((state) => state.userReducer);
 
   const navigate = useNavigate()
 
@@ -36,7 +38,7 @@ const GamesChoice = () => {
   }, []);
 
   useEffect(() => {
-    socket.on('lobby_created',() => {
+    socket.on('lobby_changed',() => {
       socket.emit('getRooms',(success) => {
         setLobbys(success)
       })
@@ -107,12 +109,15 @@ const GamesChoice = () => {
 
   const joinRoom = (roomID) => {
     if (roomID!=0) {
-      socket.emit("join_room",roomID,"Roukfa","photo de profil")
-      // navigate()
+      socket.emit('join_room',userData.surName,userData.profilImage,roomID,(success) => {
+        if (success) {
+          navigate(`/room/${roomID}`)
+        } else {alert("Impossible de rejoindre (Room full ou inGame)")}
+      })
     }
   }
 
-  const onclick = (roomID) => {
+  const onclick = () => {
     
     let questionsTheme = []
     let questionsTexts = []
@@ -167,7 +172,7 @@ const GamesChoice = () => {
         }
       }
       else {
-        navigate("/games/quiz",{
+        navigate(`/games/quiz/${0}`,{
           state: {
             questions:questionsTexts,
             choice:questionsChoices,
