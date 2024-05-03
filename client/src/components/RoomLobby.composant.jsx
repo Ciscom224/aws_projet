@@ -15,38 +15,42 @@ const RoomLobby = () =>  {
     const socket = useSocket();
   
     useEffect(() => {
-      socket.emit('getRoom',id,(success) => {
+      socket.emit('getRoom',id,"RoomLobby 1",(success) => {
         setUsers(success[0])
         setThemeSelect(success[1])
       })
-      console.log(users)
     }, []);
 
     useEffect(() => {
-      socket.on('lobby_changed',() => {
-        socket.emit('getRoom',id,(success) => {
+      const lobbyChangedHandler = () => {
+        socket.emit('getRoom', id, "RoomLobby 2", (success) => {
           setUsers(success[0])
           setThemeSelect(success[1])
-        })
-      })
-
-      socket.on('game_started',() => {
-        socket.emit('getQuiz',id,(success) => {
-          socket.emit('getRoom',id,(updatedUsers) => {
-            navigate(`/games/quiz/${id}`,{
+        });
+      };
+      const gameStartedHandler = () => {
+        socket.emit('getQuiz', id, (success) => {
+          socket.emit('getRoom', id, "RoomLobby 3", (updatedUsers) => {
+            navigate(`/games/quiz/${id}`, {
               state: {
-                questions:success[0],
-                choice:success[1],
-                answers:success[2],
-                theme:success[3],
-                multi:true,
-                usersData:updatedUsers[0]
+                questions: success[0],
+                choice: success[1],
+                answers: success[2],
+                theme: success[3],
+                multi: true,
+                usersData: updatedUsers[0]
               }
-            })
-          })
-
-        })
-      })
+            });
+          });
+        });
+      };
+      socket.on('lobby_changed', lobbyChangedHandler);
+      socket.on('game_started', gameStartedHandler);
+      
+      return () => {
+        socket.off('lobby_changed', lobbyChangedHandler);
+        socket.off('game_started', gameStartedHandler);
+      };
 
     }, [socket]);
 

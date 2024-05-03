@@ -36,9 +36,8 @@ const QuizForm = () => {
 
   // Appelle des variables et fonctions necessaire de notre Store
 
-  const points = useQuizStore((state)=> state.points)
-  const setPoints = useQuizStore((state)=> state.setPoints)
-  const resetPoints = useQuizStore((state)=> state.resetPoints)
+
+  const [points,setPoints] = useState(0)
 
   // States permettant la gestion de notre jeu
   const [users,setUsers] = useState(usersData)
@@ -48,6 +47,7 @@ const QuizForm = () => {
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
   const [isDisable,setIsDisable] = useState(false)
+  let gameIn = true;
 
   
 
@@ -55,6 +55,7 @@ const QuizForm = () => {
 
   // Pour mettre a jour le temps 
     useEffect(() => {
+      
       // Si on recharge la page, on sera renvoyé au menu car theme vaudra 0 dans ce cas
       if (theme === "") {
         navigate("/games");
@@ -67,38 +68,47 @@ const QuizForm = () => {
 
           }
           else {
-            setColor("border-[#008000]")
-            setIsDisable(true)
+            setColor("border-[#008000]");
+            setIsDisable(true);
             if (multi) {
               if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
-                // setColorAnswer("border-[#21F214]");
-                socket.emit('new_border',id,userData.surName,"border-[#21F214]")
+                socket.emit('new_border',id,userData.surName,"border-[#21F214]");
+                socket.emit('new_points',id,userData.surName,points);
               } else {
-                // setColorAnswer("border-[#F82205]");
-                socket.emit('new_border',id,userData.surName,"border-[#F82205]")
+                socket.emit('new_border',id,userData.surName,"border-[#F82205]");
               }}
-              socket.emit('getRoom',id,(updatedUsers) => {
-                setUsers(updatedUsers[0])
+  
+              socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
+                setUsers(updatedUsers[0]);
               })
+
             setTimeout(() => {
               setColor("border-black");
-              setSelectedValues([])
+              setSelectedValues([]);
               if (progressValue!=20)
               {
-              setProgressValue(progressValue+1)
-              setCountdown(10);
+                setProgressValue(progressValue+1);
+                setCountdown(10);
               }
               else {
-                setInGame(false)
+                setInGame(false);
+                gameIn = false;
+                socket.emit('new_border',id,userData.surName,"border-transparent");
+                
               }
+
               setIsDisable(false)
-              if (multi) {
-                socket.emit('new_border',id,userData.surName,"border-transparent")
-                socket.emit('getRoom',id,(updatedUsers) => {
-                  setUsers(updatedUsers[0])
-                })
+
+              if (multi ) {
+                socket.emit('new_border',id,userData.surName,"border-transparent");
+                socket.emit('getRoom',id,inGame,(updatedUsers) => {
+                  setUsers(updatedUsers[0]);
+                });
+                socket.emit('reset_submit',id);
               }
-            }, multi ? 5000 : 2000)
+        
+            }, multi ? 1000 : 2000);
+            
             
             
           
@@ -110,15 +120,23 @@ const QuizForm = () => {
 
       // Nettoie le timer lorsque le composant est démonté
       return () => clearTimeout(timer);
-  }, [countdown]);
+  }, [countdown,inGame]);
 
   useEffect(() => {
+    
     socket.on('color_changed',() => {
-      socket.emit('getRoom',id,(updatedUsers) => {
+      socket.emit('getRoom',id,"quizForm color_changed",(updatedUsers) => {
         setUsers(updatedUsers[0])
       })
     })
-  }, []);
+    socket.on('allSubmit',() => {
+      socket.emit('getRoom',id,"quizForm allSubmit",(updatedUsers) => {
+        setUsers(updatedUsers[0])
+      });
+      setCountdown(0);
+    })
+  }, [socket,inGame]);
+
     
     // La barre de progression qui nous permet de gérer le temps restant des questions
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -135,7 +153,10 @@ const QuizForm = () => {
     
     // Fonction pour le clique des boutons a la fin de la game ou on reset les points et on renvoie en fonction du choix
     const handleOnClick = (button) => {
-        resetPoints()
+      if (multi && (userData.surName === users[0][0])) {
+        socket.emit('deleteRoom',id);
+      }
+        setPoints(0)
         if (button ==="menu") {navigate("/")}
         else {navigate("/games")}
     }
@@ -156,7 +177,7 @@ const QuizForm = () => {
     const onSubmit =  () => {
       setIsDisable(true)
       if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
-        setPoints(10 + countdown)
+        setPoints(10+countdown)
       }
       if (!multi) {
         setColor("border-[#008000]")
@@ -176,10 +197,16 @@ const QuizForm = () => {
       }, 2000);
     } else {
       socket.emit('new_border',id,userData.surName,"border-[#ADA3A1]")
-      socket.emit('getRoom',id,(updatedUsers) => {
+      socket.emit('getSubmitted',id,(success) => {
+        if (success) {
+          setCountdown(0)
+        }
+      })
+      socket.emit('getRoom',id,"QuizForm afterSubmit",(updatedUsers) => {
         setUsers(updatedUsers[0])
       })
     }
+    
         
 
     }
@@ -260,8 +287,7 @@ const QuizForm = () => {
           <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
           <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
         </div>
-        <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Questions :  </p>
-        <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Points :  </p>
+        <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Points : {user[3]}  </p>
       </div>
       ))}
   </div>
