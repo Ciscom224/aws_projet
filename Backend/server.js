@@ -16,8 +16,10 @@ app.use(cors({origin:process.env.URL_CLIENT,credentials:true}));
 
 //Pour Socket
 
-const io = new Server(server,{cors:{origin:'http://localhost:3000'}});
+const io = new Server(server,{cors:{origin:process.env.URL_CLIENT}});
 const rooms = {};
+let playersInGame = [];
+let roomNumber = 1;
 
 io.on('connection',(socket) => {
     console.log(socket.id)
@@ -27,10 +29,17 @@ io.on('connection',(socket) => {
     })
 
     socket.on('getRoom',(roomID,site,callback) => {
-       if (rooms[roomID]) { const room = rooms[roomID];
-        console.log("petit getRoom de "+ site)
-        callback([room.playersDetails,room.themeSelect]);}
-        else {callback(null)}
+        roomIDint = parseInt(roomID, 10)
+        for (const roomID in rooms) {
+            if (rooms.hasOwnProperty(roomID)) {
+                const room = rooms[roomID];
+                if (room.roomID === roomIDint) {
+                    targetRoom = room;
+                    break;
+                }
+            }
+        }
+        callback([targetRoom.playersDetails,targetRoom.themeSelect]);
         
 
     })
@@ -60,13 +69,16 @@ io.on('connection',(socket) => {
 
     socket.on('getRooms',(callback) => {
         const allPlayersDetails = [];
+        const room_ID = [];
         for (const roomID in rooms) {
             if (Object.hasOwnProperty.call(rooms, roomID)) {
                 const room = rooms[roomID];
                 const playerDetails = room.playersDetails;
                 allPlayersDetails.push(playerDetails);
+                room_ID.push(room.roomID);
             }
         }
+        console.log(allPlayersDetails)
         callback(allPlayersDetails)
     })
     socket.on('getQuiz',(roomID,callback) => {
@@ -75,19 +87,47 @@ io.on('connection',(socket) => {
         else {callback(null)}
     })
 
-    socket.on('join_room',(username,photo,roomID,callback) => {
+    socket.on('join_room',(username,photo,room_ID,callback) => {
+        const roomID = parseInt(room_ID,10)
+        if (playersInGame.includes(socket.id) && !rooms[roomID].players.includes(socket.id))
+            {
+                return callback(false)
+            }
+
         if (rooms[roomID] && rooms[roomID].players) {
             if (rooms[roomID].players.length < 5 && rooms[roomID].started === false) {
-                rooms[roomID].players.push(socket.id)
-                rooms[roomID].playersDetails.push([username,photo,"border-transparent",0])
-                rooms[roomID].playersSubmit.push(false)
-                socket.join(roomID);
-                io.emit('lobby_changed');
-                callback(true);
-            } else {callback(false);}
+                if (!rooms[roomID].players.includes(socket.id)) {
+                    rooms[roomID].players.push(socket.id)
+                    playersInGame.push(socket.id)
+                    rooms[roomID].playersDetails.push([username,photo,"border-transparent",0])
+                    rooms[roomID].playersSubmit.push(false)
+                    socket.join(roomID);
+                    io.emit('lobby_changed');
+                }
+                
+                return callback([true,rooms[roomID].roomID]);
+            } else { return callback(false);}
         } else {
-            callback(false);
+            return callback(false);
         }
+    })
+
+    socket.on('disconnected',(room_ID) => {
+        const roomID = parseInt(room_ID,10)
+        console.log("On déco le joueur a la room" + roomID)
+        if (rooms[roomID]) {
+            const playerIndex = rooms[roomID].players.findIndex(playerId => playerId === socket.id);
+            playersInGame = playersInGame.filter(item => item !== socket.id);
+            socket.leave(rooms[roomID].roomID);
+            if (playerIndex !== -1) {
+                rooms[roomID].players.splice(playerIndex, 1);
+                rooms[roomID].playersDetails.splice(playerIndex, 1);
+                rooms[roomID].playersSubmit.splice(playerIndex, 1);
+                console.log(rooms[roomID].playersDetails)
+                io.emit('lobby_changed');
+                //console.log("joueur déconnecté avec succès!" + rooms[roomID].playersDetails)
+        }}
+        
     })
 
     socket.on('reset_submit',(roomID) => {
@@ -124,9 +164,9 @@ io.on('connection',(socket) => {
     socket.on('create_room',(username,photo,themeSelect,theme,questions,choices,answers,callback) => {
 
         const newRoom = Object.keys(rooms).length + 1 ;
-        console.log(newRoom)
-        socket.join(newRoom)
+        socket.join(roomNumber)
         rooms[newRoom] = {
+            roomID:roomNumber,
             players:[socket.id],
             playersDetails:[[username,photo,"border-transparent",0]],
             playersSubmit:[false],
@@ -138,8 +178,10 @@ io.on('connection',(socket) => {
             choices:choices,
             answers:answers
         }
+        playersInGame.push(socket.id)
         io.emit('lobby_changed');
-        callback(newRoom);
+        roomNumber += 1;
+        callback(rooms[newRoom].roomID);
         
         
 

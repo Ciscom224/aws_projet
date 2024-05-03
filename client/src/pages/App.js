@@ -63,7 +63,7 @@ function App() {
             <main >
               <Routes>
                 <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />
-                <Route path="/room/:id" element={<Room/>} />
+                <Route path="/room/:id" element={uid ? <Room/>: <Navigate to="/" />} />
                 <Route path="/admin" element={<Admin/>} />
                 <Route path="/parametres" element={uid ? <Parametres/>: <Navigate to="/" />} />
                 <Route path="/classement" element={uid ? <Classement/>: <Navigate to="/" />} />

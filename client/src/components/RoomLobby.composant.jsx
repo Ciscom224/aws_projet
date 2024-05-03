@@ -55,7 +55,12 @@ const RoomLobby = () =>  {
     }, [socket]);
 
   
-
+    const handleDisconnect =() => {
+      socket.emit('disconnected',id);
+      if (users.length === 1) {
+        socket.emit('deleteRoom',id);}
+      navigate('/games')
+    }
     const onclick = () => {
       socket.emit('start_game',id)
       socket.emit('getQuiz',id,(success) => {
@@ -96,7 +101,7 @@ const RoomLobby = () =>  {
             Room ID : {id}
           </p>
           <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onclick}>Lancer la partie</button>
-          
+          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#ce2e2e]" onClick={handleDisconnect}>Quitter la Room</button>
         </div>
         <div className="items-center justify-center flex">
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>

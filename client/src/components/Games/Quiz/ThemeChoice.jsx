@@ -33,14 +33,15 @@ const GamesChoice = () => {
 
   useEffect(() => {
     socket.emit('getRooms',(success) => {
-      setLobbys(success)
+      setLobbys(success);
+
     })
   }, []);
 
   useEffect(() => {
     socket.on('lobby_changed',() => {
       socket.emit('getRooms',(success) => {
-        setLobbys(success)
+        setLobbys(success);
       })
     })
   }, [socket]);
@@ -108,10 +109,11 @@ const GamesChoice = () => {
   }
 
   const joinRoom = (roomID) => {
-    if (roomID!=0) {
+    console.log(lobbys)
+    if (parseInt(roomID,10)!=0) {
       socket.emit('join_room',userData.surName,userData.profilImage,roomID,(success) => {
-        if (success) {
-          navigate(`/room/${roomID}`)
+        if (success[0]) {
+          navigate(`/room/${success[1]}`)
         } else {alert("Impossible de rejoindre (Room full ou inGame)")}
       })
     }

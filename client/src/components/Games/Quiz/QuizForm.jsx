@@ -17,14 +17,12 @@ import {useSelector } from "react-redux";
 const QuizForm = () => {
   const socket = useSocket();
   const userData = useSelector((state) => state.userReducer);
-  //const distancePy = HeighPage() Ca nous aidera plus tard pour la responsive mais en hauteur et pas largeur
-  const {id} = useParams()
   const location = useLocation()
   const { questions, choice, answers, theme , multi , usersData } = location.state;
   const distancePy = HeighPage()
   const [messages,setMessages] = useState([])
 
-
+  const {id} = useParams()
   const {
       register,
       handleSubmit,
@@ -47,7 +45,7 @@ const QuizForm = () => {
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
   const [isDisable,setIsDisable] = useState(false)
-  let gameIn = true;
+
 
   
 
@@ -92,7 +90,6 @@ const QuizForm = () => {
               }
               else {
                 setInGame(false);
-                gameIn = false;
                 socket.emit('new_border',id,userData.surName,"border-transparent");
                 
               }
@@ -129,6 +126,11 @@ const QuizForm = () => {
         setUsers(updatedUsers[0])
       })
     })
+    socket.on('lobby_changed',() => {
+      socket.emit('getRoom',id,"quizForm lobby_changed",(updatedUsers) => {
+        setUsers(updatedUsers[0])
+      })
+    })
     socket.on('allSubmit',() => {
       socket.emit('getRoom',id,"quizForm allSubmit",(updatedUsers) => {
         setUsers(updatedUsers[0])
@@ -153,9 +155,12 @@ const QuizForm = () => {
     
     // Fonction pour le clique des boutons a la fin de la game ou on reset les points et on renvoie en fonction du choix
     const handleOnClick = (button) => {
+      socket.emit('disconnected',id);
       if (multi && (userData.surName === users[0][0])) {
+        
         socket.emit('deleteRoom',id);
       }
+     
         setPoints(0)
         if (button ==="menu") {navigate("/")}
         else {navigate("/games")}
