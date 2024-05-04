@@ -6,7 +6,6 @@ function Admin() {
     const [count,setCount]=useState(0)
 
     const sendQuestion= async ()=>{
-        console.log("bien")
     await  axios.get(`https://api.openquizzdb.org/?key=${keyApi}&categ=${category.toLowerCase()}`)
   .then((res)=>{
     const question=res.data.results[0];

@@ -11,7 +11,7 @@ function Friends({ isOpen, onClose }) {
 
   const userData = useSelector((state) => state.userReducer);
   const usersData = useSelector((state) => state.usersReducer);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const addFriends=(id)=>{
     dispatch(addFriend(userData._id,id))
@@ -62,6 +62,12 @@ function Friends({ isOpen, onClose }) {
             </label>
             <div className="relative w-full">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
                 <svg
                   className="w-4 h-4 text-gray-500 dark:text-gray-400"
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,32 +150,28 @@ function Friends({ isOpen, onClose }) {
                     </IconButton>
                   </div>
 
-                  <div className="mt-1 flex items-center gap-x-1.5">
-                    {
-                      user.online ? 
-                      <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    </div>
-                      :
-                      <div className="flex-none rounded-full bg-red-500/20 p-1">
-                      <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    </div>
+                      <div className="mt-1 flex items-center gap-x-1.5">
+                        {user.online ? (
+                          <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          </div>
+                        ) : (
+                          <div className="flex-none rounded-full bg-red-500/20 p-1">
+                            <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                          </div>
+                        )}
 
-                    }
-                  
-                    <p className="text-xs leading-5 text-white">Online</p>
-                  </div>
-                </div>
-              </li>
-            );
-          }
-        }
-      })
-      
-      : <p>Liste vide </p>
-    }
- 
-      
+                        <p className="text-xs leading-5 text-white">Online</p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              }
+            }
+          })
+        ) : (
+          <p>Liste vide </p>
+        )}
       </ul>
 
       <ul className="divide-y divide-gray-100 mt-5">

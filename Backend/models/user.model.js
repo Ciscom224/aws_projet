@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
         },
         profilImage: {
             type: String,
-            default: "./uploads/profils/ramdon-image.png"
+            default: "/images/profils/ramdon-image.png"
         },
         email: {
             type: String,
@@ -50,12 +50,11 @@ const userSchema = new mongoose.Schema(
         score:{
             type:[
                 {
-                    scoreId:String,
                     categorieName:String,
                     level:Number,
                 }
             ],
-            require:true
+            default: []
         },
         online: {
             type: Boolean,

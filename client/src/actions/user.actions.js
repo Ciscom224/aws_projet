@@ -4,6 +4,7 @@ export const GET_USER="GET_USER";
 export const UPLOAD_IMG="UPLOAD_IMG";
 export const ADD_FRIEND="ADD_FRIEND";
 export const DEL_FRIEND="DEL_FRIEND";
+export const UPDATE_SCORE="UPDATE_SCORE";
 
 
 // recuperation des data d'un user 
@@ -25,7 +26,7 @@ export const getUser=(uid)=>{
 export const uploadImg=(data,id)=>{
     return async (dispatch)=>{
         return await axios
-        .post(`${process.env.REACT_APP_API_URL}api/user/upload`,data)
+        .post(`${process.env.REACT_APP_API_URL}api/user/uploadImage/${id}`,data)
         .then( async (res)=>{
             return await axios
             .get(`${process.env.REACT_APP_API_URL}api/user/${id}`)
@@ -64,5 +65,19 @@ export const delFriend=(id,idFriend)=>{
         })
         .catch((err)=>console.log(err))
         
+    }
+}
+export const updateScore = (id, categorie, score) => {
+    return async (dispatch) => {
+        try {
+            const res = await axios({
+                method: 'patch',
+                url: `${process.env.REACT_APP_API_URL}api/user/updateScore/${id}`,
+                data: { categorie: categorie, level: score }
+            });
+            dispatch({ type: UPDATE_SCORE, payload: res.data });
+        } catch (err) {
+            console.error(err);
+        }
     }
 }

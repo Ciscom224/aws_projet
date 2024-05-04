@@ -71,8 +71,6 @@ const NavBar = ({setLoginOpen}) => {
               </div>
               <div className="flex ">
                 <Profile
-                  navig={true}
-                  classment={false}
                   setIsLogin={setIsLogin}
                 />
               </div>
