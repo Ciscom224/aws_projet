@@ -124,7 +124,7 @@ const QuizForm = () => {
   }, [countdown,inGame]);
 
   useEffect(() => {
-    messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    if(multi){messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;}
   }, [messages]);
 
   useEffect(() => {

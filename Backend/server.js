@@ -18,7 +18,6 @@ app.use(cors({origin:process.env.URL_CLIENT,credentials:true}));
 
 const io = new Server(server,{cors:{origin:process.env.URL_CLIENT}});
 const rooms = {};
-console.log(rooms)
 let playersInGame = [];
 let roomNumber = 1;
 
