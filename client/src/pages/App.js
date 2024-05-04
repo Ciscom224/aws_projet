@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 
 import { getUser } from '../actions/user.actions';
 import { getQuiz } from '../actions/quiz.actions';
-import { getQuiz } from '../actions/quiz.actions';
 import Home from './Home.page';
 import Games from './Games';
 import QuizChoice from './QuizChoice';
@@ -30,7 +29,7 @@ function App() {
 
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
-
+  const [loginOpen,setLoginOpen] = useState(false)
   useEffect(() => {
     async function checkAuth() {
       await axios({
