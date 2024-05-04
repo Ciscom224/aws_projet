@@ -30,7 +30,10 @@ function App() {
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
   const [loginOpen,setLoginOpen] = useState(false)
+<<<<<<< HEAD
 
+=======
+>>>>>>> a24efbb00a55e6424ad7a41698db5b4d95e84206
   useEffect(() => {
     async function checkAuth() {
       await axios({
