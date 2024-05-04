@@ -44,9 +44,9 @@ function findIndexById(id) {
 io.on('connection',(socket) => {
     console.log(socket.id)
     
-    socket.on('send_message',(username,message,roomID) => {
+    socket.on('send_message',(messages,roomID) => {
         
-        socket.to(roomID).emit('message',username,message)
+        socket.to(parseInt(roomID,10)).emit('message',messages)
     })
 
     socket.on('getRoom',(roomID,site,callback) => {

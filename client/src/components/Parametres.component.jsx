@@ -21,7 +21,6 @@
     const [emailMessage, setEmailMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
     const [isDoubleAuthEnabled, setIsDoubleAuthEnabled] = useState(false);
-    // const [isDoubleAuthEnabled, setIsDoubleAuthEnabled] = useState(userData.isDoubleAuthEnabled || false);
     const navigate = useNavigate();
 
     const {
@@ -90,11 +89,11 @@
               />
 
               <div className=" flex items-center justify-between text-3xl h-1/6 sm:text-4xl sm:ml-5 sm:w-1/2 font-['Carter_One'] font-bold md:text-3xl sm:mt-0">
-                <div className="flex flex-grow items-center mb-8 mt-5 md:mt-5 sm:mt-8 ml-3 ">
+                <div className="flex flex-grow items-center ml-5 mb-8 mt-5 md:mt-5 sm:mt-8  ">
                   <p className="min-w-[80px] ">
-                  <Profile1 navig={false} classment={false} />
+                  <Profile1 navig={true} parametre={true} />
                   </p>
-                  paramètres
+                  <p className="ml-10">Paramètres</p>
                 </div>
               </div>
 

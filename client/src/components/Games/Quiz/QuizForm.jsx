@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { useQuizStore } from "../../../store"
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
@@ -9,6 +9,7 @@ import HeighPage from "../../HeighPage";
 import { useSocket } from "../../../pages/App";
 import userReducer from "../../../reducers/user.reducer";
 import {useSelector } from "react-redux";
+import { FaCrown } from "react-icons/fa";
 
 
 
@@ -46,6 +47,8 @@ const QuizForm = () => {
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
   const [isDisable,setIsDisable] = useState(false)
+
+  const messagesContainerRef = useRef(null);
 
 
   
@@ -121,6 +124,10 @@ const QuizForm = () => {
   }, [countdown,inGame]);
 
   useEffect(() => {
+    messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+  }, [messages]);
+
+  useEffect(() => {
     const colorChangedHandler = () => {
         socket.emit('getRoom', id, "quizForm color_changed", (updatedUsers) => {
             setUsers(updatedUsers[0]);
@@ -151,6 +158,18 @@ const QuizForm = () => {
     };
 
 }, [socket,inGame]);
+
+useEffect(() => {
+
+  socket.on('message', (updatedM) => {
+    setMessages(updatedM);
+  });
+
+  return () => {
+    socket.off("message");
+  };
+}, []);
+
 
     
     // La barre de progression qui nous permet de gérer le temps restant des questions
@@ -187,8 +206,9 @@ const QuizForm = () => {
           }
     }
     const onSubmit2 = (data) => {
-      const updatedMessages = [...messages, ["Farouk", data.message]];
+      const updatedMessages = [...messages, [userData.surName, data.message]];
       setMessages(updatedMessages)
+      socket.emit('send_message',updatedMessages,id);
       reset()
     }
     // Fonction du submit, ou on met en place le submit pour chaque question et on calcule les points + le countdown 
@@ -311,11 +331,13 @@ const QuizForm = () => {
   </div>
 </div>
   <div className="h-screen bg-[#292727] w-[300px] overflow-hidden">
-      <div className="h-[85vh] overflow-hidden">
+      <div className="h-[85vh] overflow-y-auto" ref={messagesContainerRef}>
       {messages.map((userData, index) => (
               <div key={index} className=" rounded-md mb-3 bg-transparent border-none flex">
-                   <p className="text-md font-bold  text-gray-400 ml-2 break-normal">{userData[0]}: </p>
-                   <p className="text-md text-gray-400 ml-2 break-normal">{userData[1]}</p>
+                    {userData[0] === users[0][0] && <div className="ml-2"><FaCrown style={{ color: '#CAC950',fontSize: '20px'}}/></div>}
+                    <p className="text-md text-[#c5c1c2] ml-2 break-normal">
+                      <span className="font-bold text-[#fcf6f7]">{userData[0]} :</span> {userData[1]}
+                    </p>  
               </div>
             ))}
       </div>
