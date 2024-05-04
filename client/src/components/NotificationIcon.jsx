@@ -68,7 +68,7 @@ function notificationsLabel(count) {
           {props.type == "classment" && <GoTrophy sx={{ fontSize: 30 }} style={{ color: '#d3dbe8' }}/>}
         </Badge>
       </IconButton>
-      {props.type == "notif" && <div className="absolute top-20 right-[240px] "><NotificationMenu  isClicked={isClicked} updateCount={updateCount} setFriendsToAdd={setFriendsToAdd} friendsToAdd={friendsToAdd} /> </div>}
+      {props.type == "notif" && <div className="absolute top-20 right-[360px]"><NotificationMenu  isClicked={isClicked} updateCount={updateCount} setFriendsToAdd={setFriendsToAdd} friendsToAdd={friendsToAdd} /> </div>}
       </>
     );
   }

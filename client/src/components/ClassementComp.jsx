@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Profile1 from "./PictureManag/Profile1";
-
+import { useNavigate } from "react-router-dom";
 
 const ClassementComponent = () =>  {
   // Pour le classement, on fait des test avec ces States la afin de pouvoir tester comment les données pourraient s'afficher
@@ -9,7 +9,7 @@ const ClassementComponent = () =>  {
   const [quiz60LB,setQuiz60LB] = useState([["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"],["Avatar","UserQuiz60-1","2018"],["Avatar","UserQuiz60-2","2010"],["Avatar","UserQuiz60-3","1855"],["Avatar","UserQuiz60-4","1630"],["Avatar","UserQuiz60-5","1520"],["Avatar","UserQuiz60-6","430"]])
   const [guessRLB,setguessRLB] = useState([["Avatar","UserguessR1","2018"],["Avatar","UserguessR2","2010"],["Avatar","UserguessR3","1855"],["Avatar","UserguessR4","1630"],["Avatar","UserguessR5","1520"],["Avatar","UserguessR6","430"]])
   const [selectedLB, setSelectedLB] = useState(quizLB);
-
+  const navigate = useNavigate();
   // On fera un UseEffect pour récuperer les classements depuis le serveur et appliquer les 3 set
 
   // Fonction pour savoir quel classement est selectionné
@@ -38,7 +38,7 @@ const ClassementComponent = () =>  {
             <div className="border border-gray-700 mt-2"></div>
             <div className="mt-4"></div>
             {selectedLB.map((userData, index) => (
-              <div key={index} className="mb-2 p-4 rounded-md bg-[#4b4848] flex bg-opacity-55 items-center justify-center">
+              <div key={index} className="mb-2 p-4 rounded-md bg-[#4b4848] flex bg-opacity-55 items-center justify-center" onClick={() => {navigate("/profil")}}> 
                    <p className="text-sm text-gray-400 min-w-[60px] ">{index +1 }</p>
                    <p className="text-sm text-gray-400 min-w-[80px]"><Profile1 navig={false} classment={true} /></p>
                    <p className="text-sm  text-gray-400 min-w-[120px] ">{userData[1]}</p>
