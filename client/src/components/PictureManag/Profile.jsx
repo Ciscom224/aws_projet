@@ -5,9 +5,7 @@ import AccessibleBadges from "../NotificationIcon";
 import { Menu, Transition } from "@headlessui/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import userReducer from "../../reducers/user.reducer";
 // import Friends from "./frends.component";
-import PencilIcon from "./PencilIcon";
 import Friends from "../Friends.component";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -89,11 +87,12 @@ const ProfileUser = ({ setIsLogin }) => {
                     active ? "bg-gray-900" : "",
                     "block px-4 py-2 text-sm font-semibold text-white"
                   )}
+                  onClick={() => navigate("/parametres")}
                 >
-                  Parametre
+                  Paramètres
                 </a>
               )}
-            </Menu.Item>
+            </Menu.Item> 
             <Menu.Item>
               {({ active }) => (
                 <a

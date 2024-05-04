@@ -11,7 +11,7 @@ function Quiz() {
   
   return (
     
-      <div className="w-full h-screen bg-cover bg-center " style={{backgroundImage: "url('/images/Background/quiz_bg.png')"}}>
+      <div className="w-full h-screen bg-cover bg-center ">
         <QuizForm />
       </div>
       
