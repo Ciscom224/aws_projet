@@ -32,19 +32,30 @@ const GamesChoice = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    socket.emit('getRooms',(success) => {
-      setLobbys(success);
-
-    })
-  }, []);
-
-  useEffect(() => {
-    socket.on('lobby_changed',() => {
-      socket.emit('getRooms',(success) => {
+    const getRoomsHandler = (success) => {
         setLobbys(success);
-      })
-    })
-  }, [socket]);
+    };
+
+    socket.emit('getRooms', getRoomsHandler);
+
+    return () => {
+        socket.off('getRooms', getRoomsHandler);
+    };
+}, []);
+
+useEffect(() => {
+    const lobbyChangedHandler = () => {
+        socket.emit('getRooms', (success) => {
+            setLobbys(success);
+        });
+    };
+
+    socket.on('lobby_changed', lobbyChangedHandler);
+
+    return () => {
+        socket.off('lobby_changed', lobbyChangedHandler);
+    };
+}, [socket]);
 
   const handleThemeSelected = (theme) => {
     const themeIndex = themeSelect.indexOf(theme)
@@ -109,14 +120,13 @@ const GamesChoice = () => {
   }
 
   const joinRoom = (roomID) => {
-    console.log(lobbys)
-    if (parseInt(roomID,10)!=0) {
+    
       socket.emit('join_room',userData.surName,userData.profilImage,roomID,(success) => {
         if (success[0]) {
           navigate(`/room/${success[1]}`)
         } else {alert("Impossible de rejoindre (Room full ou inGame)")}
       })
-    }
+    
   }
 
   const onclick = () => {
@@ -217,9 +227,9 @@ const GamesChoice = () => {
         <div className="m-4  py-16 px-10 flex flex-wrap space-x-10 ">
           {lobbys.map((lobby, index) => (
               <div key={index} className=" rounded-md p-6 mb-3 bg-white bg-opacity-60 border-none flex flex-col space-y-6 ">
-                   <p className="text-md font-bold  text-black ml-2">Host : {lobby[0][0]} </p>
-                   <p className="text-md text-black ml-2 break-normal">Joueurs : {lobby.length} / 5 </p>
-                   <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={() => {joinRoom(index+1)}}>Rejoindre</button>
+                   <p className="text-md font-bold  text-black ml-2">Host : {lobby[0][0][0]} </p>
+                   <p className="text-md text-black ml-2 break-normal">Joueurs : {lobby[0].length} / 5 </p>
+                   <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={() => {joinRoom(lobby[1])}}>Rejoindre</button>
 
               </div> ))}
       </div>

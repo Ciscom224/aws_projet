@@ -36,6 +36,7 @@ const QuizForm = () => {
 
 
   const [points,setPoints] = useState(0)
+  const [totalPoints,setTotalPoints] = useState(0)
 
   // States permettant la gestion de notre jeu
   const [users,setUsers] = useState(usersData)
@@ -72,6 +73,7 @@ const QuizForm = () => {
               if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
                 socket.emit('new_border',id,userData.surName,"border-[#21F214]");
                 socket.emit('new_points',id,userData.surName,points);
+                setTotalPoints(totalPoints+points)
               } else {
                 socket.emit('new_border',id,userData.surName,"border-[#F82205]");
               }}
@@ -115,29 +117,40 @@ const QuizForm = () => {
       
               , 1000);
 
-      // Nettoie le timer lorsque le composant est démonté
       return () => clearTimeout(timer);
   }, [countdown,inGame]);
 
   useEffect(() => {
-    
-    socket.on('color_changed',() => {
-      socket.emit('getRoom',id,"quizForm color_changed",(updatedUsers) => {
-        setUsers(updatedUsers[0])
-      })
-    })
-    socket.on('lobby_changed',() => {
-      socket.emit('getRoom',id,"quizForm lobby_changed",(updatedUsers) => {
-        setUsers(updatedUsers[0])
-      })
-    })
-    socket.on('allSubmit',() => {
-      socket.emit('getRoom',id,"quizForm allSubmit",(updatedUsers) => {
-        setUsers(updatedUsers[0])
-      });
-      setCountdown(0);
-    })
-  }, [socket,inGame]);
+    const colorChangedHandler = () => {
+        socket.emit('getRoom', id, "quizForm color_changed", (updatedUsers) => {
+            setUsers(updatedUsers[0]);
+        });
+    };
+
+    const lobbyChangedHandler = () => {
+        socket.emit('getRoom', id, "quizForm lobby_changed", (updatedUsers) => {
+            setUsers(updatedUsers[0]);
+        });
+    };
+
+    const allSubmitHandler = () => {
+        socket.emit('getRoom', id, "quizForm allSubmit", (updatedUsers) => {
+            setUsers(updatedUsers[0]);
+        });
+        setCountdown(0);
+    };
+
+    socket.on('color_changed', colorChangedHandler);
+    socket.on('lobby_changed', lobbyChangedHandler);
+    socket.on('allSubmit', allSubmitHandler);
+
+    return () => {
+        socket.off('color_changed', colorChangedHandler);
+        socket.off('lobby_changed', lobbyChangedHandler);
+        socket.off('allSubmit', allSubmitHandler);
+    };
+
+}, [socket,inGame]);
 
     
     // La barre de progression qui nous permet de gérer le temps restant des questions
@@ -260,7 +273,7 @@ const QuizForm = () => {
       <div className="w-full bg-white rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent h-auto mt-[95px] ">
           <div className=" flex  px-3 py-5 ml-10">
             <div className="mr-10"><Profile1 navig={false} classment={false} /></div>
-            <p className="font-bold mt-3 text-xl text-[#070707] text-shadow ">Votre Score : {points} </p>
+            <p className="font-bold mt-3 text-xl text-[#070707] text-shadow ">Votre Score : {totalPoints} </p>
             
           </div>
           <div className="sm:flex sm:flew-wrap">
