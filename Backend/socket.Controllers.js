@@ -113,12 +113,16 @@ function socketHandler(io,socket) {
                     return callback([false,"Vous etes kick de cette salle !"]);
                 }
                 if (rooms[roomID].players.length < 5 &&  !rooms[roomID].players.includes(socket.id)) {
+                    
                     rooms[roomID].players.push(socket.id)
                     playersInGame.push(socket.id)
                     rooms[roomID].playersDetails.push([username,photo,"border-transparent",0])
                     rooms[roomID].playersSubmit.push(false)
                     socket.join(rooms[roomID].roomID);
                     io.emit('lobby_changed');
+                } 
+                if (rooms[roomID].players.length === 5 &&  !rooms[roomID].players.includes(socket.id)){
+                    return callback([false,"Ce lobby est full! "]);
                 }
                 
                 return callback([true,rooms[roomID].roomID]);

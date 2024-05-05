@@ -74,10 +74,6 @@ const RoomLobby = () =>  {
 
     const handleKick =  (username) => {
       socket.emit('kick',id,username);
-      // socket.emit('getRoom', id, "RoomLobby 2", (success) => {
-      //   console.log(success[0])
-      //   setUsers(success[0])
-      // });
     }
     const handleDisconnect =() => {
       socket.emit('disconnected',id);

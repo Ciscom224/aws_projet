@@ -76,19 +76,21 @@ const QuizForm = () => {
               if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
                 socket.emit('new_border',id,userData.surName,"border-[#21F214]");
                 socket.emit('new_points',id,userData.surName,points);
-                setTotalPoints(totalPoints+points)
+                
               } else {
                 socket.emit('new_border',id,userData.surName,"border-[#F82205]");
-              }}
-  
+              }
               socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
                 setUsers(updatedUsers[0]);
               })
+            }
+              
+              
 
             setTimeout(() => {
               setColor("border-black");
               setSelectedValues([]);
-              if (progressValue!=20)
+              if (progressValue!==20)
               {
                 setProgressValue(progressValue+1);
                 setCountdown(10);
@@ -101,7 +103,7 @@ const QuizForm = () => {
 
               setIsDisable(false)
 
-              if (multi ) {
+              if (multi) {
                 socket.emit('new_border',id,userData.surName,"border-transparent");
                 socket.emit('getRoom',id,inGame,(updatedUsers) => {
                   setUsers(updatedUsers[0]);
@@ -208,6 +210,7 @@ useEffect(() => {
       }
      
         setPoints(0)
+        setTotalPoints(0)
         if (button ==="menu") {navigate("/")}
         else {navigate("/games")}
     }
@@ -230,16 +233,18 @@ useEffect(() => {
       setIsDisable(true)
       if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
         setPoints(10+countdown)
+        setTotalPoints(totalPoints+10+countdown)
       }
       if (!multi) {
         setColor("border-[#008000]")
         setTimeout(() => {
         setCountdown(10);
         
+        
         if (progressValue !== 20) {
           setProgressValue(progressValue+1)
         }
-        else {
+        else  {
           setInGame(false)
           // IcI le axios pour envoyé les points au BackEnd
         }
