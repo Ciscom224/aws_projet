@@ -23,10 +23,10 @@ export const getUser=(uid)=>{
 
 // Ajout d'une image au profil
 
-export const uploadImg=(data,id)=>{
+export const uploadImg=(image,id)=>{
     return async (dispatch)=>{
         return await axios
-        .post(`${process.env.REACT_APP_API_URL}api/user/uploadImage/${id}`,data)
+        .post(`${process.env.REACT_APP_API_URL}api/user/uploadImage/${id}`,{image:image})
         .then( async (res)=>{
             return await axios
             .get(`${process.env.REACT_APP_API_URL}api/user/${id}`)

@@ -325,7 +325,7 @@ export default function AuthUser({ openAuth, onClose, setIsLogin }) {
                                 <input
                                   id="password"
                                   name="password-confirmation"
-                                  type="password-confirmation"
+                                  type="password"
                                   autoComplete="current-password"
                                   {...register("password_conf", {
                                     required: true,

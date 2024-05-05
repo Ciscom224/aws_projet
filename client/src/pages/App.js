@@ -30,10 +30,6 @@ function App() {
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
   const [loginOpen,setLoginOpen] = useState(false)
-<<<<<<< HEAD
-
-=======
->>>>>>> a24efbb00a55e6424ad7a41698db5b4d95e84206
   useEffect(() => {
     async function checkAuth() {
       await axios({
@@ -61,7 +57,7 @@ function App() {
       <SocketContext.Provider value={socket}>
         <Router>
           <div className="w-full h-screen bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/images/Background/menu_bg.jpg')" }}>
-            <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>
+          {window.location.pathname !== '/admin' && <NavBar setLoginOpen={setLoginOpen} loginOpen={loginOpen} />}
             <main >
               <Routes>
                 <Route path="/" element={<Home setLoginOpen={setLoginOpen} loginOpen={loginOpen}/>} />

@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userReducer from "./../reducers/user.reducer";
 import usersReducer from "../reducers/users.reducer";
+
 import { isEmpty } from "../Utils";
 import { addFriend, delFriend } from "../actions/user.actions";
 
@@ -205,7 +206,7 @@ function Friends({ isOpen, onClose }) {
                 user.surName.toLowerCase().includes(search.toLowerCase())
               )
               .map((user) => {
-                if (!userData.friends.includes(user._id)) {
+                if (!userData.friends.includes(user._id) && (user._id !== userData._id)) {
                   return (
                     <li
                       key={user._id}
@@ -256,6 +257,7 @@ function Friends({ isOpen, onClose }) {
               )
               .map((user) => {
               
+                if (user._id !== userData._id) {
                   return (
                     <li
                       key={user._id}
@@ -297,6 +299,8 @@ function Friends({ isOpen, onClose }) {
                       </div>
                     </li>
                   );
+                }
+             
               }) 
           }
       </ul>

@@ -26,6 +26,7 @@ module.exports.addCategory=async (req,res)=> {
 }
 
 module.exports.addQuestion=async (req,res)=> {
+    console.log(req.body)
     try {
         const category = await QuizModel.findOne({ name: req.params.name});
         category.questions.push({ 
@@ -38,7 +39,8 @@ module.exports.addQuestion=async (req,res)=> {
         await category.save();
         res.send(req.body);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
     }
     
 }
+

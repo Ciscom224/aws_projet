@@ -80,7 +80,6 @@
       <div className="flex ">
         <div className=" fixed w-full h-full bg-cover bg-center overflow-y-auto">
           <div className="flex  justify-center h-screen">
-          {/* <div className=" fixed justify-center  bg-[#D9D9D9] opacity-95  w-full h-3/4 sm:w-1/2 sm:h-3/4 sm:items-left sm:place-items-start rounded-2xl mt-16   py-4 "> */}
             <div className=" fixed justify-center  bg-[#D9D9D9] opacity-95  w-full h-2/3 sm:w-1/2  sm:items-left sm:place-items-start rounded-2xl mt-20  py-4 ">
               <img
                 className=" hidden sm:block  sm:w-1/4 sm:absolute sm:right-0"

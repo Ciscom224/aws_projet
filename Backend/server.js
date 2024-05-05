@@ -33,7 +33,7 @@ function findIndexById(id) {
     for (const roomID in rooms) {
         const room = rooms[roomID];
         if (room.roomID === id) {
-            console.log(roomID)
+            (roomID)
             return roomID;
         }
     }
@@ -41,7 +41,7 @@ function findIndexById(id) {
 }
 
 io.on('connection',(socket) => {
-    console.log(socket.id)
+    (socket.id)
     
     socket.on('send_message',(messages,roomID) => {
         
@@ -52,8 +52,6 @@ io.on('connection',(socket) => {
         
         roomIDint = parseInt(roomID, 10)
         const index = findIndexById(roomIDint)
-        console.log("Voici le room "+rooms[index])
-
         callback([rooms[index].playersDetails,rooms[index].themeSelect]);
         
 
@@ -62,8 +60,6 @@ io.on('connection',(socket) => {
     socket.on('deleteRoom',(room_ID) => {
         const roomID = findIndexById(parseInt(room_ID, 10))
         delete rooms[roomID];
-        console.log("Room" + room_ID + "supprimé!")
-        console.log(rooms)
         io.emit('lobby_changed');
     })
     socket.on('new_points',(room_ID,username,points) => {
@@ -95,7 +91,6 @@ io.on('connection',(socket) => {
                 allPlayersDetails.push([playerDetails,roomID]);
             }
         }
-        console.log(allPlayersDetails)
         callback(allPlayersDetails)
     })
     socket.on('getQuiz',(roomID,callback) => {
@@ -106,7 +101,6 @@ io.on('connection',(socket) => {
     })
 
     socket.on('join_room',(username,photo,room_ID,callback) => {
-        console.log("join "+room_ID)
         const roomID = parseInt(room_ID,10)
         if (playersInGame.includes(socket.id) && !rooms[roomID].players.includes(socket.id))
             {
@@ -141,7 +135,7 @@ io.on('connection',(socket) => {
                 rooms[roomID].players.splice(playerIndex, 1);
                 rooms[roomID].playersDetails.splice(playerIndex, 1);
                 rooms[roomID].playersSubmit.splice(playerIndex, 1);
-                console.log(rooms[roomID].playersDetails)
+                (rooms[roomID].playersDetails)
                 io.emit('lobby_changed');
                
         }}
@@ -150,9 +144,6 @@ io.on('connection',(socket) => {
 
     socket.on('reset_submit',(roomID) => {
         const index = findIndexById(parseInt(roomID,10))
-        console.log(rooms)
-        console.log("le RooomID "+roomID)
-        console.log("le RooomIndex "+index)
         rooms[index].playersSubmit.fill(false);
     })
 
@@ -175,7 +166,6 @@ io.on('connection',(socket) => {
                         }
                         
                     }
-                    console.log("La couleur du joueur", username, "dans la salle", roomID, "a été mise à jour avec", color);
                     socket.to(parseInt(roomID,10)).emit('color_changed');
                     break; 
                 }
@@ -204,7 +194,7 @@ io.on('connection',(socket) => {
         playersInGame.push(socket.id)
         io.emit('lobby_changed');
         roomNumber += 1;
-        console.log(rooms)
+        (rooms)
         callback(rooms[newRoom].roomID);
         
         
@@ -216,7 +206,6 @@ io.on('connection',(socket) => {
         const roomID = findIndexById(parseInt(room_ID,10))
         if (rooms[roomID]) {
             rooms[roomID].started = true;
-            console.log("Game numéro lancé : "+ roomID)
             socket.to(parseInt(room_ID, 10)).emit('game_started');
         }
     });

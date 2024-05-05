@@ -1,56 +1,43 @@
-const UserModel=require("../models/user.model");
-const fs=require("fs");
-const {promisify} =require('util');
+const UserModel = require("../models/user.model");
+const fs = require("fs");
+const path = require("path");
 const { uploadErrors } = require("../utils/errors.utils");
-const pipeline=promisify(require("stream").pipeline);
 
 module.exports.uploadProfil = async (req, res) => {
-    console.log(req.body)
-    return null;
+    console.log(__dirname)
+    const { id } = req.params;
+    const { image } = req.body;
+    if (!objID.isValid(id))
+        return res.status(400).send("ID inconnu : " + id);
     try {
-        if (
-            req.file.mimetype != "image/jpg" &&
-            req.file.mimetype != "image/png" &&
-            req.file.mimetype != "image/jpeg"
-        ) {
-            throw Error("Fichier invalide");
-        }
-        if (req.file.size > 500000) {
-            throw Error("Taille maximale dépassée");
+   
+
+        if (!image) {
+            throw new Error("Aucune image trouvée dans la requête.");
         }
 
-        const fileName = req.body.name + ".jpeg";
+        const user = await UserModel.findById(id);
 
-        await pipeline(
-            req.file.stream,
-            fs.createWriteStream(
-                `${__dirname}/../../client/public/images/Profils/${fileName}`
-            )
-        );
-        try {
-            if (!objID.isValid(req.params.id) )
-                return res.status(400).send("ID inconnu ");
-          
-            const updatedUser = await UserModel.findByIdAndUpdate(
-                req.params.id,
-                { $set: { profilImage:"/images/profils/"+fileName } },
-                { new: true, upsert: true ,setDefaultsOnInsert:true}
-            ).exec();
-    
-         
-            if (updatedUser) {
-                res.status(200).json({ user: updatedUser });
-            } else {
-                res.status(400).json({ message: "Utilisateur non trouvé" });
-            }
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: err.message });
+        if (!user) {
+            return res.status(400).json({ message: "Utilisateur non trouvé." });
         }
 
-    } catch (err) {
-        console.error("Erreur lors de l'enregistrement de l'image :", err);
-        const errors = uploadErrors(err);
-        return res.status(200).json({ errors });
+        // le nom et le chemin d'acces du dossier du client 
+        const fileName = `${user.surName}.jpeg`;
+        const imagePath = path.join(__dirname, `../../client/public/images/Profils/${fileName}`);
+
+        // ajout dans chez le client 
+        fs.writeFileSync(imagePath, image, 'base64');
+
+        // Mise à jour du chemin de l'image dans le modèle d'utilisateur
+        user.profilImage = `/images/Profils/${fileName}`;
+
+        const updatedUser = await user.save();
+
+        res.status(200).json({ user: updatedUser });
+    } catch (error) {
+        console.error("Erreur lors de l'upload de l'image :", error);
+        const errors = uploadErrors(error);
+        res.status(400).json({ errors });
     }
 };

@@ -183,8 +183,13 @@ module.exports.updateScore = async (req, res) => {
         }
         user = await user.save();
 
-        return res.send("Score mis à jour avec succès pour la catégorie : " + categorie);
+        return res.send("le score a ete modifier " + categorie);
     } catch (err) {
         return res.status(500).send(err.message);
     }
 };
+module.exports.getBestPayers=async (req,res) => {
+
+    console.log("bienvenue ! ")
+    res.status(400).send("error !!!");
+}
