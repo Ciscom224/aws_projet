@@ -4,6 +4,7 @@ export const GET_USER="GET_USER";
 export const UPLOAD_IMG="UPLOAD_IMG";
 export const ADD_FRIEND="ADD_FRIEND";
 export const DEL_FRIEND="DEL_FRIEND";
+
 export const UPDATE_SCORE="UPDATE_SCORE";
 
 
@@ -67,6 +68,7 @@ export const delFriend=(id,idFriend)=>{
         
     }
 }
+
 export const updateScore = (id, categorie, score) => {
     return async (dispatch) => {
         try {

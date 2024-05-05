@@ -4,11 +4,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt,faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import quizReducer from "../../reducers/quiz.reducer";
 import Question from "../../components/Admin/Question.admin.component";
+import UserManagment from "../../components/Admin/UserManagment.admin.component";
+import Swal from "sweetalert2";
+
 function Admin() {
   const [page,setPage]=useState(0);
+  const [admin,setAdmin]=useState(false);
   const quiz = useSelector((state) => state.quizReducer);
 
-  useEffect(()=>{
+  const disconect = async () => {
+    const { value: password } = await Swal.fire({
+      title: "Mot de passe admin",
+      input: "password",
+      inputLabel: "Password",
+      inputPlaceholder: "Enter your password",
+      inputAttributes: {
+        maxlength: "10",
+        autocapitalize: "off",
+        autocorrect: "off"
+      }
+    });
+  
+    if (password !== "admin_aws@123") {
+      
+    }
+  }
+  
+  useEffect( ()=>{
+  disconect();
    
   },[page])
 
@@ -124,7 +147,7 @@ function Admin() {
             {
               page === 0 ? <h1>Board</h1>:
                page === 1 ? <Question/>:
-               page === 2 ? <h1>page users</h1>:
+               page === 2 ? <UserManagment/>:
                null
             }
           </div>
