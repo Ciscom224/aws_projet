@@ -139,6 +139,16 @@ useEffect(() => {
   }
 
   const onclick = () => {
+    if (themeSelect.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        color: "#ede6ca",
+        background:"#33322e",
+        title: isMulti ? "Impossible de créer cette room..." : "Impossible de lancer la partie",
+        text: isMulti ? "Veuillez sélectionner au moins un thème avant de créer un lobby! " : "Veuillez sélectionner au moins un thème avant de lancer votre partie ! ",
+      });
+      return;
+    }
     
     let questionsTheme = []
     let questionsTexts = []
