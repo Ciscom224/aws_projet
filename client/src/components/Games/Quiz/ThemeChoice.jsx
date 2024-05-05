@@ -5,6 +5,7 @@ import userReducer from "../../../reducers/user.reducer"
 import {useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useSocket } from "../../../pages/App";
+import Swal from 'sweetalert2';
 
 
 
@@ -124,12 +125,30 @@ useEffect(() => {
       socket.emit('join_room',userData.surName,userData.profilImage,roomID,(success) => {
         if (success[0]) {
           navigate(`/room/${success[1]}`)
-        } else {alert("Impossible de rejoindre (Room full ou inGame)")}
+        } else {
+          Swal.fire({
+            icon: "error",
+            color: "#ede6ca",
+            background:"#33322e",
+            title: "Impossible de rejoindre cette room...",
+            text: success[1],
+          });
+        }
       })
     
   }
 
   const onclick = () => {
+    if (themeSelect.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        color: "#ede6ca",
+        background:"#33322e",
+        title: isMulti ? "Impossible de créer cette room..." : "Impossible de lancer la partie",
+        text: isMulti ? "Veuillez sélectionner au moins un thème avant de créer un lobby! " : "Veuillez sélectionner au moins un thème avant de lancer votre partie ! ",
+      });
+      return;
+    }
     
     let questionsTheme = []
     let questionsTexts = []
@@ -179,7 +198,16 @@ useEffect(() => {
         if (createLob)
         { 
           socket.emit('create_room',userData.surName,userData.profilImage,themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
-            navigate(`/room/${success}`)
+            if (success) {navigate(`/room/${success}`)}
+            else {
+              Swal.fire({
+                icon: "error",
+                color: "#ede6ca",
+                background:"#33322e",
+                title: "Impossible de créer une room...",
+                text: "Vous etes déja inscrit dans une autre room déja existante, veuillez vous déconnecter de celle ci d'abord!",
+              });
+            }
           });
         }
       }

@@ -25,7 +25,6 @@ export function useSocket() {
 function App() {
   const socket = io.connect('http://localhost:5000');
 
-  // socket.on('connection',socket) 
 
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)

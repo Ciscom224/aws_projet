@@ -1,6 +1,5 @@
 import { useState,useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { useQuizStore } from "../../../store"
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { FormControlLabel, Radio, styled} from '@mui/material';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -10,6 +9,7 @@ import { useSocket } from "../../../pages/App";
 import userReducer from "../../../reducers/user.reducer";
 import {useSelector } from "react-redux";
 import { FaCrown } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 
 
@@ -134,9 +134,22 @@ const QuizForm = () => {
         });
     };
 
+    const roomDeletedHandler = () => {
+      navigate("/games/quizchoice");
+  };
+
     const lobbyChangedHandler = () => {
         socket.emit('getRoom', id, "quizForm lobby_changed", (updatedUsers) => {
-            setUsers(updatedUsers[0]);
+          if (updatedUsers) {setUsers(updatedUsers[0]);}
+          else {
+            Swal.fire({
+              icon: "error",
+              color: "#ede6ca",
+              background:"#33322e",
+              title: "Room supprimé",
+              text: "Le host a quitté le lobby ! ",
+            });
+          }
         });
     };
 
@@ -149,6 +162,7 @@ const QuizForm = () => {
 
     socket.on('color_changed', colorChangedHandler);
     socket.on('lobby_changed', lobbyChangedHandler);
+    socket.on('roomDeleted', roomDeletedHandler);
     socket.on('allSubmit', allSubmitHandler);
 
     return () => {
