@@ -245,7 +245,7 @@ useEffect(() => {
           setInGame(false)
           // IcI le axios pour envoyé les points au BackEnd
         }
-        //setSelectedValues([])
+        setSelectedValues([])
         setColor("border-black");
         setIsDisable(false)
       }, 2000);

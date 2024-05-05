@@ -120,7 +120,9 @@ function socketHandler(io,socket) {
                     socket.join(rooms[roomID].roomID);
                     io.emit('lobby_changed');
                 }
-                
+                if (rooms[roomID].players.length === 5 &&  !rooms[roomID].players.includes(socket.id)){
+                    return callback([false,"Ce lobby est full! "]);
+                }
                 return callback([true,rooms[roomID].roomID]);
             } else { return callback([false,"La game est en cours !"]);}
         } else {
@@ -213,11 +215,16 @@ function socketHandler(io,socket) {
         
     })
 
-    socket.on('start_game', (room_ID) => {
+    socket.on('start_game', (room_ID,callback) => {
         const roomID = findIndexById(parseInt(room_ID,10))
         if (rooms[roomID]) {
-            rooms[roomID].started = true;
-            socket.to(parseInt(room_ID, 10)).emit('game_started');
+            if (rooms[roomID].players.length > 1) {
+                    rooms[roomID].started = true;
+                    socket.to(parseInt(room_ID, 10)).emit('game_started');
+                    callback(true)
+            } else {
+                callback(false)
+            }
         }
     });
 }

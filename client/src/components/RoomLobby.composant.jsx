@@ -86,18 +86,29 @@ const RoomLobby = () =>  {
       navigate('/games')
     }
     const onclick = () => {
-      socket.emit('start_game',id)
-      socket.emit('getQuiz',id,(success) => {
-        navigate(`/games/quiz/${id}`,{
-          state: {
-            questions:success[0],
-            choice:success[1],
-            answers:success[2],
-            theme:success[3],
-            multi:true,
-            usersData:users
-          }
-        })
+      socket.emit('start_game',id,(success) => {
+        if(!success) {
+          Swal.fire({
+            icon: "warning",
+            color: "#ede6ca",
+            background:"#33322e",
+            title: "Impossible de lancer la partie",
+            text: "La partie doit avoir au moins 2 joueurs pour se lancer !",
+          });
+        } else {
+          socket.emit('getQuiz',id,(quiz) => {
+            navigate(`/games/quiz/${id}`,{
+              state: {
+                questions:quiz[0],
+                choice:quiz[1],
+                answers:quiz[2],
+                theme:quiz[3],
+                multi:true,
+                usersData:users
+              }
+            })
+          })
+        }
       })
     }
     return (
