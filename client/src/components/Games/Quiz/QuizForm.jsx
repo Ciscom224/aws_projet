@@ -76,14 +76,14 @@ const QuizForm = () => {
               if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
                 socket.emit('new_border',id,userData.surName,"border-[#21F214]");
                 socket.emit('new_points',id,userData.surName,points);
-                setTotalPoints(totalPoints+points)
               } else {
                 socket.emit('new_border',id,userData.surName,"border-[#F82205]");
-              }}
-  
-              socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
+              } 
+                socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
                 setUsers(updatedUsers[0]);
               })
+            }
+  
 
             setTimeout(() => {
               setColor("border-black");
@@ -208,6 +208,7 @@ useEffect(() => {
       }
      
         setPoints(0)
+        setTotalPoints(0)
         if (button ==="menu") {navigate("/")}
         else {navigate("/games")}
     }
@@ -230,6 +231,7 @@ useEffect(() => {
       setIsDisable(true)
       if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
         setPoints(10+countdown)
+        setTotalPoints(totalPoints+10+countdown)
       }
       if (!multi) {
         setColor("border-[#008000]")
