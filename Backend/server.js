@@ -44,46 +44,54 @@ io.on('connection',(socket) => {
     console.log(socket.id)
     
     socket.on('send_message',(messages,roomID) => {
-        
-        socket.to(parseInt(roomID,10)).emit('message',messages)
+        if (rooms[findIndexById(parseInt(roomID, 10))]){socket.to(parseInt(roomID,10)).emit('message',messages)}
     })
 
     socket.on('getRoom',(roomID,site,callback) => {
         
         roomIDint = parseInt(roomID, 10)
         const index = findIndexById(roomIDint)
-        console.log("Voici le room "+rooms[index])
-
-        callback([rooms[index].playersDetails,rooms[index].themeSelect]);
+        if (rooms[index]) {callback([rooms[index].playersDetails,rooms[index].themeSelect]);}
+        else {
+            console.log(rooms[index])
+            console.log(index)
+            callback(null)
+        }
         
 
     })
 
     socket.on('deleteRoom',(room_ID) => {
         const roomID = findIndexById(parseInt(room_ID, 10))
-        delete rooms[roomID];
-        console.log("Room" + room_ID + "supprimé!")
-        console.log(rooms)
-        io.emit('lobby_changed');
+        if(roomID){
+            delete rooms[roomID];
+            io.to(parseInt(room_ID,10)).emit('roomDeleted');
+            io.emit('lobby_changed');
+        }
     })
     socket.on('new_points',(room_ID,username,points) => {
         const roomID = findIndexById(parseInt(room_ID, 10))
-        const room = rooms[roomID];
-        const playersDetails = room.playersDetails;
+        if(roomID){
+            const room = rooms[roomID];
+            const playersDetails = room.playersDetails;
 
-        for (let i = 0; i < playersDetails.length; i++) {
-            const playerDetail = playersDetails[i];
-            const playerName = playerDetail[0];
-            if (playerName === username) {
-                rooms[roomID].playersDetails[i][3] += points;
-            }
-        }
+            for (let i = 0; i < playersDetails.length; i++) {
+                const playerDetail = playersDetails[i];
+                const playerName = playerDetail[0];
+                if (playerName === username) {
+                    rooms[roomID].playersDetails[i][3] += points;
+                }
+        }}
     })
     socket.on('getSubmitted',(room_ID,callback) => {
         const roomID = findIndexById(parseInt(room_ID,10))
-        const room = rooms[roomID];
-        const allSubmitted = room.playersSubmit.every((value) => value === true);
-        callback(allSubmitted);
+        if(roomID){
+            const room = rooms[roomID];
+            const allSubmitted = room.playersSubmit.every((value) => value === true);
+            callback(allSubmitted);
+        } else {
+            callback(null);
+        }
     })
 
     socket.on('getRooms',(callback) => {
@@ -95,27 +103,38 @@ io.on('connection',(socket) => {
                 allPlayersDetails.push([playerDetails,roomID]);
             }
         }
-        console.log(allPlayersDetails)
         callback(allPlayersDetails)
+    })
+    
+    socket.on('kick',(roomID,username) => {
+        const index = findIndexById(parseInt(roomID,10))
+        if (index) {
+            rooms[index].kicked.push(username);
+            socket.to(rooms[index].roomID).emit('playerKicked',username);
+            socket.to(rooms[index].roomID).emit('lobby_changed');
+        }
     })
     socket.on('getQuiz',(roomID,callback) => {
         const index = findIndexById(parseInt(roomID,10))
+        if(index) {
         const room = rooms[index];
-        if(room) {callback([room.questions,room.choices,room.answers,room.theme])}
-        else {callback(null)}
+        callback([room.questions,room.choices,room.answers,room.theme])
+        } else {callback(null)}
     })
 
     socket.on('join_room',(username,photo,room_ID,callback) => {
-        console.log("join "+room_ID)
         const roomID = parseInt(room_ID,10)
         if (playersInGame.includes(socket.id) && !rooms[roomID].players.includes(socket.id))
             {
-                return callback(false)
+                return callback([false,"Vous avez déja rejoins un lobby ! "])
             }
 
-        if (rooms[roomID] && rooms[roomID].players) {
-            if (rooms[roomID].players.length < 5 && rooms[roomID].started === false) {
-                if (!rooms[roomID].players.includes(socket.id)) {
+        if (rooms[roomID]) {
+            if (rooms[roomID].started === false) {
+                if (rooms[roomID].kicked.includes(username)) {
+                    return callback([false,"Vous etes kick de cette salle !"]);
+                }
+                if (rooms[roomID].players.length < 5 &&  !rooms[roomID].players.includes(socket.id)) {
                     rooms[roomID].players.push(socket.id)
                     playersInGame.push(socket.id)
                     rooms[roomID].playersDetails.push([username,photo,"border-transparent",0])
@@ -125,9 +144,9 @@ io.on('connection',(socket) => {
                 }
                 
                 return callback([true,rooms[roomID].roomID]);
-            } else { return callback(false);}
+            } else { return callback([false,"La game est en cours !"]);}
         } else {
-            return callback(false);
+            return callback([false,"Cette Room n'existe plus"]);
         }
     })
 
@@ -144,29 +163,28 @@ io.on('connection',(socket) => {
                 console.log(rooms[roomID].playersDetails)
                 io.emit('lobby_changed');
                
-        }}
+        }} else if (playersInGame.includes(socket.id)) {
+            playersInGame = playersInGame.filter(item => item !== socket.id);
+            socket.leave(rooms[roomID].roomID);
+        }
         
     })
 
     socket.on('reset_submit',(roomID) => {
         const index = findIndexById(parseInt(roomID,10))
-        console.log(rooms)
-        console.log("le RooomID "+roomID)
-        console.log("le RooomIndex "+index)
-        rooms[index].playersSubmit.fill(false);
+        if (rooms[index]){rooms[index].playersSubmit.fill(false);}
     })
 
     socket.on('new_border', (roomID, username, color) => {
         const index = findIndexById(parseInt(roomID,10))
-        const room = rooms[index];
-        if (room) {
+        if (index) {
+            const room = rooms[index];
             const playersDetails = room.playersDetails;
             for (let i = 0; i < playersDetails.length; i++) {
                 const playerDetail = playersDetails[i];
                 const playerName = playerDetail[0];
                 if (playerName === username) {
                     rooms[index].playersDetails[i][2] = color;
-                    // permet de dire qu'un joueur a effectué un submit
                     if (color === "border-[#ADA3A1]") {
                         rooms[index].playersSubmit[i] = true;
                         const allSubmitted = room.playersSubmit.every((value) => value === true);
@@ -185,27 +203,32 @@ io.on('connection',(socket) => {
        
     });
     socket.on('create_room',(username,photo,themeSelect,theme,questions,choices,answers,callback) => {
-
-        const newRoom = findNextAvailableIndex() ;
-        socket.join(roomNumber)
-        rooms[newRoom] = {
-            roomID:roomNumber,
-            players:[socket.id],
-            playersDetails:[[username,photo,"border-transparent",0]],
-            playersSubmit:[false],
-            started:false,
-            kicked:[],
-            themeSelect:themeSelect,
-            theme:theme,
-            questions:questions,
-            choices:choices,
-            answers:answers
+        console.log(playersInGame)
+        console.log(socket.id)
+        const ingame = playersInGame.includes(socket.id)
+        if (!ingame){
+            const newRoom = findNextAvailableIndex() ;
+            socket.join(roomNumber)
+            rooms[newRoom] = {
+                roomID:roomNumber,
+                players:[socket.id],
+                playersDetails:[[username,photo,"border-transparent",0]],
+                playersSubmit:[false],
+                started:false,
+                kicked:[],
+                themeSelect:themeSelect,
+                theme:theme,
+                questions:questions,
+                choices:choices,
+                answers:answers
+            }
+            playersInGame.push(socket.id)
+            io.emit('lobby_changed');
+            roomNumber += 1;
+            callback(rooms[newRoom].roomID);
+        } else {
+            callback(null)
         }
-        playersInGame.push(socket.id)
-        io.emit('lobby_changed');
-        roomNumber += 1;
-        console.log(rooms)
-        callback(rooms[newRoom].roomID);
         
         
 
@@ -216,7 +239,6 @@ io.on('connection',(socket) => {
         const roomID = findIndexById(parseInt(room_ID,10))
         if (rooms[roomID]) {
             rooms[roomID].started = true;
-            console.log("Game numéro lancé : "+ roomID)
             socket.to(parseInt(room_ID, 10)).emit('game_started');
         }
     });

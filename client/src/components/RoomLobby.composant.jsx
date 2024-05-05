@@ -4,10 +4,12 @@ import {useSelector } from "react-redux";
 import Profile1 from "./PictureManag/Profile1";
 import { useLocation, useNavigate,useParams} from "react-router-dom";
 import { useSocket } from "../pages/App";
+import { IoClose } from "react-icons/io5";
+import Swal from 'sweetalert2';
 
 
 const RoomLobby = () =>  {
-    // const userData = useSelector((state) => state.userReducer);
+    const userData = useSelector((state) => state.userReducer);
     const [users,setUsers] = useState([])
     const [themeSelect,setThemeSelect] = useState([])
     const navigate = useNavigate()
@@ -44,17 +46,39 @@ const RoomLobby = () =>  {
           });
         });
       };
+      const kickHandler =(username) => {
+        if (userData.surName === username) {
+          socket.emit('disconnected',id);
+          Swal.fire({
+            icon: "error",
+            color: "#ede6ca",
+            background:"#33322e",
+            title: "Vous avez été kick...",
+          });
+          navigate("/games/quizchoice")
+        } else {
+
+        }
+      }
+      socket.on('playerKicked', kickHandler);
       socket.on('lobby_changed', lobbyChangedHandler);
       socket.on('game_started', gameStartedHandler);
       
       return () => {
+        socket.off('playerKicked', kickHandler);
         socket.off('lobby_changed', lobbyChangedHandler);
         socket.off('game_started', gameStartedHandler);
       };
 
     }, [socket]);
 
-  
+    const handleKick =  (username) => {
+      socket.emit('kick',id,username);
+      // socket.emit('getRoom', id, "RoomLobby 2", (success) => {
+      //   console.log(success[0])
+      //   setUsers(success[0])
+      // });
+    }
     const handleDisconnect =() => {
       socket.emit('disconnected',id);
       if (users.length === 1) {
@@ -83,12 +107,18 @@ const RoomLobby = () =>  {
         <div className=" h-[92vh] overflow-y-auto">
           <p className="flex mb-2 p-4 text-white font-bold text-2xl">Joueurs Connecté : </p>
           {users.map((user, index) => (
+          
             <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center ">
+              
               <div className="flex flex-row items-center">
+                {userData.surName === users[0][0] && userData.surName !== user[0] &&
+                  <p className="rounded-full min-w-[20px] mr-5 bg-[#726969] cursor-pointer" onClick={() => handleKick(user[0])}><IoClose style={{ fontSize: '28px', color: 'red' }}/></p>
+                }
                 <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
                 <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
               </div>
             </div>
+       
             ))}
         </div>
       </div>
