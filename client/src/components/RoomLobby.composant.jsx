@@ -15,6 +15,7 @@ const RoomLobby = () =>  {
     const navigate = useNavigate()
     const {id} = useParams()
     const socket = useSocket();
+    const location = useLocation()
   
     useEffect(() => {
       socket.emit('getRoom',id,"RoomLobby 1",(success) => {
@@ -46,26 +47,26 @@ const RoomLobby = () =>  {
           });
         });
       };
-      const kickHandler =(username) => {
-        if (userData.surName === username) {
-          socket.emit('disconnected',id);
-          Swal.fire({
+      const kickHandler =(username,roomID) => {
+          if (userData.surName === username){
+          socket.emit('disconnected',userData._id,id,"RoomLobby 1");
+          if(location.pathname === `/room/${roomID}`){
+            Swal.fire({
             icon: "error",
             color: "#ede6ca",
             background:"#33322e",
             title: "Vous avez été kick...",
           });
           navigate("/games/quizchoice")
-        } else {
-
         }
+         }
       }
       socket.on('playerKicked', kickHandler);
       socket.on('lobby_changed', lobbyChangedHandler);
       socket.on('game_started', gameStartedHandler);
       
       return () => {
-        socket.off('playerKicked', kickHandler);
+        //socket.off('playerKicked', kickHandler);
         socket.off('lobby_changed', lobbyChangedHandler);
         socket.off('game_started', gameStartedHandler);
       };
@@ -74,30 +75,37 @@ const RoomLobby = () =>  {
 
     const handleKick =  (username) => {
       socket.emit('kick',id,username);
-      // socket.emit('getRoom', id, "RoomLobby 2", (success) => {
-      //   console.log(success[0])
-      //   setUsers(success[0])
-      // });
     }
     const handleDisconnect =() => {
-      socket.emit('disconnected',id);
+      socket.emit('disconnected',userData._id,id, "RoomLobby 2");
       if (users.length === 1) {
         socket.emit('deleteRoom',id);}
       navigate('/games')
     }
     const onclick = () => {
-      socket.emit('start_game',id)
-      socket.emit('getQuiz',id,(success) => {
-        navigate(`/games/quiz/${id}`,{
-          state: {
-            questions:success[0],
-            choice:success[1],
-            answers:success[2],
-            theme:success[3],
-            multi:true,
-            usersData:users
-          }
-        })
+      socket.emit('start_game',id,(success) => {
+        if(!success) {
+          Swal.fire({
+            icon: "warning",
+            color: "#ede6ca",
+            background:"#33322e",
+            title: "Impossible de lancer la partie",
+            text: "La partie doit avoir au moins 2 joueurs pour se lancer !",
+          });
+        } else {
+          socket.emit('getQuiz',id,(quiz) => {
+            navigate(`/games/quiz/${id}`,{
+              state: {
+                questions:quiz[0],
+                choice:quiz[1],
+                answers:quiz[2],
+                theme:quiz[3],
+                multi:true,
+                usersData:users
+              }
+            })
+          })
+        }
       })
     }
     return (

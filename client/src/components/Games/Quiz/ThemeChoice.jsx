@@ -122,7 +122,7 @@ useEffect(() => {
 
   const joinRoom = (roomID) => {
     
-      socket.emit('join_room',userData.surName,userData.profilImage,roomID,(success) => {
+      socket.emit('join_room',userData._id,userData.surName,userData.profilImage,roomID,(success) => {
         if (success[0]) {
           navigate(`/room/${success[1]}`)
         } else {
@@ -197,7 +197,7 @@ useEffect(() => {
       if (isMulti) {
         if (createLob)
         { 
-          socket.emit('create_room',userData.surName,userData.profilImage,themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
+          socket.emit('create_room',userData._id,userData.surName,userData.profilImage,themeSelect,questionsTheme,questionsTexts,questionsChoices,questionsAnswers,(success) => {
             if (success) {navigate(`/room/${success}`)}
             else {
               Swal.fire({

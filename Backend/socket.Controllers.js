@@ -14,7 +14,6 @@ function findIndexById(id) {
     for (const roomID in rooms) {
         const room = rooms[roomID];
         if (room.roomID === id) {
-            console.log(roomID)
             return roomID;
         }
     }
@@ -26,13 +25,11 @@ function socketHandler(io,socket) {
     })
 
     socket.on('getRoom',(roomID,site,callback) => {
-        
         roomIDint = parseInt(roomID, 10)
         const index = findIndexById(roomIDint)
-        if (rooms[index]) {callback([rooms[index].playersDetails,rooms[index].themeSelect]);}
+        if (rooms[index]) {callback([rooms[index].playersDetails,rooms[index].themeSelect,rooms[index].playersReady]);}
         else {
-            console.log(rooms[index])
-            console.log(index)
+         
             callback(null)
         }
         
@@ -88,8 +85,8 @@ function socketHandler(io,socket) {
         const index = findIndexById(parseInt(roomID,10))
         if (index) {
             rooms[index].kicked.push(username);
-            socket.to(rooms[index].roomID).emit('playerKicked',username);
-            socket.to(rooms[index].roomID).emit('lobby_changed');
+            socket.to(rooms[index].roomID).emit('playerKicked',username,rooms[index].roomID);
+            io.emit('lobby_changed');
         }
     })
     socket.on('getQuiz',(roomID,callback) => {
@@ -100,9 +97,9 @@ function socketHandler(io,socket) {
         } else {callback(null)}
     })
 
-    socket.on('join_room',(username,photo,room_ID,callback) => {
+    socket.on('join_room',(id,username,photo,room_ID,callback) => {
         const roomID = parseInt(room_ID,10)
-        if (playersInGame.includes(socket.id) && !rooms[roomID].players.includes(socket.id))
+        if (playersInGame.includes(id) && !rooms[roomID].players.includes(id))
             {
                 return callback([false,"Vous avez déja rejoins un lobby ! "])
             }
@@ -112,15 +109,22 @@ function socketHandler(io,socket) {
                 if (rooms[roomID].kicked.includes(username)) {
                     return callback([false,"Vous etes kick de cette salle !"]);
                 }
-                if (rooms[roomID].players.length < 5 &&  !rooms[roomID].players.includes(socket.id)) {
-                    rooms[roomID].players.push(socket.id)
-                    playersInGame.push(socket.id)
+                if (rooms[roomID].players.length < 5 &&  !rooms[roomID].players.includes(id)) {
+                    
+                    rooms[roomID].players.push(id)
+                    playersInGame.push(id)
                     rooms[roomID].playersDetails.push([username,photo,"border-transparent",0])
                     rooms[roomID].playersSubmit.push(false)
+                    rooms[roomID].playersReady.push(false)
                     socket.join(rooms[roomID].roomID);
                     io.emit('lobby_changed');
+                } 
+                if (rooms[roomID].players.length === 5 &&  !rooms[roomID].players.includes(id)){
+                    return callback([false,"Ce lobby est full! "]);
                 }
-                
+                if (rooms[roomID].players.length === 5 &&  !rooms[roomID].players.includes(id)){
+                    return callback([false,"Ce lobby est full! "]);
+                }
                 return callback([true,rooms[roomID].roomID]);
             } else { return callback([false,"La game est en cours !"]);}
         } else {
@@ -128,22 +132,22 @@ function socketHandler(io,socket) {
         }
     })
 
-    socket.on('disconnected',(room_ID) => {
+    socket.on('disconnected',(id,room_ID,site) => {
         const roomID = findIndexById(parseInt(room_ID,10))
         if (rooms[roomID]) {
-            const playerIndex = rooms[roomID].players.findIndex(playerId => playerId === socket.id);
-            playersInGame = playersInGame.filter(item => item !== socket.id);
+            const playerIndex = rooms[roomID].players.findIndex(playerId => playerId === id);
+            playersInGame = playersInGame.filter(item => item !== id);
             socket.leave(rooms[roomID].roomID);
             if (playerIndex !== -1) {
                 rooms[roomID].players.splice(playerIndex, 1);
                 rooms[roomID].playersDetails.splice(playerIndex, 1);
                 rooms[roomID].playersSubmit.splice(playerIndex, 1);
-                console.log(rooms[roomID].playersDetails)
                 io.emit('lobby_changed');
             
-        }} else if (playersInGame.includes(socket.id)) {
-            playersInGame = playersInGame.filter(item => item !== socket.id);
-            socket.leave(rooms[roomID].roomID);
+        }} else if (playersInGame.includes(id)) {
+            console.log("on a déco "+ site)
+            playersInGame = playersInGame.filter(item => item !== id);
+            socket.leave(parseInt(room_ID,10));
         }
         
     })
@@ -151,6 +155,22 @@ function socketHandler(io,socket) {
     socket.on('reset_submit',(roomID) => {
         const index = findIndexById(parseInt(roomID,10))
         if (rooms[index]){rooms[index].playersSubmit.fill(false);}
+    })
+
+    socket.on('ready',(id,roomID,callback) => {
+        const room = findIndexById(parseInt(roomID,10))
+        if (rooms[room]) {
+            const index = rooms[room].players.indexOf(id);
+            console.log(index)
+            rooms[room].playersReady[index] = !rooms[room].playersReady[index];
+            const allReady = rooms[room].playersReady.every((value) => value === true);
+            if (allReady) {
+                socket.to(parseInt(roomID,10)).emit('allReady');
+                callback(true)
+            }
+            socket.to(parseInt(roomID,10)).emit('newReady');
+            callback(false)
+        }
     })
 
     socket.on('new_border', (roomID, username, color) => {
@@ -180,18 +200,19 @@ function socketHandler(io,socket) {
         }
     
     });
-    socket.on('create_room',(username,photo,themeSelect,theme,questions,choices,answers,callback) => {
-        console.log(playersInGame)
-        console.log(socket.id)
-        const ingame = playersInGame.includes(socket.id)
+    socket.on('create_room',(id,username,photo,themeSelect,theme,questions,choices,answers,callback) => {
+        const ingame = playersInGame.includes(id)
+        console.log(ingame)
         if (!ingame){
+            console.log("on est la")
             const newRoom = findNextAvailableIndex() ;
             socket.join(roomNumber)
             rooms[newRoom] = {
                 roomID:roomNumber,
-                players:[socket.id],
+                players:[id],
                 playersDetails:[[username,photo,"border-transparent",0]],
                 playersSubmit:[false],
+                playersReady:[false],
                 started:false,
                 kicked:[],
                 themeSelect:themeSelect,
@@ -200,7 +221,8 @@ function socketHandler(io,socket) {
                 choices:choices,
                 answers:answers
             }
-            playersInGame.push(socket.id)
+            playersInGame.push(id)
+            console.log(playersInGame)
             io.emit('lobby_changed');
             roomNumber += 1;
             callback(rooms[newRoom].roomID);
@@ -213,11 +235,16 @@ function socketHandler(io,socket) {
         
     })
 
-    socket.on('start_game', (room_ID) => {
+    socket.on('start_game', (room_ID,callback) => {
         const roomID = findIndexById(parseInt(room_ID,10))
         if (rooms[roomID]) {
-            rooms[roomID].started = true;
-            socket.to(parseInt(room_ID, 10)).emit('game_started');
+            if (rooms[roomID].players.length > 1) {
+                    rooms[roomID].started = true;
+                    socket.to(parseInt(room_ID, 10)).emit('game_started');
+                    callback(true)
+            } else {
+                callback(false)
+            }
         }
     });
 }
