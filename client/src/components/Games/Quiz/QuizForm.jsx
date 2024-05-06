@@ -41,42 +41,55 @@ const QuizForm = () => {
 
   // States permettant la gestion de notre jeu
   const [users,setUsers] = useState(usersData)
+  const [usersReady,setUsersReady] = useState(Array.from({ length: userData.length }, () => false))
   const [progressValue,setProgressValue] = useState(1)
   const [selectedValues, setSelectedValues] = useState([]);
   const [countdown, setCountdown] = useState(10);
   const [color,setColor] = useState("border-black")
   const [inGame,setInGame] = useState(true)
+  const [allReady,setAllReady] = useState(multi ? false : true)
   const [isDisable,setIsDisable] = useState(false)
 
   const messagesContainerRef = useRef(null);
     
-  
-  window.onbeforeunload = function() {
-    socket.emit('disconnected',id);
-      if (multi && (userData.surName === users[0][0])) {
-        socket.emit('deleteRoom',id);
-      }
-  }
+  // Gestion de déconnexion en cas de changement de URL (reload ou navigate)
+  function unloadEventHandler() {
+    socket.emit('disconnected', userData._id,id, "reload");
+    if (multi && (userData.surName === users[0][0])) {
+        socket.emit('deleteRoom', id);
+    }
+    // Désactivez les écouteurs d'événements
+    socket.off('disconnected');
+    socket.off('deleteRoom');
+}
+  function navigateEventHandler(event) {
+    socket.emit('disconnected', userData._id,id, "navigate");
+    if (multi && (userData.surName === users[0][0])) {
+        socket.emit('deleteRoom', id);
+    }
+}
 
-  window.navigation.addEventListener("navigate", (event) => {
-    socket.emit('disconnected',id);
-      if (multi && (userData.surName === users[0][0])) {
-        socket.emit('deleteRoom',id);
-      }
-})
+
+useEffect(() => {
+  window.navigation.addEventListener("navigate", navigateEventHandler);
+  window.onbeforeunload = unloadEventHandler;
+
+  return () => {
+      window.navigation.removeEventListener("navigate", navigateEventHandler);
+      window.onbeforeunload = null;
+      socket.off('disconnected');
+      socket.off('deleteRoom');
+  };
+}, []);
 
   
 
   // Pour mettre a jour le temps 
     useEffect(() => {
-      
-      // Si on recharge la page, on sera renvoyé au menu car theme vaudra 0 dans ce cas
-      if (theme === "") {
-        navigate("/games");
-      }
-      
+
       // on met en place un Timeout avec le countdown pour faire un useEffect toutes les secondes
-      const timer = setTimeout(() => {
+      if (allReady) {
+        const timer = setTimeout(() => {
           if (countdown > 0) {
               setCountdown(countdown - 1);
 
@@ -90,7 +103,7 @@ const QuizForm = () => {
                 socket.emit('new_points',id,userData.surName,points);
                 
               } else {
-                socket.emit('new_border',id,userData.surName,"border-[#F82205]");
+                if (inGame) {socket.emit('new_border',id,userData.surName,"border-[#F82205]");}
               }
               socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
                 setUsers(updatedUsers[0]);
@@ -124,9 +137,6 @@ const QuizForm = () => {
               }
         
             }, multi ? 1000 : 2000);
-            
-            
-            
           
           }
      
@@ -135,7 +145,8 @@ const QuizForm = () => {
               , 1000);
 
       return () => clearTimeout(timer);
-  }, [countdown,inGame]);
+    }
+  }, [countdown,inGame,allReady]);
 
   useEffect(() => {
     if(multi){messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;}
@@ -149,9 +160,22 @@ const QuizForm = () => {
     };
 
     const roomDeletedHandler = () => {
-      socket.emit('disconnected',id);
+      socket.emit('disconnected',id,"RoomDelete");
       navigate("/games/quizchoice");
   };
+
+  const ReadyHandler = (value) => {
+    console.log(id)
+    socket.emit('getRoom',id,"quizForm ",(updatedUsers) => {
+      if(updatedUsers){
+        setUsers(updatedUsers[0]);
+        setUsersReady(updatedUsers[2])
+      }
+    })
+    if (value) {
+      setAllReady(true);
+    }
+};
 
     const lobbyChangedHandler = () => {
         socket.emit('getRoom', id, "quizForm lobby_changed", (updatedUsers) => {
@@ -169,21 +193,25 @@ const QuizForm = () => {
     };
 
     const allSubmitHandler = () => {
-        socket.emit('getRoom', id, "quizForm allSubmit", (updatedUsers) => {
-            setUsers(updatedUsers[0]);
-        });
         setCountdown(0);
+        socket.emit('getRoom', id, "quizForm allSubmit", (updatedUsers) => {
+          setUsers(updatedUsers[0]);
+      });
     };
 
     socket.on('color_changed', colorChangedHandler);
     socket.on('lobby_changed', lobbyChangedHandler);
     socket.on('roomDeleted', roomDeletedHandler);
     socket.on('allSubmit', allSubmitHandler);
+    socket.on('allReady', () => ReadyHandler(true));
+    socket.on('newReady', () => ReadyHandler(false));
 
     return () => {
         socket.off('color_changed', colorChangedHandler);
         socket.off('lobby_changed', lobbyChangedHandler);
         socket.off('allSubmit', allSubmitHandler);
+        socket.off('allReady', () => ReadyHandler(true));
+        socket.off('newReady', () => ReadyHandler(false));
     };
 
 }, [socket,inGame]);
@@ -216,7 +244,7 @@ useEffect(() => {
     
     // Fonction pour le clique des boutons a la fin de la game ou on reset les points et on renvoie en fonction du choix
     const handleOnClick = (button) => {
-      socket.emit('disconnected',id);
+      socket.emit('disconnected',userData._id,id);
       if (multi && (userData.surName === users[0][0])) {
         
         socket.emit('deleteRoom',id);
@@ -234,6 +262,19 @@ useEffect(() => {
           } else {
             setSelectedValues([...selectedValues, value]);
           }
+    }
+    const pushReady = () => {
+      socket.emit('ready',userData._id,id,(success) => {
+        socket.emit('getRoom',id,"quizForm (afterSubmit)",(updatedUsers) => {
+         
+          setUsers(updatedUsers[0]);
+          setUsersReady(updatedUsers[2])
+          
+        })
+        if (success) {
+          setAllReady(true)
+        }
+      });
     }
     const onSubmit2 = (data) => {
       const updatedMessages = [...messages, [userData.surName, data.message]];
@@ -286,7 +327,7 @@ useEffect(() => {
         <div className="inset-0 flex">
         
         <div className="  sm:mt-5 mx-auto  sm:max-w-md  lg:py-0  w-full ">
-        {inGame ? <> 
+        {inGame && allReady ? <> 
             <div className={`w-full sm:mt-10 h-screen ${distancePy < 73 ? "space-y-2" : "space-y-5"} bg-white sm:rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent  sm:h-auto `}>
             
                 <h2 className="font-bold px-3  text-md text-x sm:text-xl text-[#070707] text-shadow">Thème : {theme[progressValue-1]}</h2>
@@ -321,7 +362,7 @@ useEffect(() => {
               </form>
           
           </div> 
-      </div> </>: <>
+      </div> </>: allReady && <>
       <div className="w-full bg-white rounded-lg shadow dark:border  dark:bg-[#FFFFFF] dark:bg-opacity-50 dark:border-transparent h-auto mt-[95px] ">
           <div className=" flex  px-3 py-5 ml-10">
             <div className="mr-10"><Profile1 navig={false} classment={false} /></div>
@@ -352,10 +393,11 @@ useEffect(() => {
   <div className=" h-[92vh] overflow-y-auto py-16">
   
     {users.map((user, index) => (
-      <div className={`mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col items-center justify-center border-4 ${user[2] ? user[2] : "border-transparent"}`}>
+      <div className={`mb-2 p-4 rounded-md ${(!allReady && usersReady[index]) ? "bg-[#236842]" : "bg-[#4b4848]"  } flex flex-col items-center justify-center border-4 ${user[2] ? user[2] : "border-transparent"}`}>
         <div className="flex flex-row items-center">
           <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
           <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
+          {userData.surName === user[0] && !allReady && <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={pushReady}>¨Pret</button>}
         </div>
         <p className="text-sm text-gray-400 min-w-[80px] ml-[60px] font-bold "> Points : {user[3]}  </p>
       </div>

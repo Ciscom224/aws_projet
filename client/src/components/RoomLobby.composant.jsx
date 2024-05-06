@@ -15,6 +15,7 @@ const RoomLobby = () =>  {
     const navigate = useNavigate()
     const {id} = useParams()
     const socket = useSocket();
+    const location = useLocation()
   
     useEffect(() => {
       socket.emit('getRoom',id,"RoomLobby 1",(success) => {
@@ -46,26 +47,26 @@ const RoomLobby = () =>  {
           });
         });
       };
-      const kickHandler =(username) => {
-        if (userData.surName === username) {
-          socket.emit('disconnected',id);
-          Swal.fire({
+      const kickHandler =(username,roomID) => {
+          if (userData.surName === username){
+          socket.emit('disconnected',userData._id,id,"RoomLobby 1");
+          if(location.pathname === `/room/${roomID}`){
+            Swal.fire({
             icon: "error",
             color: "#ede6ca",
             background:"#33322e",
             title: "Vous avez été kick...",
           });
           navigate("/games/quizchoice")
-        } else {
-
         }
+         }
       }
       socket.on('playerKicked', kickHandler);
       socket.on('lobby_changed', lobbyChangedHandler);
       socket.on('game_started', gameStartedHandler);
       
       return () => {
-        socket.off('playerKicked', kickHandler);
+        //socket.off('playerKicked', kickHandler);
         socket.off('lobby_changed', lobbyChangedHandler);
         socket.off('game_started', gameStartedHandler);
       };
@@ -76,7 +77,7 @@ const RoomLobby = () =>  {
       socket.emit('kick',id,username);
     }
     const handleDisconnect =() => {
-      socket.emit('disconnected',id);
+      socket.emit('disconnected',userData._id,id, "RoomLobby 2");
       if (users.length === 1) {
         socket.emit('deleteRoom',id);}
       navigate('/games')
