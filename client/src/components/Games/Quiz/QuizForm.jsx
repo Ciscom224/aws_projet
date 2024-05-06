@@ -1,4 +1,4 @@
-import { useState,useEffect, useRef } from "react"
+import { useState,useEffect, useRef  } from "react"
 import { useForm } from "react-hook-form"
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { FormControlLabel, Radio, styled} from '@mui/material';
@@ -49,9 +49,21 @@ const QuizForm = () => {
   const [isDisable,setIsDisable] = useState(false)
 
   const messagesContainerRef = useRef(null);
-
-
+    
   
+  window.onbeforeunload = function() {
+    socket.emit('disconnected',id);
+      if (multi && (userData.surName === users[0][0])) {
+        socket.emit('deleteRoom',id);
+      }
+  }
+
+  window.navigation.addEventListener("navigate", (event) => {
+    socket.emit('disconnected',id);
+      if (multi && (userData.surName === users[0][0])) {
+        socket.emit('deleteRoom',id);
+      }
+})
 
   
 
@@ -137,6 +149,7 @@ const QuizForm = () => {
     };
 
     const roomDeletedHandler = () => {
+      socket.emit('disconnected',id);
       navigate("/games/quizchoice");
   };
 

@@ -149,7 +149,7 @@ function socketHandler(io,socket) {
             
         }} else if (playersInGame.includes(socket.id)) {
             playersInGame = playersInGame.filter(item => item !== socket.id);
-            socket.leave(rooms[roomID].roomID);
+            socket.leave(parseInt(room_ID,10));
         }
         
     })
