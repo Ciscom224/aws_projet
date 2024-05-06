@@ -34,11 +34,13 @@ function Admin() {
   };
 
   useEffect(() => {
-    if (!admin) disconect();
+    // disconect();
   }, [page, admin]);
 
   return (
-    admin && (
+    <>
+    {admin ?  
+    (
       <>
         <button
           data-drawer-target="logo-sidebar"
@@ -167,9 +169,22 @@ function Admin() {
             ) : null}
           </div>
         </div>
-      </>
-    )
-  );
+     </>
+    ):
+    <input 
+    type="password" 
+    placeholder="Mot de passe admin ..."
+    onChange={(e) => {
+      if (e.target.value === "Admin_aws@123") {
+        setAdmin(true);
+      }
+    }} 
+    className="mx-auto my-32 block px-2"
+  />
+  
+    }
+    </>
+  )
 }
 
 export default Admin;
