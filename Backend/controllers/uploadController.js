@@ -1,4 +1,5 @@
 const UserModel = require("../models/user.model");
+const objID = require('mongoose').Types.ObjectId;
 const fs = require("fs");
 const path = require("path");
 const { uploadErrors } = require("../utils/errors.utils");
@@ -30,7 +31,7 @@ module.exports.uploadProfil = async (req, res) => {
         fs.writeFileSync(imagePath, image, 'base64');
 
         // Mise à jour du chemin de l'image dans le modèle d'utilisateur
-        user.profilImage = `/images/Profils/${fileName}`;
+        user.profilImage = image ;
 
         const updatedUser = await user.save();
 
