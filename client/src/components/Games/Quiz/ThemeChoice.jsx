@@ -22,7 +22,7 @@ const GamesChoice = () => {
 
   
 
-  const listeQuiz = ["informatique","animaux","celebrites","cinema","culture","geographie","histoire","musique","sciences"]
+  const listeQuiz = ["informatique","animaux","celebrites","cinema","culture","geographie","histoire","musique","sciences","bd","gastronomie","nature","litterature","sport"]
   const [themeSelect,setThemeSelect] = useState([])
   const [isMulti,setIsMulti] = useState(false)
   const [createLob,setCreateLob] = useState(true)
@@ -248,6 +248,11 @@ useEffect(() => {
             <img src="/images/Themes/celebrites.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("celebrites") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("celebrites")}/>
             <img src="/images/Themes/cinema.png" alt="bug" className={`w-[200px]  rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("cinema") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("cinema")}/>
             <img src="/images/Themes/informatique.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("informatique") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("informatique")}/>
+            <img src="/images/Themes/bd.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("bd") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("bd")}/>
+            <img src="/images/Themes/gastronomie.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("gastronomie") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("gastronomie")}/>
+            <img src="/images/Themes/nature.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("nature") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("nature")}/>
+            <img src="/images/Themes/litterature.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("litterature") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("litterature")}/>
+            <img src="/images/Themes/sport.png" alt="bug" className={`w-[200px] rounded-2xl hover:scale-105 duration-300 mr-12 cursor-pointer mb-10 ${themeSelect.includes("sport") && "border-4 border-[#48ff70]" }`} onClick={() => handleThemeSelected("sport")}/>
         </div>
 
         </div> : 
