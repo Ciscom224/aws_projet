@@ -7,10 +7,10 @@ import Profile1 from "../../PictureManag/Profile1";
 import HeighPage from "../../HeighPage";
 import { useSocket } from "../../../pages/App";
 import userReducer from "../../../reducers/user.reducer";
-import {useSelector } from "react-redux";
+import {useSelector, useDispatch } from "react-redux";
 import { FaCrown } from "react-icons/fa";
 import Swal from 'sweetalert2';
-
+import { updateScore } from "../../../actions/user.actions";
 
 
 
@@ -22,7 +22,7 @@ const QuizForm = () => {
   const { questions, choice, answers, theme , multi , usersData } = location.state;
   const distancePy = HeighPage()
   const [messages,setMessages] = useState([])
-
+  const dispatch = useDispatch();
   const {id} = useParams()
   const {
       register,
@@ -133,7 +133,7 @@ useEffect(() => {
               }
               else {
                 setInGame(false);
-                
+                dispatch(updateScore(userData._id,"Quiz",totalPoints))
               }
 
               setIsDisable(false)
@@ -305,7 +305,7 @@ useEffect(() => {
         }
         else  {
            setInGame(false)
-          // IcI le axios pour envoyé les points au BackEnd
+           dispatch(updateScore(userData._id,"Quiz",totalPoints))
         }
          setSelectedValues([])
          setColor("border-amber-600");
@@ -401,7 +401,7 @@ useEffect(() => {
     {users.map((user, index) => (
       <div className={`mb-2 p-4 rounded-md ${(!allReady && usersReady[index]) ? "bg-[#236842]" : "bg-[#4b4848]"  } flex flex-col items-center justify-center border-4 ${user[2] ? user[2] : "border-transparent"}`}>
         <div className="flex flex-row items-center">
-          <p className="text-sm text-white min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
+          <p className="text-sm text-white min-w-[60px] "><Profile1 avatar={user[1]} navig={false} classment={true} /> </p>
           <p className="text-sm text-white min-w-[80px] font-bold ">{user[0]} </p>
           {userData.surName === user[0] && !allReady && <button className="mt-1  px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#338645]" onClick={pushReady}>¨Pret</button>}
         </div>

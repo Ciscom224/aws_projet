@@ -122,7 +122,7 @@ const RoomLobby = () =>  {
                 {userData.surName === users[0][0] && userData.surName !== user[0] &&
                   <p className="rounded-full min-w-[20px] mr-5 bg-[#726969] cursor-pointer" onClick={() => handleKick(user[0])}><IoClose style={{ fontSize: '28px', color: 'red' }}/></p>
                 }
-                <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 navig={false} classment={true} /> </p>
+                <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 avatar={user[1]} navig={false} classment={true} /> </p>
                 <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
               </div>
             </div>

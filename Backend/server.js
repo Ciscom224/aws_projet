@@ -14,10 +14,12 @@ const socketHandler = require("./socket.Controllers.js");
 const app=express();
 const server = createServer(app);
 app.use(cors({origin:process.env.URL_CLIENT,credentials:true}));
+//app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 //Pour Socket
 
 const io = new Server(server,{cors:{origin:process.env.URL_CLIENT}});
+//const io = new Server(server,{cors:{origin: 'http://localhost:3000'}});
 const rooms = {};
 let playersInGame = [];
 let roomNumber = 1;
