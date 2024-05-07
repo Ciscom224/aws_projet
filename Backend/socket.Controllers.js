@@ -142,6 +142,7 @@ function socketHandler(io,socket) {
                 rooms[roomID].players.splice(playerIndex, 1);
                 rooms[roomID].playersDetails.splice(playerIndex, 1);
                 rooms[roomID].playersSubmit.splice(playerIndex, 1);
+                rooms[roomID].playersReady.splice(playerIndex, 1);
                 io.emit('lobby_changed');
             
         }} else if (playersInGame.includes(id)) {
@@ -173,8 +174,9 @@ function socketHandler(io,socket) {
         }
     })
 
-    socket.on('new_border', (roomID, username, color) => {
+    socket.on('new_border', (roomID, username, color,callback) => {
         const index = findIndexById(parseInt(roomID,10))
+        let allSubmitted = null;
         if (index) {
             const room = rooms[index];
             const playersDetails = room.playersDetails;
@@ -185,19 +187,27 @@ function socketHandler(io,socket) {
                     rooms[index].playersDetails[i][2] = color;
                     if (color === "border-[#ADA3A1]") {
                         rooms[index].playersSubmit[i] = true;
-                        const allSubmitted = room.playersSubmit.every((value) => value === true);
+                        console.log("submit de  "+ username)
+                        console.log("Les Submits "+ rooms[index].playersSubmit)
+                        allSubmitted = room.playersSubmit.every((value) => value === true);
                         if (allSubmitted) {
                             socket.to(parseInt(roomID,10)).emit('allSubmit');
+                            console.log("Allsubmit send ! ")
                         }
                         
                     }
-                    console.log("La couleur du joueur", username, "dans la salle", roomID, "a été mise à jour avec", color);
+                    //console.log("La couleur du joueur", username, "dans la salle", roomID, "a été mise à jour avec", color);
                     socket.to(parseInt(roomID,10)).emit('color_changed');
                     break; 
                 }
             }
-            
         }
+            if (typeof callback === 'function') {{ 
+                if (allSubmitted) {callback(true)}
+                else {callback(false)}
+            }
+        }
+    
     
     });
     socket.on('create_room',(id,username,photo,themeSelect,theme,questions,choices,answers,callback) => {

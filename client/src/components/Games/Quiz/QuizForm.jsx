@@ -49,6 +49,7 @@ const QuizForm = () => {
   const [inGame,setInGame] = useState(true)
   const [allReady,setAllReady] = useState(multi ? false : true)
   const [isDisable,setIsDisable] = useState(false)
+  const countdownRef = useRef(countdown);
 
   const messagesContainerRef = useRef(null);
     
@@ -69,6 +70,9 @@ const QuizForm = () => {
     }
 }
 
+useEffect(() => {
+  countdownRef.current = countdown;
+}, [countdown]);
 
 useEffect(() => {
   window.navigation.addEventListener("navigate", navigateEventHandler);
@@ -90,8 +94,8 @@ useEffect(() => {
       // on met en place un Timeout avec le countdown pour faire un useEffect toutes les secondes
       if (allReady) {
         const timer = setTimeout(() => {
-          if (countdown > 0) {
-              setCountdown(countdown - 1);
+          if (countdownRef.current > 0) {
+            setCountdown(prevCountdown => prevCountdown - 1);
 
           }
           else {
@@ -115,19 +119,6 @@ useEffect(() => {
             setTimeout(() => {
               setColor("border-amber-600");
               setSelectedValues([]);
-              if (progressValue!==20)
-              {
-                setProgressValue(progressValue+1);
-                setCountdown(10);
-              }
-              else {
-                setInGame(false);
-                socket.emit('new_border',id,userData.surName,"border-transparent");
-                
-              }
-
-              setIsDisable(false)
-
               if (multi) {
                 socket.emit('new_border',id,userData.surName,"border-transparent");
                 socket.emit('getRoom',id,inGame,(updatedUsers) => {
@@ -135,6 +126,20 @@ useEffect(() => {
                 });
                 socket.emit('reset_submit',id);
               }
+              if (progressValue!==20)
+              {
+                setProgressValue(progressValue+1);
+                setCountdown(10);
+              }
+              else {
+                setInGame(false);
+                
+              }
+
+              setIsDisable(false)
+             
+
+              
         
             }, multi ? 1000 : 2000);
           
@@ -153,7 +158,7 @@ useEffect(() => {
   }, [messages]);
 
   useEffect(() => {
-    const colorChangedHandler = () => {
+    if(multi){const colorChangedHandler = () => {
         socket.emit('getRoom', id, "quizForm color_changed", (updatedUsers) => {
             setUsers(updatedUsers[0]);
         });
@@ -212,9 +217,9 @@ useEffect(() => {
         socket.off('allSubmit', allSubmitHandler);
         socket.off('allReady', () => ReadyHandler(true));
         socket.off('newReady', () => ReadyHandler(false));
-    };
+    };}
 
-}, [socket,inGame]);
+}, [socket,inGame,countdown]);
 
 useEffect(() => {
 
@@ -284,38 +289,39 @@ useEffect(() => {
     }
     // Fonction du submit, ou on met en place le submit pour chaque question et on calcule les points + le countdown 
     const onSubmit =  () => {
-      setIsDisable(true)
+       setIsDisable(true)
       if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
-        setPoints(10+countdown)
-        setTotalPoints(totalPoints+10+countdown)
+         setPoints(10+countdown)
+         setTotalPoints(totalPoints+10+countdown)
       }
       if (!multi) {
-        setColor("border-[#008000]")
-        setTimeout(() => {
-        setCountdown(10);
+         setColor("border-[#008000]")
+         setTimeout(() => {
+           setCountdown(10);
         
         
         if (progressValue !== 20) {
-          setProgressValue(progressValue+1)
+           setProgressValue(progressValue+1)
         }
         else  {
-          setInGame(false)
+           setInGame(false)
           // IcI le axios pour envoyé les points au BackEnd
         }
-        setSelectedValues([])
-        setColor("border-amber-600");
-        setIsDisable(false)
+         setSelectedValues([])
+         setColor("border-amber-600");
+         setIsDisable(false)
       }, 2000);
     } else {
-      socket.emit('new_border',id,userData.surName,"border-[#ADA3A1]")
-      socket.emit('getSubmitted',id,(success) => {
+       socket.emit('new_border',id,userData.surName,"border-[#ADA3A1]", (success) => {
+        console.log("Question "+progressValue + " : " + success)
         if (success) {
-          setCountdown(0)
+           setCountdown(0);
         }
       })
       socket.emit('getRoom',id,"QuizForm afterSubmit",(updatedUsers) => {
         setUsers(updatedUsers[0])
       })
+      
     }
     
         
@@ -347,13 +353,13 @@ useEffect(() => {
               
               <form className={`flex flex-wrap sm:h-auto ${distancePy < 73 ? "space-y-2" : "space-y-6 py-10"}`} action="#"  onSubmit={handleSubmit(onSubmit)} style={{color:"white !important"}}>
              
-                <FormControlLabel className={` border-2 rounded-lg ${answers[progressValue-1][0].includes(choice[progressValue-1][0]) ? color : "border-amber-600"} w-full`} value="b" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]} />
-                <FormControlLabel className={` border-2 rounded-lg ${answers[progressValue-1][0].includes(choice[progressValue-1][1]) ? color : "border-amber-600"} w-full`} value="c" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
-                <FormControlLabel className={` border-2 rounded-lg ${answers[progressValue-1][0].includes(choice[progressValue-1][2]) ? color : "border-amber-600"} w-full`} value="a" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
-                <FormControlLabel className={` border-2 rounded-lg ${answers[progressValue-1][0].includes(choice[progressValue-1][3]) ? color : "border-amber-600"} w-full`} value="d" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][0]) ? color : "border-amber-600"} w-full`} value="b" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][1]) ? color : "border-amber-600"} w-full`} value="c" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][2]) ? color : "border-amber-600"} w-full`} value="a" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][3]) ? color : "border-amber-600"} w-full`} value="d" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
                 <button
                   type="submit"
-                  className="fixed bottom-[5%] w-[80%] text-black bg-amber-500 hover:bg-amber-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
+                  className="fixed bottom-[5%] w-[80%] text-black bg-amber-500  focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
                   disabled={isDisable}
                 >
                   Valider
@@ -378,7 +384,7 @@ useEffect(() => {
                 </button>
                 <button
                   onClick={() => handleOnClick("")}
-                  className=" w-full text-black bg-amber-500 hover:bg-amber-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000]  hover:bg-[#305f68]    mt-5 sm:mt-2 sm:w-1/2"
+                  className=" w-full text-black bg-amber-500  focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000]  hover:bg-[#305f68]    mt-5 sm:mt-2 sm:w-1/2"
                 >
                   Choix de Jeu
                 </button>
