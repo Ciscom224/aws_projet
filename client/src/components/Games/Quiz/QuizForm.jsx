@@ -10,7 +10,7 @@ import userReducer from "../../../reducers/user.reducer";
 import {useSelector, useDispatch } from "react-redux";
 import { FaCrown } from "react-icons/fa";
 import Swal from 'sweetalert2';
-import { updateScore } from "../../../actions/user.actions";
+import { updateScore } from "../../../actions/users.actions";
 
 
 

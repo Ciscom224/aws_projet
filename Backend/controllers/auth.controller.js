@@ -29,7 +29,7 @@ module.exports.signIn=async (req,res)=>{
     try {
         const user= await UserModel.login(email,password);
         const token=createToken(user._id);
-        res.cookie('jwt',token,{httpOnly:true,maxDate}) // ajout du token JWT dans le cookie
+        res.cookie('jwt',token,{httpOnly:true,sameSite: 'None'}) // ajout du token JWT dans le cookie
         res.status(201).send(user)
     } catch (err) {
         const errors=signInErrors(err)

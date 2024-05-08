@@ -1,4 +1,4 @@
-import { ADD_FRIEND, DEL_FRIEND, GET_USER, UPDATE_SCORE, UPLOAD_IMG } from "../actions/user.actions";
+import { ADD_FRIEND, DEL_FRIEND, GET_USER, UPLOAD_IMG } from "../actions/user.actions";
 
 const initialState = {}
 
@@ -23,11 +23,6 @@ export default function userReducer(state = initialState, action) {
                 ...state,
                 friends: state.friends.filter((id) => id !== action.payload.idFriend)
             }
-        case UPDATE_SCORE:
-            return {
-                ...state,
-                score: action.payload.score
-            };
         default:
             return state;
     }

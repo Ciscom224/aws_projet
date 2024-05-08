@@ -69,17 +69,3 @@ export const delFriend=(id,idFriend)=>{
     }
 }
 
-export const updateScore = (id, categorie, score) => {
-    return async (dispatch) => {
-        try {
-            const res = await axios({
-                method: 'patch',
-                url: `${process.env.REACT_APP_API_URL}api/user/updateScore/${id}`,
-                data: { categorie: categorie, level: score }
-            });
-            dispatch({ type: UPDATE_SCORE, payload: res.data });
-        } catch (err) {
-            console.error(err);
-        }
-    }
-}

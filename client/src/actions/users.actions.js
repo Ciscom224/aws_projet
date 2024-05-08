@@ -32,3 +32,22 @@ export const deleteUser=(id)=>{
         
     }
 }
+export const updateScore = (id, categorie, score) => {
+    return async (dispatch) => {
+        try {
+             await axios({
+                method: 'patch',
+                url: `${process.env.REACT_APP_API_URL}api/user/updateScore/${id}`,
+                data: { categorie: categorie, level: score }
+            }).then(async (res)=>{
+                await axios
+                .get( `${process.env.REACT_APP_API_URL}api/user/all`)
+                .then((res)=> {
+                    dispatch({type:GET_USERS,payload:res.data})
+                })
+            })
+        } catch (err) {
+            console.error(err);
+        }
+    }
+}

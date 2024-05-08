@@ -111,19 +111,19 @@ const RoomLobby = () =>  {
     return (
       <>
     <div className="sm:flex ">
-      <div className="sm:w-[300px] h-screen bg-[#2c2c2c]">
+      <div className="sm:w-[300px] h-screen bg-[#2c2c2c] bg-opacity-80">
         <div className=" h-[92vh] overflow-y-auto">
           <p className="flex mb-2 p-4 text-white font-bold text-2xl">Joueurs Connecté : </p>
           {users.map((user, index) => (
           
-            <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center ">
+            <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center mx-2 justify-center hover:bg-opacity-45">
               
               <div className="flex flex-row items-center">
                 {userData.surName === users[0][0] && userData.surName !== user[0] &&
                   <p className="rounded-full min-w-[20px] mr-5 bg-[#726969] cursor-pointer" onClick={() => handleKick(user[0])}><IoClose style={{ fontSize: '28px', color: 'red' }}/></p>
                 }
-                <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 avatar={user[1]} navig={false} classment={true} /> </p>
-                <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
+                <p className="text-sm text-white min-w-[60px] "><Profile1 avatar={user[1]} navig={false} classment={true} /> </p>
+                <p className="text-sm text-white min-w-[80px] font-bold ">{user[0]} </p>
               </div>
             </div>
        
@@ -138,11 +138,11 @@ const RoomLobby = () =>  {
           <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
             Room ID : {id}
           </p>
-          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onclick}>Lancer la partie</button>
+          <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-amber-600" onClick={onclick}>Lancer la partie</button>
           <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#ce2e2e]" onClick={handleDisconnect}>Quitter la Room</button>
         </div>
         <div className="items-center justify-center flex">
-          <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+          <p className="font-bold text-2xl sm:text-4xl text-white text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
             Voici les Thèmes selectionné :
           </p>
         </div>
