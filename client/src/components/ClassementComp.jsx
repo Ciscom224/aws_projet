@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import usersReducer from "../reducers/users.reducer";
 import { getUsersByScore } from "../Utils";
+import { useNavigate } from "react-router-dom";
 
 const ClassementComponent = () => {
 
   const [selectedTab, setSelectedTab] = useState(1);
-
+  const navigate = useNavigate();
   const users = useSelector((state) => state.usersReducer);
   const catQuiz = getUsersByScore(users, "Quiz");
   const catGuess = getUsersByScore(users, "GuessR");
@@ -51,6 +52,7 @@ const ClassementComponent = () => {
                 <div
                   key={index}
                   className="mb-2 p-4 rounded-md bg-[#4b4848] flex bg-opacity-55 items-center justify-center cursor-pointer hover:bg-opacity-40 hover:drop-shadow-lg"
+                  onClick={() => {navigate("/profil")}}
                 >
                   <p className="text-sm text-white min-w-[60px] ">
                     {index + 1}

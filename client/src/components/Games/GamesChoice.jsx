@@ -14,9 +14,9 @@ const GamesChoice = () => {
             Liste des jeux
           </p>
           <div className="ml-8 items-center justify-center py-16 px-10 flex flex-wrap">
-          <img src="/images/games_pic1.png" alt="bug" className="w-[200px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" onClick={() => {navigate("/games/quizchoice")}} />
-          <img src="/images/games_pic2.png" alt="bug" className="w-[200px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" />
-          <img src="/images/games_pic.png" alt="bug" className="w-[200px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" />
+          <img src="/images/games_pic1.png" alt="bug" className="w-[300px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" onClick={() => {navigate("/games/quizchoice")}} />
+          <img src="/images/games_pic2.png" alt="bug" className="w-[300px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" />
+          <img src="/images/games_pic.png" alt="bug" className="w-[300px]  h-auto rounded-2xl hover:scale-105 duration-300 mr-6 cursor-pointer" />
         </div>
     
         </div>

@@ -15,6 +15,7 @@ import Admin from './admin/home.admin.page';
 import Classement from './Classement.jsx';
 import Quiz from './Quiz.jsx';
 import Parametres from './Parametres.pages';
+import Profiljoueur from './Profil.page';
 import Room from './RoomLobby.jsx';
 import io from "socket.io-client"
 
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/games" element={ uid ? <Games />:<Navigate to="/" />}/>
                 <Route path="/games/quiz/:id" element={ uid ? <Quiz />:<Navigate to="/" />}/>
                 <Route path="/games/quizchoice" element={ uid ? <QuizChoice />: <Navigate to="/"/>} />
+                <Route path="/profil" element={ uid ? <Profiljoueur />: <Navigate to="/"/>} />
                 <Route path="*" element={<Error/>} />
               </Routes>
             </main>

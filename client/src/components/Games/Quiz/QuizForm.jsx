@@ -31,7 +31,7 @@ const QuizForm = () => {
 
   const { handleSubmit: handleSubmit2, register: register2 ,reset} = useForm();
   const navigate = useNavigate()
-  
+
 
   // Appelle des variables et fonctions necessaire de notre Store
 
@@ -293,6 +293,7 @@ useEffect(() => {
       if (JSON.stringify(selectedValues) === JSON.stringify(answers[progressValue-1])) {
          setPoints(10+countdown)
          setTotalPoints(totalPoints+10+countdown)
+      } else {
       }
       if (!multi) {
          setColor("border-[#008000]")
@@ -353,10 +354,10 @@ useEffect(() => {
               
               <form className={`flex flex-wrap sm:h-auto ${distancePy < 73 ? "space-y-2" : "space-y-6 py-10"}`} action="#"  onSubmit={handleSubmit(onSubmit)} style={{color:"white !important"}}>
              
-                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][0]) ? color : "border-amber-600"} w-full`} value="b" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={choice[progressValue-1][0]} />
-                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][1]) ? color : "border-amber-600"} w-full`} value="c" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={choice[progressValue-1][1]} />
-                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][2]) ? color : "border-amber-600"} w-full`} value="a" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={choice[progressValue-1][2]} />
-                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][3]) ? color : "border-amber-600"} w-full`} value="d" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={choice[progressValue-1][3]} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][0]) ? color : "border-amber-600"} w-full`} value="b" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][0])} checked={selectedValues.includes(choice[progressValue-1][0])}/>} label={<span style={{ color: "white" }}> {choice[progressValue-1][0]} </span>} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][1]) ? color : "border-amber-600"} w-full`} value="c" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][1])} checked={selectedValues.includes(choice[progressValue-1][1])}/>} label={<span style={{ color: "white" }}> {choice[progressValue-1][1]} </span>} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][2]) ? color : "border-amber-600"} w-full`} value="a" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][2])} checked={selectedValues.includes(choice[progressValue-1][2])}/>} label={<span style={{ color: "white" }}> {choice[progressValue-1][2]} </span>} />
+                <FormControlLabel className={` border-2 rounded-lg text-white ${answers[progressValue-1][0].includes(choice[progressValue-1][3]) ? color : "border-amber-600"} w-full`} value="d" control={<Radio disabled={isDisable} sx={{ color: "white",'&.Mui-checked': { color: '#D97706',}}} onClick={() => handleChange(choice[progressValue-1][3])} checked={selectedValues.includes(choice[progressValue-1][3])}/>} label={<span style={{ color: "white" }}> {choice[progressValue-1][3]} </span>} />
                 <button
                   type="submit"
                   className="fixed bottom-[5%] w-[80%] text-black bg-amber-500  focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:text-[#000000] hover:scale-105 duration-300 hover:bg-[#afb9b0] sm:relative sm:block sm:left-[70%] sm:mt-10 sm:w-1/3"
