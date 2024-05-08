@@ -24,7 +24,7 @@ export function useSocket() {
 }
 
 function App() {
-  const socket = io.connect('http://localhost:5000');
+  const socket = io.connect('https://server-aws-9701a1e831ed.herokuapp.com/');
 
 
   const dispatch = useDispatch()

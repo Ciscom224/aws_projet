@@ -35,9 +35,9 @@ const ClassementComponent = () => {
           GuessR{" "}
         </div>
       </div>
-      <div className="flex-1 max-h-[500px] md:max-h-[750px] overflow-y-auto bg-[#2c2c2c] bg-opacity-60 rounded-lg mt-4 mr-4 sm:mt-0 ">
-        <div className="p-4">
-          <div className="h-[80vh] overflow-y-auto">
+      <div className="flex-1  bg-[#2c2c2c] bg-opacity-60 rounded-lg mt-4 mr-4 sm:mt-0 ">
+        <div className="p-4 ">
+          <div className="h-[55vh] sm:h-[70vh] overflow-y-auto">
             <div className="flex mb-2 p-4">
               <p className="text-sm  text-white min-w-[60px]">Rang</p>
               <p className="text-sm  text-white min-w-[80px]">Profile</p>

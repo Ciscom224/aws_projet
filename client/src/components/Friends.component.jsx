@@ -251,6 +251,7 @@ function Friends({ isOpen, onClose }) {
                 }
               })
           :
+          !isEmpty(usersData) &&
           usersData
               .filter((user) =>
                 user.surName.toLowerCase().includes(search.toLowerCase())
