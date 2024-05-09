@@ -6,17 +6,20 @@ import { useLocation, useNavigate,useParams} from "react-router-dom";
 import { useSocket } from "../pages/App";
 import { IoClose } from "react-icons/io5";
 import Swal from 'sweetalert2';
+import { BiSolidUserDetail } from "react-icons/bi";
+
 
 
 const RoomLobby = () =>  {
     const userData = useSelector((state) => state.userReducer);
     const [users,setUsers] = useState([])
+    const [connected,setConnected] = useState(true)
     const [themeSelect,setThemeSelect] = useState([])
     const navigate = useNavigate()
     const {id} = useParams()
     const socket = useSocket();
     const location = useLocation()
-  
+
     useEffect(() => {
       socket.emit('getRoom',id,"RoomLobby 1",(success) => {
         setUsers(success[0])
@@ -73,6 +76,9 @@ const RoomLobby = () =>  {
 
     }, [socket]);
 
+    const handleConnected = () => {
+      setConnected(!connected)
+    }
     const handleKick =  (username) => {
       socket.emit('kick',id,username);
     }
@@ -111,33 +117,33 @@ const RoomLobby = () =>  {
     return (
       <>
     <div className="sm:flex ">
-      <div className="sm:w-[300px] h-screen bg-[#2c2c2c]">
+    <div className="sm:hidden"><BiSolidUserDetail className={`absolute ${connected ? "right-[5%]" : "right-[91%]" } top-[50%] bg-[#2c2c2c] text-4xl text-white`} onClick={handleConnected}/></div>
+    {connected ? <div className="w-[90%] sm:w-[300px] h-screen bg-[#2c2c2c]">
+         
         <div className=" h-[92vh] overflow-y-auto">
           <p className="flex mb-2 p-4 text-white font-bold text-2xl">Joueurs Connecté : </p>
           {users.map((user, index) => (
           
-            <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center ">
+            <div className="mb-2 p-4 rounded-md bg-[#4b4848] flex flex-col bg-opacity-55 items-center justify-center mr-8 sm:mr-0">
               
               <div className="flex flex-row items-center">
                 {userData.surName === users[0][0] && userData.surName !== user[0] &&
                   <p className="rounded-full min-w-[20px] mr-5 bg-[#726969] cursor-pointer" onClick={() => handleKick(user[0])}><IoClose style={{ fontSize: '28px', color: 'red' }}/></p>
                 }
                 <p className="text-sm text-gray-400 min-w-[60px] "><Profile1 avatar={user[1]} navig={false} classment={true} /> </p>
-                <p className="text-sm text-gray-400 min-w-[80px] font-bold ">{user[0]} </p>
+                <p className="text-sm text-gray-400 min-w-[80px] font-bold  ">{user[0]} </p>
               </div>
             </div>
        
             ))}
         </div>
-      </div>
+      </div> : <div className="absolute h-[92vh] w-[1%] bg-[#2c2c2c] sm:hidden"></div>}
       
       
 
       <div className="flex-1 h-screen overflow-y-auto">
-        <div className=" flex py-8 space-y-8 sm:space-x-8 sm:space-y-0 sm:flex-row ">
-          <p className="font-bold text-2xl sm:text-4xl text-[#070707] text-shadow" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
-            Room ID : {id}
-          </p>
+        <div className=" flex py-8 space-y-8 sm:space-x-8 sm:space-y-0 flex-col px-2 sm:px-0 sm:flex-row sm:items-center justify-center ">
+          
           <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#99458b]" onClick={onclick}>Lancer la partie</button>
           <button className="mt-1 px-5 py-2.5 border border-[#b3abab] rounded-lg bg-[#ce2e2e]" onClick={handleDisconnect}>Quitter la Room</button>
         </div>
