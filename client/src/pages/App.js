@@ -26,7 +26,6 @@ export function useSocket() {
 function App() {
   const socket = io.connect('https://server-aws-9701a1e831ed.herokuapp.com/');
 
-
   const dispatch = useDispatch()
   const [uid, setUid] = useState(null)
   const [loginOpen,setLoginOpen] = useState(false)
